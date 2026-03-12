@@ -2,7 +2,6 @@ import React from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import assets from "../assets/assets";
 
-/* ── Shared check-list item ── */
 function Bullet({ text }) {
   return (
     <li
@@ -30,7 +29,6 @@ function Bullet({ text }) {
   );
 }
 
-/* ── Generic product section layout ── */
 function ProductSection({
   id,
   href,
@@ -62,7 +60,6 @@ function ProductSection({
         overflow: "hidden",
       }}
     >
-      {/* Ambient glow */}
       <div
         className={tagColor === "blue" ? "glow-blue" : "glow-orange"}
         style={{
@@ -142,6 +139,21 @@ function ProductSection({
               )}
             </h2>
 
+            {/* Mobile-only image — sits between title and body */}
+            <div className="prod-mobile-img animate-fade-up delay-150">
+              <img
+                src={image}
+                alt={tag}
+                style={{
+                  width: "100%",
+                  height: 240,
+                  objectFit: "cover",
+                  borderRadius: 12,
+                  display: "block",
+                }}
+              />
+            </div>
+
             <p
               className="animate-fade-up delay-200"
               style={{
@@ -172,7 +184,7 @@ function ProductSection({
             </a>
           </div>
 
-          {/* VISUAL side */}
+          {/* VISUAL side — desktop only */}
           <div
             style={{
               order: reverse ? 1 : 2,
@@ -180,7 +192,7 @@ function ProductSection({
               justifyContent: "stretch",
               alignItems: "stretch",
             }}
-            className={reverse ? "prod-vis-r" : "prod-vis-l"}
+            className={`prod-vis ${reverse ? "prod-vis-r" : "prod-vis-l"}`}
           >
             <img
               src={image}
@@ -199,23 +211,42 @@ function ProductSection({
       </div>
 
       <style>{`
+        .prod-mobile-img { display: none; }
+
         @media(max-width:900px){
-          .prod-grid{grid-template-columns:1fr !important; gap:2.5rem !important;}
-          .prod-text-r,.prod-text-l{order:2 !important;}
-          .prod-vis-r,.prod-vis-l{order:1 !important;}
+          .prod-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+          .prod-text-r, .prod-text-l { order: 1 !important; }
+          .prod-vis { display: none !important; }
+          .prod-mobile-img { display: block; margin-bottom: 1.25rem; }
         }
       `}</style>
     </section>
   );
 }
 
-/* ══════════════════════════════════════════════
-   EXPORT — all 4 product sections
-══════════════════════════════════════════════ */
 export default function ProductSections() {
   return (
     <>
-      {/* 1 ── BRANDING */}
+      <ProductSection
+        id="web-dev"
+        href="/web-dev"
+        tag="Website & Software Development"
+        tagColor="blue"
+        headline="Websites That"
+        headlineAccent="Work While You Sleep."
+        accentPosition="after"
+        body="A beautiful website is your best salesperson — available 24/7, converting visitors into clients while you focus on running your business. Serenly builds fast, secure, and scalable websites and custom software solutions tailored to your business goals and built to grow with you."
+        bullets={[
+          "Custom website design & development — built to convert",
+          "E-commerce stores, booking systems & client portals",
+          "Mobile-first, lightning-fast & SEO-ready from launch",
+          "Ongoing maintenance, hosting & technical support",
+        ]}
+        ctaLabel="Explore Web Development"
+        image={assets.websites}
+        reverse={true}
+        bgVariant="secondary"
+      />
       <ProductSection
         id="branding"
         href="/branding"
@@ -236,8 +267,6 @@ export default function ProductSections() {
         reverse={false}
         bgVariant="primary"
       />
-
-      {/* 2 ── SMM */}
       <ProductSection
         id="smm"
         href="/smm"
@@ -258,8 +287,6 @@ export default function ProductSections() {
         reverse={true}
         bgVariant="secondary"
       />
-
-      {/* 3 ── SEO */}
       <ProductSection
         id="seo"
         href="/seo"
@@ -279,28 +306,6 @@ export default function ProductSections() {
         image={assets.seo}
         reverse={false}
         bgVariant="primary"
-      />
-
-      {/* 4 ── WEB DEV */}
-      <ProductSection
-        id="web-dev"
-        href="/web-dev"
-        tag="Website & Software Development"
-        tagColor="blue"
-        headline="Websites That"
-        headlineAccent="Work While You Sleep."
-        accentPosition="after"
-        body="A beautiful website is your best salesperson — available 24/7, converting visitors into clients while you focus on running your business. Serenly builds fast, secure, and scalable websites and custom software solutions tailored to your business goals and built to grow with you."
-        bullets={[
-          "Custom website design & development — built to convert",
-          "E-commerce stores, booking systems & client portals",
-          "Mobile-first, lightning-fast & SEO-ready from launch",
-          "Ongoing maintenance, hosting & technical support",
-        ]}
-        ctaLabel="Explore Web Development"
-        image={assets.websites}
-        reverse={true}
-        bgVariant="secondary"
       />
     </>
   );

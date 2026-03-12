@@ -1,6 +1,6 @@
 // src/components/Hero.jsx
 import React, { useState, useEffect, useCallback } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import assets from "../assets/assets";
 
 const SLIDES = [
@@ -81,11 +81,10 @@ export default function Hero() {
       style={{
         position: "relative",
         overflow: "hidden",
-        padding: "2rem 0 4rem",
+        padding: "1rem 0 1.5rem",
         background: "var(--color-bg-primary)",
       }}
     >
-      {/* Ambient glows */}
       <div
         className="glow-orange"
         style={{
@@ -119,15 +118,15 @@ export default function Hero() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "3.5rem",
+            gap: "2rem",
             alignItems: "start",
           }}
         >
-          {/* LEFT — text content (order: 2 on mobile so image appears first) */}
+          {/* LEFT */}
           <div
             className="hero-text"
             style={{
-              paddingTop: "1rem",
+              paddingTop: "0.25rem",
               opacity: animating ? 0 : 1,
               transform: animating
                 ? `translateX(${direction * -28}px)`
@@ -140,12 +139,12 @@ export default function Hero() {
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 6,
                 background: "rgba(254,122,54,0.1)",
                 border: "1px solid rgba(254,122,54,0.25)",
                 borderRadius: 999,
-                padding: "5px 14px",
-                marginBottom: "1.5rem",
+                padding: "4px 12px",
+                marginBottom: "0.5rem",
               }}
             >
               <span
@@ -170,7 +169,7 @@ export default function Hero() {
             </div>
 
             {/* Headline */}
-            <h1 style={{ marginBottom: "1.25rem", lineHeight: 1.08 }}>
+            <h1 style={{ marginBottom: "0.5rem", lineHeight: 1.08 }}>
               {slide.headline}
               <br />
               <span className="text-gradient-orange">{slide.accent}</span>
@@ -180,8 +179,8 @@ export default function Hero() {
               style={{
                 fontSize: "1.0625rem",
                 maxWidth: 440,
-                marginBottom: "1.5rem",
-                lineHeight: 1.8,
+                marginBottom: "0.625rem",
+                lineHeight: 1.65,
               }}
             >
               {slide.body}
@@ -192,8 +191,8 @@ export default function Hero() {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: 8,
-                marginBottom: "2rem",
+                gap: 6,
+                marginBottom: "0.75rem",
               }}
             >
               {slide.keywords.map((kw) => (
@@ -214,7 +213,7 @@ export default function Hero() {
             </div>
 
             {/* Email CTA */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
                 <input
                   type="email"
@@ -248,11 +247,11 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — image (order: 1 on mobile so it appears above text) */}
+          {/* RIGHT — image */}
           <div
             className="hero-image"
             style={{
-              height: "clamp(800px,42vw,500px)",
+              height: "clamp(300px,42vw,500px)",
               opacity: animating ? 0 : 1,
               transform: animating
                 ? `translateX(${direction * 28}px)`
@@ -263,9 +262,10 @@ export default function Hero() {
             <img
               src={slide.image}
               alt={slide.imageAlt}
+              className="hero-img"
               style={{
                 width: "100%",
-                height: "80%",
+                height: "100%",
                 objectFit: "contain",
                 objectPosition: "top",
                 display: "block",
@@ -273,118 +273,33 @@ export default function Hero() {
             />
           </div>
         </div>
-
-        {/* Carousel controls */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 16,
-            marginTop: "2.5rem",
-          }}
-        >
-          <button
-            onClick={prev}
-            className="btn btn-ghost"
-            style={{ width: 40, height: 40, padding: 0, borderRadius: "50%" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#FE7A36";
-              e.currentTarget.style.color = "#FE7A36";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--color-border-strong)";
-              e.currentTarget.style.color = "";
-            }}
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            {SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => go(i, i > current ? 1 : -1)}
-                style={{
-                  width: i === current ? 26 : 7,
-                  height: 7,
-                  borderRadius: 999,
-                  background:
-                    i === current ? "#FE7A36" : "rgba(255,255,255,0.15)",
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  padding: 0,
-                }}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={next}
-            className="btn btn-ghost"
-            style={{ width: 40, height: 40, padding: 0, borderRadius: "50%" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#FE7A36";
-              e.currentTarget.style.color = "#FE7A36";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--color-border-strong)";
-              e.currentTarget.style.color = "";
-            }}
-          >
-            <ChevronRight size={18} />
-          </button>
-        </div>
-
-        {/* Tab pills */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 8,
-            marginTop: "1rem",
-            flexWrap: "wrap",
-          }}
-        >
-          {SLIDES.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => go(i, i > current ? 1 : -1)}
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                padding: "5px 14px",
-                borderRadius: 999,
-                border: `1px solid ${i === current ? "rgba(254,122,54,0.5)" : "rgba(255,255,255,0.08)"}`,
-                background:
-                  i === current ? "rgba(254,122,54,0.1)" : "transparent",
-                color: i === current ? "#FE7A36" : "var(--color-text-tertiary)",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              {s.tag}
-            </button>
-          ))}
-        </div>
       </div>
 
       <style>{`
         @media(max-width:900px){
-          .hero-grid{
+          .hero-grid {
             grid-template-columns: 1fr !important;
           }
-          .hero-image{
+          .hero-image {
             order: -1;
-            height: 260px !important;
+            height: 70vw !important;
+            max-height: 360px !important;
+            width: 100vw !important;
+            margin-left: calc(-1 * var(--container-padding, 1.25rem)) !important;
+            margin-right: calc(-1 * var(--container-padding, 1.25rem)) !important;
           }
-          .hero-text{
-            order: 1;
+          .hero-img {
+            object-fit: cover !important;
+            object-position: center !important;
+            border-radius: 0 !important;
           }
+          .hero-text { order: 1; }
         }
         @media(max-width:640px){
-          .hero-image{ height: 220px !important; }
+          .hero-image {
+            height: 60vw !important;
+            max-height: 280px !important;
+          }
         }
       `}</style>
     </section>
