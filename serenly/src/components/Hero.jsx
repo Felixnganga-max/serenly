@@ -282,8 +282,8 @@ export default function Hero() {
           }
           .hero-image {
             order: -1;
-            height: 70vw !important;
-            max-height: 360px !important;
+            height: 85vw !important;
+            max-height: 420px !important;
             width: 100vw !important;
             margin-left: calc(-1 * var(--container-padding, 1.25rem)) !important;
             margin-right: calc(-1 * var(--container-padding, 1.25rem)) !important;
@@ -297,8 +297,8 @@ export default function Hero() {
         }
         @media(max-width:640px){
           .hero-image {
-            height: 60vw !important;
-            max-height: 280px !important;
+            height: 75vw !important;
+            max-height: 360px !important;
           }
         }
       `}</style>
