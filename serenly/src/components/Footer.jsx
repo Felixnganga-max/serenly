@@ -1,6 +1,7 @@
 // src/components/Footer.jsx
 import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 import React from "react";
+import assets from "../assets/assets";
 
 /* Facebook SVG icon */
 function FacebookIcon() {
@@ -101,41 +102,8 @@ export default function Footer() {
                 marginBottom: "1.25rem",
               }}
             >
-              <div
-                style={{
-                  width: 38,
-                  height: 38,
-                  background: "linear-gradient(135deg,#FE7A36,#FF9A62)",
-                  borderRadius: 10,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 4px 14px rgba(254,122,54,0.3)",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    color: "#fff",
-                    fontSize: 18,
-                  }}
-                >
-                  S
-                </span>
-              </div>
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "1.2rem",
-                  background:
-                    "linear-gradient(135deg,#FE7A36 20%,#0046FF 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Serenly
-              </span>
+         
+           <img src={assets.logo} alt="Serenly Digital Marketing Company Logo" />
             </a>
 
             <p

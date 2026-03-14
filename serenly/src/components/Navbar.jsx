@@ -1,25 +1,30 @@
 // src/components/Navbar.jsx
-import React, { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import assets from "../assets/assets";
 
-const PRODUCTS = [
+const SERVICES = [
   { label: "Branding", href: "/branding" },
-  { label: "SMM", href: "/smm" },
+  { label: "Meta Ads Management", href: "/smm" },
   { label: "SEO Optimization", href: "/seo" },
-  { label: "Web Development", href: "/web-dev" },
+  { label: "Website Development", href: "/web-dev" },
 ];
 
 const MORE_LINKS = [
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Blogs", href: "/blogs" },
   { label: "About Us", href: "/about" },
-  // { label: "Campaigns", href: "/campaigns" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 16);
@@ -27,7 +32,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const allLinks = [...PRODUCTS, ...MORE_LINKS];
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setServicesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -67,42 +81,11 @@ export default function Navbar() {
               flexShrink: 0,
             }}
           >
-            <div
-              style={{
-                width: 38,
-                height: 38,
-                background: "linear-gradient(135deg,#FE7A36,#FF9A62)",
-                borderRadius: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 4px 16px rgba(254,122,54,0.35)",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-display)",
-                  color: "#fff",
-                  fontSize: 18,
-                  lineHeight: 1,
-                }}
-              >
-                S
-              </span>
-            </div>
-            <span
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "1.3rem",
-                background: "linear-gradient(135deg,#FE7A36 20%,#0046FF 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              Serenly
-            </span>
+            <img
+              src={assets.logo}
+              className="h-22"
+              alt="Serenly Digital Marketing Company Logo"
+            />
           </a>
 
           {/* ── DESKTOP NAV ── */}
@@ -110,17 +93,97 @@ export default function Navbar() {
             style={{ display: "flex", alignItems: "center", gap: 24 }}
             className="desk-nav"
           >
-            {/* Products — slightly highlighted */}
-            {PRODUCTS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="nav-link"
-                style={{ fontSize: "0.875rem" }}
+            {/* Services Dropdown */}
+            <div ref={dropdownRef} style={{ position: "relative" }}>
+              <button
+                onClick={() => setServicesOpen((o) => !o)}
+                className="nav-link services-trigger"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  fontSize: "0.875rem",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  color: "var(--color-text-primary)",
+                  fontFamily: "inherit",
+                }}
               >
-                {l.label}
-              </a>
-            ))}
+                Services
+                <ChevronDown
+                  size={14}
+                  strokeWidth={2}
+                  style={{
+                    transition: "transform 0.2s ease",
+                    transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  }}
+                />
+              </button>
+
+              {servicesOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 14px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "var(--color-surface-overlay)",
+                    backdropFilter: "blur(28px)",
+                    WebkitBackdropFilter: "blur(28px)",
+                    border: "1px solid var(--color-border-subtle)",
+                    borderRadius: 14,
+                    padding: "8px",
+                    minWidth: 220,
+                    boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
+                    zIndex: 100,
+                  }}
+                >
+                  {/* Small arrow pointer */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: -6,
+                      left: "50%",
+                      transform: "translateX(-50%) rotate(45deg)",
+                      width: 10,
+                      height: 10,
+                      background: "var(--color-surface-overlay)",
+                      border: "1px solid var(--color-border-subtle)",
+                      borderRight: "none",
+                      borderBottom: "none",
+                    }}
+                  />
+                  {SERVICES.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      onClick={() => setServicesOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "10px 14px",
+                        borderRadius: 9,
+                        fontSize: "0.875rem",
+                        color: "var(--color-text-primary)",
+                        textDecoration: "none",
+                        transition: "background 0.15s ease",
+                        whiteSpace: "nowrap",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "var(--color-surface-hover, rgba(254,122,54,0.08))")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = "transparent")
+                      }
+                    >
+                      {s.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Divider dot */}
             <span
@@ -173,7 +236,7 @@ export default function Navbar() {
               className="btn btn-primary btn-md desk-cta"
               style={{ borderRadius: 10, fontSize: "0.875rem" }}
             >
-              Contact Us
+              Get Started
             </a>
 
             <button
@@ -210,7 +273,61 @@ export default function Navbar() {
               zIndex: 99,
             }}
           >
-            {allLinks.map((l) => (
+            {/* Mobile Services accordion */}
+            <div>
+              <button
+                onClick={() => setMobileServicesOpen((o) => !o)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  background: "none",
+                  border: "none",
+                  padding: "0.875rem 0",
+                  borderBottom: "1px solid var(--color-border-subtle)",
+                  color: "var(--color-text-primary)",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                }}
+              >
+                Services
+                <ChevronDown
+                  size={16}
+                  style={{
+                    transition: "transform 0.2s ease",
+                    transform: mobileServicesOpen
+                      ? "rotate(180deg)"
+                      : "rotate(0deg)",
+                  }}
+                />
+              </button>
+              {mobileServicesOpen && (
+                <div style={{ paddingLeft: "1rem" }}>
+                  {SERVICES.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      className="nav-link"
+                      style={{
+                        display: "block",
+                        padding: "0.75rem 0",
+                        borderBottom: "1px solid var(--color-border-subtle)",
+                        fontSize: "0.9375rem",
+                        opacity: 0.85,
+                      }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {s.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Rest of mobile links */}
+            {MORE_LINKS.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
@@ -226,6 +343,7 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
+
             <a
               href="/contact"
               className="btn btn-primary btn-md"
@@ -236,7 +354,7 @@ export default function Navbar() {
                 borderRadius: 10,
               }}
             >
-              Contact Us
+              Get Started
             </a>
           </div>
         )}

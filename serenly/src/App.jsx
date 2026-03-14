@@ -10,6 +10,8 @@ import Seo from "./pages/Seo";
 import SMM from "./pages/SMM";
 import About from "./pages/About";
 import Blogs from "./pages/Blogs";
+import Portfolio from "./pages/Portfolio";
+import Contact from "./pages/Contact";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -24,6 +26,8 @@ function App() {
         <Route path="/smm" element={<SMM />} />
         <Route path="/about" element={<About />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </>

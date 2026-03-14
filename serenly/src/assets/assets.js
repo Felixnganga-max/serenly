@@ -6,6 +6,7 @@ import sc from "./sc.png";
 import wb from "./wb.png";
 import br from "./br.png";
 import se from "./se.png";
+import logo from "./logo.png";
 
 const assets = {
   brand,
@@ -16,6 +17,7 @@ const assets = {
   wb,
   br,
   sc,
+  logo
 };
 
 export default assets;
