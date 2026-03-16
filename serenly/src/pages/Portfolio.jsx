@@ -88,23 +88,6 @@ const WEBSITE_ITEMS = [
   },
 ];
 
-const META_ADS_ITEMS = [
-  {
-    id: "m1",
-    category: "meta-ads",
-    title: "Meta Ads Campaign",
-    desc: "High-converting ad creative coming soon.",
-    placeholder: true,
-  },
-  {
-    id: "m2",
-    category: "meta-ads",
-    title: "Meta Ads Campaign",
-    desc: "High-converting ad creative coming soon.",
-    placeholder: true,
-  },
-];
-
 const SEO_ITEMS = WEBSITE_ITEMS.map((w) => ({
   ...w,
   id: `seo-${w.id}`,
@@ -112,12 +95,7 @@ const SEO_ITEMS = WEBSITE_ITEMS.map((w) => ({
   desc: `${w.desc} — Fully SEO-optimised.`,
 }));
 
-const ALL_ITEMS = [
-  ...BRANDING_ITEMS,
-  ...WEBSITE_ITEMS,
-  ...META_ADS_ITEMS,
-  ...SEO_ITEMS,
-];
+const ALL_ITEMS = [...BRANDING_ITEMS, ...WEBSITE_ITEMS, ...SEO_ITEMS];
 
 /* ─── ICON MAP ──────────────────────────────────────────── */
 const CATEGORY_ICONS = {
@@ -498,12 +476,7 @@ export default function Portfolio() {
                 items: WEBSITE_ITEMS,
                 Icon: Globe,
               },
-              {
-                id: "meta-ads",
-                label: "Meta Ads Management",
-                items: META_ADS_ITEMS,
-                Icon: TrendingUp,
-              },
+
               {
                 id: "seo",
                 label: "SEO Optimization",
