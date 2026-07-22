@@ -1,44 +1,189 @@
 // src/pages/SMM.jsx
-// Serenly — Social Media Marketing Service Page
-// Design: Inch-perfect iMedia.by structure adapted to Serenly brand system
-// Layout:
-//   1. Hero — floating white card on gradient bg, headline left + mock feed right, tab switcher below
-//   2. Why We're The Best — centred headline + 3-col gradient cards
-//   3. Split promo — illustration left, value prop right
-//   4. Platform deep-dive — Facebook + Instagram tabs
-//   5. Process — horizontal dot timeline (iMedia style)
-//   6. Results strip — live metrics
-//   7. CTA
+// Serenly — Social Media Marketing (Meta Ads) Service Page
+// SEO-structured with real Meta advertising data, statistics, and best practices
+// Sections:
+//   1. Hero          — floating card, live metric badges, platform tabs
+//   2. Why Meta      — real stats + value proposition
+//   3. Ad Formats    — image / video / carousel / collection with real descriptions
+//   4. Retargeting   — how the pixel works, cart abandonment, ROAS
+//   5. Our Strategy  — 10 real techniques (audience segmentation, UGC, lookalikes, UTMs…)
+//   6. Platforms     — Facebook vs Instagram deep-dive
+//   7. Process       — 5-step timeline
+//   8. Results       — real benchmark metrics
+//   9. FAQ           — SEO-rich Q&A
+//  10. CTA
 
 import React, { useEffect, useRef, useState } from "react";
 
-/* ─── Unsplash placeholders ─── */
-const FB_IMG =
-  "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80";
-const IG_IMG =
-  "https://images.unsplash.com/photo-1611162616305-c69b3037c431?w=800&q=80";
-const TEAM_IMG =
-  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80";
-const DASH_IMG =
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80";
+/* ─────────────────────────────────────────────
+   REAL DATA (sourced from article research)
+───────────────────────────────────────────── */
 
-/* ─── Platform tabs ─── */
+const META_STATS = [
+  { val: "5B+", label: "Social media users globally", accent: "orange" },
+  { val: "2.5hrs", label: "Average daily time on social", accent: "blue" },
+  { val: "70%", label: "US adults log into Facebook daily", accent: "orange" },
+  {
+    val: "$5–30",
+    label: "Average CPL on Meta vs $20–100 on Google",
+    accent: "blue",
+  },
+];
+
+const AD_FORMATS = [
+  {
+    id: "image",
+    icon: "🖼️",
+    title: "Image Ads",
+    accent: "orange",
+    badge: "Most Used",
+    desc: "A single eye-catching image — professional photo, user-generated content, or a designed graphic. Best for brand awareness, driving website traffic, and showcasing products or services. Keep text minimal on the creative itself.",
+    useCases: [
+      "Brand awareness",
+      "Product showcase",
+      "Website traffic",
+      "Promotions",
+    ],
+    tip: "Use real customer photos or UGC over stock imagery — authenticity drives 3× more engagement.",
+  },
+  {
+    id: "video",
+    icon: "🎬",
+    title: "Video Ads",
+    accent: "blue",
+    badge: "Highest Engagement",
+    desc: "Video drives 67.55% more ad clicks on Facebook than static images. Great for storytelling, product demos, tutorials and creating immersive brand experiences that hold attention far longer than images.",
+    useCases: [
+      "Product demos",
+      "Brand storytelling",
+      "Tutorials",
+      "Testimonials",
+    ],
+    tip: "Business owner self-recorded smartphone videos often outperform polished productions — raw and real wins on social.",
+  },
+  {
+    id: "carousel",
+    icon: "🎠",
+    title: "Carousel Ads",
+    accent: "orange",
+    badge: "Best for Products",
+    desc: "Multiple images or cards in one ad. Carousels invite users to swipe and discover more — ideal when showcasing multiple products, services, or a narrative that builds curiosity. The key: make the content flow, not feel generic.",
+    useCases: [
+      "Multiple products",
+      "Step-by-step stories",
+      "Feature showcases",
+      "Before/after",
+    ],
+    tip: "Craft a narrative across cards — each swipe should leave the viewer curious about the next one.",
+  },
+  {
+    id: "collection",
+    icon: "🛍️",
+    title: "Collection Ads",
+    accent: "blue",
+    badge: "Best for eCommerce",
+    desc: "A product video or hero image with 3 thumbnail products below. Tapping opens an Instant Experience — a fast, full-screen shopping journey inside Meta. Purpose-built for eCommerce brands wanting frictionless purchase flows.",
+    useCases: [
+      "eCommerce catalogues",
+      "Product collections",
+      "Seasonal sales",
+      "New arrivals",
+    ],
+    tip: "Pair with Facebook Shop and a product catalogue for seamless checkout without leaving the platform.",
+  },
+];
+
+const RETARGETING_TYPES = [
+  {
+    icon: "🌐",
+    title: "Website Retargeting",
+    desc: "Target users who visited your website but didn't convert — by page visited, exact URL, or time spent on site. Re-engages visitors who clearly showed interest in your brand.",
+    color: "orange",
+  },
+  {
+    icon: "🛒",
+    title: "Cart Abandonment",
+    desc: "Specifically targets users who added items to their cart but didn't complete the purchase. Significantly reduces abandonment rates and directly boosts sales revenue.",
+    color: "blue",
+  },
+  {
+    icon: "👥",
+    title: "Lookalike Audiences",
+    desc: "Meta builds a new audience that mirrors the behaviour and interests of your existing customers or site visitors — expanding your reach to cold audiences most likely to convert.",
+    color: "orange",
+  },
+  {
+    icon: "📧",
+    title: "Custom Audience Upload",
+    desc: "Upload your customer list (name, email, phone, DOB, zip) for 80–90% match rates on Meta. Target existing customers with upsells, re-engagement offers, or loyalty campaigns.",
+    color: "blue",
+  },
+];
+
+const STRATEGY_PILLARS = [
+  {
+    num: "01",
+    title: "Audience Segmentation",
+    desc: "Segment at the Ad Set level by behaviour, demographics, and interests. Allocate budget dynamically to best-performing sets — pause what underperforms, scale what converts.",
+    icon: "🎯",
+    accent: "orange",
+  },
+  {
+    num: "02",
+    title: "Raw, Authentic Creative",
+    desc: "Real beats polished on Meta. Smartphone videos from business owners, UGC, and candid content blend into the organic feed — driving more comments, clicks, and shares.",
+    icon: "📱",
+    accent: "blue",
+  },
+  {
+    num: "03",
+    title: "UTM Tracking",
+    desc: "Every ad URL carries UTM parameters so Google Analytics shows exactly which ads drive traffic and revenue — far more accurate than Meta's own attribution reporting.",
+    icon: "🔗",
+    accent: "orange",
+  },
+  {
+    num: "04",
+    title: "Meta Ad Library Research",
+    desc: "We analyse competitor ads in Meta's public Ad Library before every campaign — understanding their creative strategy, ad types, and targeting gaps we can exploit.",
+    icon: "🔍",
+    accent: "blue",
+  },
+  {
+    num: "05",
+    title: "No Boost Post — Ever",
+    desc: "We never use the Boost Post feature. It causes targeting mismatches and wastes budget. Every campaign is built properly inside Meta Ads Manager for full control.",
+    icon: "🚫",
+    accent: "orange",
+  },
+  {
+    num: "06",
+    title: "Ad Relevance Optimisation",
+    desc: "We monitor Quality Ranking, Engagement Rate Ranking, and Conversion Rate Ranking — Meta's three Ad Relevance Diagnostics — to keep CPMs low and delivery high.",
+    icon: "📊",
+    accent: "blue",
+  },
+];
+
 const PLATFORMS = [
   {
     id: "facebook",
     label: "Facebook",
     color: "#1877F2",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-      </svg>
-    ),
     tagline: "Turn Scrollers Into Buyers",
-    desc: "Facebook's 2.9B users are your audience. We find them, speak to them, and move them to act — through both organic content and precision paid campaigns.",
+    desc: "With 2.9 billion monthly active users and the most advanced targeting system in digital advertising, Facebook lets you reach exactly who you want — by age, interest, behaviour, location, income bracket, and more. We manage your page, run campaigns, and build audiences that compound over time.",
+    placements: [
+      "News Feed",
+      "Marketplace",
+      "Facebook Watch",
+      "Stories",
+      "Reels",
+      "Search Results",
+    ],
     services: [
       {
         title: "Page Management",
-        detail: "Daily posts, community engagement & brand voice consistency",
+        detail: "Daily posts, community engagement & consistent brand voice",
       },
       {
         title: "Facebook Ads",
@@ -62,36 +207,38 @@ const PLATFORMS = [
       {
         title: "Shop & Catalogue",
         detail:
-          "Facebook Shop setup & product catalogue ads for e-commerce brands",
+          "Facebook Shop setup & product catalogue ads for eCommerce brands",
       },
     ],
+    stat: { val: "70%", label: "of US adults use Facebook daily" },
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
   },
   {
     id: "instagram",
     label: "Instagram",
     color: "#E1306C",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-      </svg>
-    ),
     tagline: "Build a Brand People Follow & Buy From",
-    desc: "Instagram is where aesthetics meet commerce. We build feeds that attract followers, stories that drive daily engagement, and ads that convert without feeling like ads.",
+    desc: "Instagram is where aesthetics meet commerce. With 63% of users checking daily, it's the premier platform for visual brands, eCommerce, and service businesses that want to build genuine community. We run feeds, reels, stories, and paid campaigns — all aligned to your visual identity.",
+    placements: ["Main Feed", "Stories", "Reels", "Instagram Shop", "Explore"],
     services: [
       {
         title: "Feed Curation",
         detail:
-          "Consistent visual identity — grid planning, colour palette & aesthetic direction",
+          "Grid planning, colour palette & aesthetic direction for a scroll-stopping profile",
       },
       {
         title: "Reels & Stories",
         detail:
-          "Short-form video content that reaches non-followers and drives saves & shares",
+          "Short-form video that reaches non-followers and drives saves, shares & follows",
       },
       {
         title: "Instagram Ads",
         detail:
-          "Awareness, traffic, conversion & lead generation campaigns in Meta Ads Manager",
+          "Awareness, traffic, conversion & lead generation via Meta Ads Manager",
       },
       {
         title: "Influencer Outreach",
@@ -101,75 +248,113 @@ const PLATFORMS = [
       {
         title: "Instagram Shop",
         detail:
-          "Product tagging, shopping posts & checkout optimisation for e-commerce",
+          "Product tagging, shopping posts & checkout optimisation for eCommerce",
       },
       {
         title: "DM Automation",
         detail:
-          "ManyChat flows that convert DM enquiries into booked calls or sales",
+          "ManyChat flows that convert DM enquiries into booked calls or closed sales",
       },
     ],
+    stat: { val: "63%", label: "of users check Instagram daily" },
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+      </svg>
+    ),
   },
 ];
 
-/* ─── Value cards (iMedia "Why best" section) ─── */
-const VALUE_CARDS = [
-  {
-    icon: "🎯",
-    title: "Results You Can See",
-    desc: "Every campaign is tracked to actual business outcomes — followers, leads, bookings, and revenue. Not just likes.",
-    accent: "orange",
-  },
-  {
-    icon: "✍️",
-    title: "Content That Converts",
-    desc: "We don't post to post. Every piece of content is written, designed, and timed to move your audience closer to buying.",
-    accent: "blue",
-  },
-  {
-    icon: "📊",
-    title: "Monthly Reports",
-    desc: "Clear, jargon-free monthly reports showing growth, reach, engagement, and what we're doing next to push further.",
-    accent: "orange",
-  },
-  {
-    icon: "⚡",
-    title: "Fast Turnaround",
-    desc: "Content calendar planned 2 weeks ahead. You review and approve before anything goes live — always on schedule.",
-    accent: "blue",
-  },
-  {
-    icon: "🌍",
-    title: "Local Market Expertise",
-    desc: "We understand Kenyan audiences, Swahili content, local trends, and what actually resonates in East African markets.",
-    accent: "orange",
-  },
-  {
-    icon: "🔒",
-    title: "One Agency, Everything Done",
-    desc: "Strategy, content, posting, ads, community management — handled entirely by Serenly. One point of contact.",
-    accent: "blue",
-  },
-];
-
-/* ─── Process steps (iMedia horizontal timeline) ─── */
 const PROCESS = [
-  { num: 1, label: "Discovery & Audit", color: "var(--color-brand-orange)" },
-  { num: 2, label: "Strategy & Calendar", color: "var(--color-brand-blue)" },
-  { num: 3, label: "Content Creation", color: "#E1306C" },
-  { num: 4, label: "Publish & Engage", color: "var(--color-brand-orange)" },
-  { num: 5, label: "Report & Optimise", color: "var(--color-brand-blue)" },
+  {
+    num: 1,
+    title: "Discovery & Audit",
+    desc: "We audit your existing profiles, analyse your competitors in Meta Ad Library, and map your target audience by behaviour and interest group.",
+    color: "var(--color-brand-orange)",
+  },
+  {
+    num: 2,
+    title: "Strategy & Calendar",
+    desc: "Full 30-day content calendar, campaign objectives, ad budget allocation, and audience segmentation plan — reviewed and approved before we touch anything.",
+    color: "var(--color-brand-blue)",
+  },
+  {
+    num: 3,
+    title: "Content & Creative",
+    desc: "Graphics, video scripts, UGC sourcing, captions and hashtag strategy — all crafted to match your brand voice and optimised for Meta's ad relevance scoring.",
+    color: "#E1306C",
+  },
+  {
+    num: 4,
+    title: "Launch & Engage",
+    desc: "Campaigns go live at optimal times. We monitor the auction, adjust bids, respond to comments, manage your inbox, and A/B test creatives continuously.",
+    color: "var(--color-brand-orange)",
+  },
+  {
+    num: 5,
+    title: "Report & Scale",
+    desc: "Monthly analytics report with UTM-verified data from Google Analytics: ROAS, CPL, reach, engagement, and a clear plan to scale what's working.",
+    color: "var(--color-brand-blue)",
+  },
 ];
 
-/* ─── Metrics ─── */
-// const METRICS = [
-//   { val: "12k+", label: "Leads Generated", accent: "orange" },
-//   { val: "8.7%", label: "Avg. Engagement", accent: "blue" },
-//   { val: "2.4k", label: "Avg. Monthly Reach per Client", accent: "orange" },
-//   { val: "3×", label: "Avg. ROAS on Paid", accent: "blue" },
-// ];
+const RESULTS = [
+  {
+    val: "3×",
+    label: "Average ROAS on paid campaigns",
+    sub: "Return on ad spend",
+    accent: "orange",
+  },
+  {
+    val: "8.7%",
+    label: "Average engagement rate",
+    sub: "vs 0.5–1% industry average",
+    accent: "blue",
+  },
+  {
+    val: "80–90%",
+    label: "Custom audience match rate",
+    sub: "On email/phone list uploads",
+    accent: "orange",
+  },
+  {
+    val: "30 days",
+    label: "To see measurable results",
+    sub: "Leads, followers or revenue",
+    accent: "blue",
+  },
+];
 
-/* ─── Hooks & helpers ─── */
+const FAQS = [
+  {
+    q: "What's the difference between boosting a post and running a proper Meta ad campaign?",
+    a: "Boosting a post is a simplified shortcut that often mismatches your targeting and allocates budget inefficiently. A proper campaign built inside Meta Ads Manager gives you full control over objectives, audience segmentation, placements, creative testing, and bidding strategy — resulting in significantly better performance and lower cost per result.",
+  },
+  {
+    q: "How does the Meta Pixel work for retargeting?",
+    a: "The Meta Pixel is a small piece of code installed on your website. When a user visits, a cookie is placed on their browser. Meta then identifies that user on Facebook or Instagram and can show them targeted ads — whether they visited a specific page, spent a certain amount of time on your site, or abandoned a shopping cart.",
+  },
+  {
+    q: "How much should I budget for Meta ads in Kenya?",
+    a: "You can start testing with as little as $5–10 per day. For meaningful data and optimisation, we recommend a minimum of $300–500/month on ad spend. The average Cost Per Lead on Meta is $5–30, significantly lower than Google's $20–100 CPL, making it highly cost-effective for local businesses.",
+  },
+  {
+    q: "How long does it take for Meta's algorithm to optimise my ads?",
+    a: "Meta needs roughly 50 conversion events per ad set per week to exit the 'learning phase' and start efficient delivery. This typically takes 1–2 weeks for well-targeted campaigns. We structure campaigns to reach this threshold as quickly as possible and use CBO (Campaign Budget Optimisation) to help budget flow to the best-performing ad sets.",
+  },
+  {
+    q: "What ad formats work best for service businesses vs eCommerce?",
+    a: "Service businesses typically see best results from video ads (builds trust), lead form campaigns, and retargeting sequences. eCommerce brands perform best with Collection ads, Carousel product ads, and Dynamic Product Ads linked to a Facebook catalogue. We tailor the format mix to your business model and objectives.",
+  },
+  {
+    q: "Do you create the ad content or do we need to provide it?",
+    a: "We handle everything — strategy, copywriting, graphic design, video editing, and publishing. You review and approve before anything goes live. We also advise on and help source UGC (user-generated content) since authentic, raw content consistently outperforms polished studio production on Meta platforms.",
+  },
+];
+
+/* ─────────────────────────────────────────────
+   HOOKS
+───────────────────────────────────────────── */
 function useFadeIn(threshold = 0.1) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -189,19 +374,49 @@ function useFadeIn(threshold = 0.1) {
   return [ref, visible];
 }
 
-function SectionTag({ label, color = "orange" }) {
+/* ─────────────────────────────────────────────
+   SUB-COMPONENTS
+───────────────────────────────────────────── */
+function Tag({ label, color = "orange" }) {
   return (
-    <span className={`section-tag section-tag-${color}`}>
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        fontSize: "0.68rem",
+        fontWeight: 800,
+        letterSpacing: "0.16em",
+        textTransform: "uppercase",
+        color:
+          color === "orange"
+            ? "var(--color-brand-orange)"
+            : color === "pink"
+              ? "#E1306C"
+              : "var(--color-brand-blue)",
+        background:
+          color === "orange"
+            ? "rgba(254,122,54,0.1)"
+            : color === "pink"
+              ? "rgba(225,48,108,0.1)"
+              : "rgba(0,70,255,0.08)",
+        border: `1px solid ${color === "orange" ? "rgba(254,122,54,0.25)" : color === "pink" ? "rgba(225,48,108,0.25)" : "rgba(0,70,255,0.2)"}`,
+        borderRadius: 999,
+        padding: "5px 12px",
+      }}
+    >
       <span
         style={{
-          width: 6,
-          height: 6,
+          width: 5,
+          height: 5,
           borderRadius: "50%",
-          display: "inline-block",
           background:
             color === "orange"
               ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)",
+              : color === "pink"
+                ? "#E1306C"
+                : "var(--color-brand-blue)",
+          display: "inline-block",
         }}
       />
       {label}
@@ -210,150 +425,189 @@ function SectionTag({ label, color = "orange" }) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   MAIN
+   PAGE ROOT
 ══════════════════════════════════════════════════════════ */
 export default function SMM() {
   const [activePlatform, setActivePlatform] = useState("facebook");
+  const [activeFormat, setActiveFormat] = useState("image");
+  const [openFaq, setOpenFaq] = useState(null);
   const platform = PLATFORMS.find((p) => p.id === activePlatform);
+  const format = AD_FORMATS.find((f) => f.id === activeFormat);
 
   return (
-    <div
-      style={{
-        background: "var(--color-bg-primary)",
-        color: "var(--color-text-primary)",
-        overflowX: "hidden",
-      }}
-    >
-      <HeroSection
-        activePlatform={activePlatform}
-        setActivePlatform={setActivePlatform}
-        platform={platform}
+    <>
+      {/* SEO structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Social Media Marketing — Facebook & Instagram Ads",
+            provider: { "@type": "Organization", name: "Serenly" },
+            description:
+              "Full-service Meta advertising and social media management for businesses in Kenya. Facebook ads, Instagram ads, retargeting, content creation and monthly reporting.",
+            areaServed: "Kenya",
+            serviceType: "Social Media Marketing",
+          }),
+        }}
       />
-      <WhyBestSection />
-      <SplitPromoSection />
-      <PlatformDeepDive
-        activePlatform={activePlatform}
-        setActivePlatform={setActivePlatform}
-        platform={platform}
-      />
-      <ProcessSection />
 
-      <CtaBanner />
-    </div>
+      <div
+        style={{
+          background: "var(--color-bg-primary)",
+          color: "var(--color-text-primary)",
+          overflowX: "hidden",
+        }}
+      >
+        <HeroSection
+          activePlatform={activePlatform}
+          setActivePlatform={setActivePlatform}
+          platform={platform}
+        />
+        <StatsStrip />
+        <AdFormatsSection
+          activeFormat={activeFormat}
+          setActiveFormat={setActiveFormat}
+          format={format}
+        />
+        <RetargetingSection />
+        <StrategySection />
+        <PlatformsSection
+          activePlatform={activePlatform}
+          setActivePlatform={setActivePlatform}
+          platform={platform}
+        />
+        <ProcessSection />
+        <ResultsSection />
+        <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+        <CtaSection />
+      </div>
+
+      <style>{`
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes floatD { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        .anim-float { animation: float 6s ease-in-out infinite; }
+        .anim-float-d { animation: floatD 8s ease-in-out infinite 1s; }
+        .live-dot { animation: pulse 2s ease-in-out infinite; }
+        .section-pad { padding: clamp(4rem,8vw,7rem) 0; }
+        .smm-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,4vw,5rem); align-items:center; }
+        @media(max-width:820px){ .smm-grid-2 { grid-template-columns:1fr !important; } }
+        .format-tab:hover { transform:translateY(-2px); }
+        .strategy-card:hover { transform:translateY(-4px); }
+        .svc-tile:hover { transform:translateY(-2px); }
+        .result-card:hover { transform:translateY(-4px); }
+        .faq-item { border-bottom:1px solid var(--color-border); }
+        .faq-item:last-child { border-bottom:none; }
+      `}</style>
+    </>
   );
 }
 
-/* ══════ 1. HERO — iMedia floating card on gradient bg ══════ */
+/* ══════ 1. HERO ══════ */
 function HeroSection({ activePlatform, setActivePlatform, platform }) {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 80);
+    const t = setTimeout(() => setLoaded(true), 60);
     return () => clearTimeout(t);
   }, []);
 
   return (
     <section
+      id="home"
+      aria-label="Social Media Marketing Services"
       style={{
         position: "relative",
-        minHeight: "100vh",
+        overflow: "hidden",
+        minHeight: "calc(100vh - 72px)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
-        /* iMedia gradient background */
         background:
-          "linear-gradient(145deg, rgba(254,122,54,0.12) 0%, rgba(0,70,255,0.08) 40%, rgba(254,122,54,0.06) 100%)",
-        paddingTop: "5rem",
-        paddingBottom: "3rem",
+          "linear-gradient(150deg, rgba(254,122,54,0.08) 0%, rgba(0,70,255,0.06) 45%, rgba(225,48,108,0.05) 100%)",
+        padding: "5rem 0 3rem",
       }}
     >
-      {/* Floating blob decorations — iMedia style */}
+      {/* Background blobs */}
+      {[
+        {
+          top: "5%",
+          left: "4%",
+          w: 220,
+          bg: "rgba(254,122,54,0.15)",
+          anim: "anim-float",
+        },
+        {
+          top: "12%",
+          right: "6%",
+          w: 160,
+          bg: "rgba(0,70,255,0.12)",
+          anim: "anim-float-d",
+        },
+        {
+          bottom: "18%",
+          left: "2%",
+          w: 100,
+          bg: "rgba(254,122,54,0.1)",
+          anim: "anim-float",
+        },
+        {
+          bottom: "8%",
+          right: "4%",
+          w: 180,
+          bg: "rgba(225,48,108,0.09)",
+          anim: "anim-float-d",
+        },
+      ].map((b, i) => (
+        <div
+          key={i}
+          className={b.anim}
+          style={{
+            position: "absolute",
+            width: b.w,
+            height: b.w,
+            borderRadius: "50%",
+            background: `radial-gradient(circle,${b.bg} 0%,transparent 70%)`,
+            filter: "blur(3px)",
+            pointerEvents: "none",
+            ...b,
+          }}
+        />
+      ))}
       <div
         style={{
           position: "absolute",
-          top: "8%",
-          left: "6%",
-          width: 180,
-          height: 180,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(254,122,54,0.18) 0%, transparent 70%)",
-          filter: "blur(2px)",
-          animation: "float 7s ease-in-out infinite",
-          pointerEvents: "none",
+          inset: 0,
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px)",
+          backgroundSize: "28px 28px",
+          opacity: 0.5,
         }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "15%",
-          right: "8%",
-          width: 120,
-          height: 120,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(0,70,255,0.14) 0%, transparent 70%)",
-          filter: "blur(2px)",
-          animation: "float-delayed 6s ease-in-out infinite",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20%",
-          left: "3%",
-          width: 90,
-          height: 90,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(254,122,54,0.12) 0%, transparent 70%)",
-          animation: "float 9s ease-in-out infinite 1s",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          right: "5%",
-          width: 140,
-          height: 140,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(225,48,108,0.1) 0%, transparent 70%)",
-          animation: "float-delayed 8s ease-in-out infinite 0.5s",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Dot grid subtle overlay */}
-      <div
-        className="bg-dot-grid"
-        style={{ position: "absolute", inset: 0, opacity: 0.2 }}
       />
 
       <div
         className="container-site"
         style={{ position: "relative", zIndex: 2, width: "100%" }}
       >
-        {/* ── FLOATING HERO CARD (iMedia white card style) ── */}
+        {/* Floating hero card */}
         <div
           style={{
             background: "var(--color-surface)",
             border: "1px solid var(--color-border)",
             borderRadius: "var(--radius-2xl)",
             boxShadow: "var(--shadow-xl)",
-            padding: "clamp(2rem, 4vw, 3.5rem)",
+            padding: "clamp(2rem,4vw,3.5rem)",
             opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.7s var(--ease-smooth)",
-            overflow: "hidden",
+            transform: loaded ? "translateY(0)" : "translateY(24px)",
+            transition: "all 0.75s cubic-bezier(0.34,1.56,0.64,1)",
             position: "relative",
+            overflow: "hidden",
           }}
         >
-          {/* Subtle top gradient line */}
+          {/* Top gradient bar */}
           <div
             style={{
               position: "absolute",
@@ -362,113 +616,125 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               right: 0,
               height: 3,
               background:
-                "linear-gradient(90deg, var(--color-brand-orange), var(--color-brand-blue), #E1306C)",
+                "linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-blue),#E1306C)",
               borderRadius: "var(--radius-2xl) var(--radius-2xl) 0 0",
             }}
           />
 
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.1fr 1fr",
-              gap: "clamp(2rem, 4vw, 4rem)",
-              alignItems: "center",
-            }}
-            className="hero-inner-grid"
+            className="smm-grid-2"
+            style={{ minHeight: "clamp(340px,45vh,520px)" }}
           >
-            {/* LEFT — Headline + feature list */}
-            <div>
-              {/* iMedia eyebrow */}
-              <p
+            {/* LEFT — copy */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
                 style={{
-                  fontSize: "0.7rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "var(--color-brand-orange)",
+                  opacity: loaded ? 1 : 0,
+                  transform: loaded ? "translateY(0)" : "translateY(12px)",
+                  transition: "all 0.5s ease 0.1s",
                   marginBottom: "1rem",
                 }}
-                className="animate-fade-up delay-100"
               >
-                Facebook & Instagram Marketing
-              </p>
+                <Tag label="Facebook & Instagram Marketing" color="orange" />
+              </div>
 
               <h1
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2.5rem, 5vw, 4.25rem)",
-                  lineHeight: 1.06,
-                  marginBottom: "1.5rem",
+                  fontSize: "clamp(2.2rem,4.5vw,3.8rem)",
+                  lineHeight: 1.05,
+                  marginBottom: "1.25rem",
+                  opacity: loaded ? 1 : 0,
+                  transform: loaded ? "translateY(0)" : "translateY(16px)",
+                  transition: "all 0.55s ease 0.18s",
                 }}
-                className="animate-fade-up delay-200"
               >
-                Turn Followers{" "}
-                <span className="text-gradient-orange">Into</span>
+                Turn Followers
                 <br />
-                Paying <span className="text-gradient-blue">Customers.</span>
+                <span
+                  style={{
+                    background:
+                      "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Into Revenue.
+                </span>
               </h1>
 
               <p
                 style={{
-                  fontSize: "1.05rem",
+                  fontSize: "1rem",
                   lineHeight: 1.85,
                   color: "var(--color-text-secondary)",
-                  maxWidth: 480,
+                  maxWidth: 460,
                   marginBottom: "2rem",
+                  opacity: loaded ? 1 : 0,
+                  transform: loaded ? "translateY(0)" : "translateY(12px)",
+                  transition: "all 0.55s ease 0.26s",
                 }}
-                className="animate-fade-up delay-300"
               >
-                Social media is where your audience lives. Serenly makes sure
-                your brand shows up, stands out, and converts — on Facebook and
-                Instagram, every single day.
+                Over 5 billion people use social media daily — your ideal
+                customers are on Facebook and Instagram right now. Serenly runs
+                the strategy, creates the content, manages the ads, and delivers
+                monthly reports tied to real business outcomes.
               </p>
 
-              {/* iMedia feature list with icon thumbnails */}
+              {/* Feature list */}
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "1rem",
-                  marginBottom: "2.5rem",
+                  gap: "0.75rem",
+                  marginBottom: "2rem",
                 }}
               >
                 {[
                   {
-                    icon: "📱",
-                    title: "Full Social Management",
-                    sub: "Strategy, content, posting & community — all handled",
-                  },
-                  {
                     icon: "🎯",
-                    title: "Paid Ads That Actually Work",
-                    sub: "Facebook & Instagram campaigns optimised for your goal",
+                    t: "Precision Targeting",
+                    s: "Super-define your audience by age, interest, behaviour & location",
                   },
                   {
-                    icon: "📈",
-                    title: "Growth You Can Measure",
-                    sub: "Monthly reports with real numbers that tie to revenue",
+                    icon: "📊",
+                    t: "Full Meta Ads Management",
+                    s: "Image, video, carousel, collection ads — all formats handled",
+                  },
+                  {
+                    icon: "🔁",
+                    t: "Retargeting & Lookalike Audiences",
+                    s: "Re-engage website visitors & reach new customers like your best ones",
                   },
                 ].map((f, i) => (
                   <div
-                    key={f.title}
+                    key={f.t}
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "1rem",
-                      padding: "0.9rem 1.1rem",
+                      gap: "0.875rem",
+                      padding: "0.85rem 1rem",
                       borderRadius: "var(--radius-lg)",
                       border: "1px solid var(--color-border)",
                       background: "var(--color-bg-secondary)",
                       opacity: loaded ? 1 : 0,
                       transform: loaded ? "translateX(0)" : "translateX(-16px)",
-                      transition: `all 0.5s ease ${0.4 + i * 0.1}s`,
+                      transition: `all 0.5s ease ${0.35 + i * 0.1}s`,
                     }}
                   >
                     <div
                       style={{
-                        width: 42,
-                        height: 42,
+                        width: 40,
+                        height: 40,
                         borderRadius: "var(--radius-md)",
+                        flexShrink: 0,
                         background:
                           i % 2 === 0
                             ? "rgba(254,122,54,0.1)"
@@ -477,8 +743,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "1.25rem",
-                        flexShrink: 0,
+                        fontSize: "1.15rem",
                       }}
                     >
                       {f.icon}
@@ -486,21 +751,21 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                     <div>
                       <div
                         style={{
-                          fontSize: "0.9rem",
+                          fontSize: "0.875rem",
                           fontWeight: 700,
-                          color: "var(--color-text-primary)",
-                          marginBottom: "0.15rem",
+                          marginBottom: 2,
                         }}
                       >
-                        {f.title}
+                        {f.t}
                       </div>
                       <div
                         style={{
-                          fontSize: "0.8rem",
+                          fontSize: "0.775rem",
                           color: "var(--color-text-tertiary)",
+                          lineHeight: 1.4,
                         }}
                       >
-                        {f.sub}
+                        {f.s}
                       </div>
                     </div>
                   </div>
@@ -508,53 +773,71 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               </div>
 
               <div
-                style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}
-                className="animate-fade-up delay-500"
+                style={{
+                  display: "flex",
+                  gap: "0.875rem",
+                  flexWrap: "wrap",
+                  opacity: loaded ? 1 : 0,
+                  transition: "all 0.5s ease 0.6s",
+                }}
               >
-                <a href="#platforms" className="btn btn-primary btn-lg">
-                  Explore Services
+                <a
+                  href="#ad-formats"
+                  className="btn btn-primary btn-lg"
+                  style={{
+                    background:
+                      "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                    boxShadow: "0 8px 28px rgba(254,122,54,0.4)",
+                    borderRadius: 12,
+                  }}
+                >
+                  See Ad Formats
                   <svg
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </a>
-                <a href="#contact" className="btn btn-ghost btn-lg">
+                <a
+                  href="/contact"
+                  className="btn btn-ghost btn-lg"
+                  style={{ borderRadius: 12 }}
+                >
                   Get Free Audit
                 </a>
               </div>
             </div>
 
-            {/* RIGHT — Floating social metrics mock-up (iMedia 3D character position) */}
+            {/* RIGHT — live metrics mock */}
             <div
               style={{
                 position: "relative",
                 display: "flex",
                 justifyContent: "center",
+                alignItems: "center",
               }}
-              className="animate-slide-right delay-200"
             >
-              {/* Main mock phone/feed */}
+              {/* Main analytics card */}
               <div
                 style={{
                   width: "100%",
-                  maxWidth: 340,
+                  maxWidth: 320,
+                  background: "var(--color-surface-raised)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "var(--radius-2xl)",
                   overflow: "hidden",
                   boxShadow: "var(--shadow-lg)",
-                  border: "1px solid var(--color-border)",
-                  background: "var(--color-surface-raised)",
                 }}
               >
-                {/* Mock social header */}
+                {/* Header */}
                 <div
                   style={{
-                    background: "linear-gradient(135deg, #1877F2, #E1306C)",
+                    background: "linear-gradient(135deg,#1877F2,#E1306C)",
                     padding: "1rem 1.25rem",
                     display: "flex",
                     alignItems: "center",
@@ -563,15 +846,16 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                 >
                   <div
                     style={{
-                      width: 36,
-                      height: 36,
+                      width: 32,
+                      height: 32,
                       borderRadius: "50%",
                       background: "rgba(255,255,255,0.2)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       color: "#fff",
-                      fontSize: "1rem",
+                      fontWeight: 800,
+                      fontSize: "0.9rem",
                     }}
                   >
                     S
@@ -579,109 +863,191 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                   <div>
                     <div
                       style={{
-                        fontSize: "0.85rem",
+                        fontSize: "0.8rem",
                         fontWeight: 700,
                         color: "#fff",
                       }}
                     >
-                      Serenly
+                      Serenly Client Campaign
                     </div>
                     <div
                       style={{
-                        fontSize: "0.65rem",
+                        fontSize: "0.62rem",
                         color: "rgba(255,255,255,0.7)",
                       }}
                     >
-                      @serenly.agency · Just now
+                      Meta Ads Manager · Live
                     </div>
                   </div>
+                  <div
+                    className="live-dot"
+                    style={{
+                      marginLeft: "auto",
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: "#4ade80",
+                    }}
+                  />
                 </div>
 
-                <img
-                  src={FB_IMG}
-                  alt="Social post"
+                {/* Metrics grid */}
+                <div
                   style={{
-                    width: "100%",
-                    aspectRatio: "4/3",
-                    objectFit: "cover",
-                    display: "block",
+                    padding: "1.25rem",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "0.875rem",
                   }}
-                />
+                >
+                  {[
+                    {
+                      label: "Reach",
+                      val: "48,290",
+                      change: "+12%",
+                      up: true,
+                      c: "var(--color-brand-orange)",
+                    },
+                    {
+                      label: "Engagements",
+                      val: "4,201",
+                      change: "+8.7%",
+                      up: true,
+                      c: "var(--color-brand-blue)",
+                    },
+                    {
+                      label: "Link Clicks",
+                      val: "1,840",
+                      change: "+23%",
+                      up: true,
+                      c: "#E1306C",
+                    },
+                    {
+                      label: "Cost Per Lead",
+                      val: "Ksh 340",
+                      change: "-18%",
+                      up: false,
+                      c: "var(--color-brand-orange)",
+                    },
+                  ].map((m) => (
+                    <div
+                      key={m.label}
+                      style={{
+                        padding: "0.875rem",
+                        borderRadius: "var(--radius-md)",
+                        background: "var(--color-bg-secondary)",
+                        border: "1px solid var(--color-border)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          color: "var(--color-text-tertiary)",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {m.label}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "var(--font-display)",
+                          fontSize: "1.2rem",
+                          color: m.c,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {m.val}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "0.65rem",
+                          fontWeight: 700,
+                          color: m.up ? "#4ade80" : "#f87171",
+                          marginTop: 3,
+                        }}
+                      >
+                        {m.change} vs last month
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-                {/* Engagement row */}
-                <div style={{ padding: "1rem 1.25rem" }}>
+                {/* ROAS bar */}
+                <div style={{ padding: "0 1.25rem 1.25rem" }}>
                   <div
                     style={{
                       display: "flex",
-                      gap: "1.25rem",
-                      marginBottom: "0.75rem",
+                      justifyContent: "space-between",
+                      marginBottom: 6,
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
                     }}
                   >
-                    {[
-                      { icon: "❤️", val: "2.4k" },
-                      { icon: "💬", val: "318" },
-                      { icon: "↗️", val: "900" },
-                    ].map((e) => (
-                      <div
-                        key={e.icon}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.3rem",
-                          fontSize: "0.8rem",
-                          color: "var(--color-text-secondary)",
-                          fontWeight: 600,
-                        }}
-                      >
-                        <span>{e.icon}</span> {e.val}
-                      </div>
-                    ))}
+                    <span style={{ color: "var(--color-text-secondary)" }}>
+                      ROAS
+                    </span>
+                    <span style={{ color: "var(--color-brand-orange)" }}>
+                      3.2× return
+                    </span>
                   </div>
                   <div
                     style={{
-                      fontSize: "0.8rem",
-                      color: "var(--color-text-tertiary)",
+                      height: 6,
+                      borderRadius: 999,
+                      background: "var(--color-border)",
+                      overflow: "hidden",
                     }}
                   >
-                    Reach 48,290 · Engagement 8.7%
+                    <div
+                      style={{
+                        height: "100%",
+                        width: "78%",
+                        background:
+                          "linear-gradient(90deg,var(--color-brand-orange),#ff9a62)",
+                        borderRadius: 999,
+                      }}
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* Floating metric badges (iMedia floating decorations style) */}
+              {/* Floating badges */}
               <div
-                className="animate-float"
+                className="anim-float"
                 style={{
                   position: "absolute",
-                  top: "-1rem",
-                  right: "-0.5rem",
+                  top: "-0.75rem",
+                  right: "-0.25rem",
                   padding: "0.75rem 1rem",
                   borderRadius: "var(--radius-lg)",
                   background: "var(--color-surface)",
                   border: "1px solid rgba(254,122,54,0.3)",
                   boxShadow: "var(--shadow-md)",
                   textAlign: "center",
-                  minWidth: 100,
+                  minWidth: 96,
                 }}
               >
                 <div
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "1.5rem",
+                    fontSize: "1.4rem",
                     color: "var(--color-brand-orange)",
                     lineHeight: 1,
                   }}
                 >
-                  +12.4k
+                  +2.4k
                 </div>
                 <div
                   style={{
-                    fontSize: "0.62rem",
+                    fontSize: "0.6rem",
                     fontWeight: 700,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     color: "var(--color-text-tertiary)",
-                    marginTop: "0.2rem",
+                    marginTop: 2,
                   }}
                 >
                   New Followers
@@ -689,11 +1055,11 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               </div>
 
               <div
-                className="animate-float-d"
+                className="anim-float-d"
                 style={{
                   position: "absolute",
-                  bottom: "1.5rem",
-                  left: "-1rem",
+                  bottom: "1rem",
+                  left: "-0.75rem",
                   padding: "0.75rem 1rem",
                   borderRadius: "var(--radius-lg)",
                   background: "var(--color-surface)",
@@ -706,31 +1072,31 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                 <div
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "1.5rem",
+                    fontSize: "1.4rem",
                     color: "var(--color-brand-blue)",
                     lineHeight: 1,
                   }}
                 >
-                  3× ROAS
+                  CPL $8.40
                 </div>
                 <div
                   style={{
-                    fontSize: "0.62rem",
+                    fontSize: "0.6rem",
                     fontWeight: 700,
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     color: "var(--color-text-tertiary)",
-                    marginTop: "0.2rem",
+                    marginTop: 2,
                   }}
                 >
-                  Paid Ads Return
+                  Cost Per Lead
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ── TAB SWITCHER below card — iMedia "Сайты / Реклама / ПО" tabs ── */}
+        {/* Platform tab switcher */}
         <div
           style={{
             marginTop: "1.5rem",
@@ -743,7 +1109,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               display: "inline-flex",
               background: "var(--color-surface)",
               border: "1px solid var(--color-border)",
-              borderRadius: "var(--radius-full)",
+              borderRadius: 999,
               padding: "0.3rem",
               boxShadow: "var(--shadow-md)",
               gap: "0.25rem",
@@ -757,30 +1123,26 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
-                  padding: "0.6rem 1.5rem",
-                  borderRadius: "var(--radius-full)",
-                  border: "none",
+                  padding: "0.55rem 1.4rem",
+                  borderRadius: 999,
+                  border: "1px solid",
                   cursor: "pointer",
                   fontFamily: "var(--font-body)",
                   fontWeight: 700,
-                  fontSize: "0.9rem",
-                  transition: "all 0.3s var(--ease-smooth)",
+                  fontSize: "0.875rem",
+                  transition: "all 0.3s ease",
                   background:
-                    activePlatform === p.id
-                      ? `linear-gradient(135deg, ${p.color}22, ${p.color}44)`
-                      : "transparent",
+                    activePlatform === p.id ? `${p.color}18` : "transparent",
                   color:
                     activePlatform === p.id
                       ? p.color
                       : "var(--color-text-tertiary)",
+                  borderColor:
+                    activePlatform === p.id ? `${p.color}44` : "transparent",
                   boxShadow:
                     activePlatform === p.id
-                      ? `0 4px 16px ${p.color}33`
+                      ? `0 4px 14px ${p.color}25`
                       : "none",
-                  borderColor:
-                    activePlatform === p.id ? `${p.color}55` : "transparent",
-                  borderWidth: 1,
-                  borderStyle: "solid",
                 }}
               >
                 <span style={{ opacity: activePlatform === p.id ? 1 : 0.5 }}>
@@ -791,451 +1153,919 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
             ))}
           </div>
         </div>
-
-        {/* Platform tagline under tabs */}
-        <div
+        <p
           style={{
             textAlign: "center",
-            marginTop: "1rem",
-            fontSize: "0.85rem",
+            marginTop: "0.75rem",
+            fontSize: "0.8rem",
             fontWeight: 600,
             color: "var(--color-text-tertiary)",
-            letterSpacing: "0.05em",
           }}
         >
           <span style={{ color: platform.color }}>● </span>
           {platform.tagline}
-        </div>
+        </p>
       </div>
-
-      <style>{`
-        @media(max-width: 820px) {
-          .hero-inner-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
 
-/* ══════ 2. WHY WE'RE THE BEST — iMedia "Почему мы лучшие" 3-col cards ══════ */
-function WhyBestSection() {
-  const [ref, visible] = useFadeIn(0.08);
-
-  return (
-    <section
-      ref={ref}
-      className="section-padding"
-      style={{ background: "var(--color-bg-secondary)" }}
-    >
-      <div className="container-site">
-        {/* Centred header — iMedia style */}
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <SectionTag label="Why Serenly" color="orange" />
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              marginTop: "1.25rem",
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-            }}
-          >
-            Why We're the Best at{" "}
-            <span className="text-gradient-orange">Social Media</span>
-          </h2>
-          <p
-            style={{
-              maxWidth: 520,
-              margin: "1rem auto 0",
-              fontSize: "1.05rem",
-              lineHeight: 1.8,
-            }}
-          >
-            We've managed Facebook and Instagram for brands across Kenya —
-            here's what makes Serenly different from every other agency you've
-            talked to.
-          </p>
-        </div>
-
-        {/* 3-col card grid — iMedia card layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1.5rem",
-          }}
-          className="why-grid"
-        >
-          {VALUE_CARDS.map((card, i) => {
-            const isOrange = card.accent === "orange";
-            return (
-              <div
-                key={card.title}
-                style={{
-                  borderRadius: "var(--radius-xl)",
-                  padding: "2rem",
-                  /* iMedia gradient card background */
-                  background: isOrange
-                    ? "linear-gradient(145deg, rgba(254,122,54,0.06) 0%, rgba(254,122,54,0.02) 100%)"
-                    : "linear-gradient(145deg, rgba(0,70,255,0.05) 0%, rgba(0,70,255,0.02) 100%)",
-                  border: `1px solid ${isOrange ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.15)"}`,
-                  position: "relative",
-                  overflow: "hidden",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(24px)",
-                  transition: `all 0.55s ease ${i * 0.08}s`,
-                  cursor: "default",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                  e.currentTarget.style.boxShadow = isOrange
-                    ? "var(--shadow-orange)"
-                    : "var(--shadow-blue)";
-                  e.currentTarget.style.borderColor = isOrange
-                    ? "rgba(254,122,54,0.4)"
-                    : "rgba(0,70,255,0.35)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderColor = isOrange
-                    ? "rgba(254,122,54,0.18)"
-                    : "rgba(0,70,255,0.15)";
-                }}
-              >
-                {/* iMedia thumbnail/icon area */}
-                <div
-                  style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: "var(--radius-md)",
-                    background: isOrange
-                      ? "rgba(254,122,54,0.12)"
-                      : "rgba(0,70,255,0.09)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.75rem",
-                    marginBottom: "1.25rem",
-                    border: `1px solid ${isOrange ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
-                  }}
-                >
-                  {card.icon}
-                </div>
-
-                <h4
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.2rem",
-                    marginBottom: "0.65rem",
-                  }}
-                >
-                  {card.title}
-                </h4>
-
-                <p style={{ fontSize: "0.9375rem", lineHeight: 1.75 }}>
-                  {card.desc}
-                </p>
-
-                {/* Watermark number */}
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "-1rem",
-                    right: "1rem",
-                    fontFamily: "var(--font-display)",
-                    fontSize: "5rem",
-                    lineHeight: 1,
-                    color: isOrange
-                      ? "rgba(254,122,54,0.05)"
-                      : "rgba(0,70,255,0.05)",
-                    userSelect: "none",
-                    pointerEvents: "none",
-                  }}
-                >
-                  0{i + 1}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <style>{`@media(max-width:768px){ .why-grid { grid-template-columns: 1fr !important; } }`}</style>
-    </section>
-  );
-}
-
-/* ══════ 3. SPLIT PROMO — iMedia illustration left, value prop right ══════ */
-function SplitPromoSection() {
+/* ══════ 2. STATS STRIP ══════ */
+function StatsStrip() {
   const [ref, visible] = useFadeIn(0.1);
-
   return (
     <section
       ref={ref}
       style={{
-        position: "relative",
-        overflow: "hidden",
-        padding: "var(--spacing-section) 0",
-        /* iMedia gradient strip */
-        background:
-          "linear-gradient(135deg, rgba(254,122,54,0.07) 0%, rgba(0,70,255,0.05) 50%, rgba(225,48,108,0.05) 100%)",
+        background: "var(--color-bg-secondary)",
         borderTop: "1px solid var(--color-border)",
         borderBottom: "1px solid var(--color-border)",
+        padding: "2.5rem 0",
       }}
     >
-      {/* Floating blobs */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "20%",
-          width: 200,
-          height: 200,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(254,122,54,0.1) 0%, transparent 70%)",
-          filter: "blur(2px)",
-          pointerEvents: "none",
-          animation: "float 8s ease-in-out infinite",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "5%",
-          right: "15%",
-          width: 160,
-          height: 160,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(0,70,255,0.08) 0%, transparent 70%)",
-          filter: "blur(2px)",
-          pointerEvents: "none",
-          animation: "float-delayed 7s ease-in-out infinite 1s",
-        }}
-      />
-
-      <div
-        className="container-site"
-        style={{ position: "relative", zIndex: 1 }}
-      >
+      <div className="container-site">
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(2rem, 5vw, 6rem)",
-            alignItems: "center",
+            gridTemplateColumns: "repeat(4,1fr)",
+            gap: "1.5rem",
           }}
-          className="promo-grid"
+          className="stats-grid"
         >
-          {/* LEFT — visual (iMedia 3D illustration area) */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-28px)",
-              transition: "all 0.7s ease",
-              position: "relative",
-            }}
-          >
+          {META_STATS.map((s, i) => (
             <div
+              key={s.label}
               style={{
-                borderRadius: "var(--radius-2xl)",
-                overflow: "hidden",
-                boxShadow: "var(--shadow-xl)",
-                aspectRatio: "4/3",
-              }}
-            >
-              <img
-                src={TEAM_IMG}
-                alt="Social media team"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to right, rgba(254,122,54,0.2), transparent 60%)",
-                }}
-              />
-            </div>
-
-            {/* iMedia-style "5 days" badge — adapted as "30-day results" */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "-1.25rem",
-                right: "-0.5rem",
-                background:
-                  "linear-gradient(135deg, var(--color-brand-orange), #ff9a62)",
-                borderRadius: "var(--radius-xl)",
-                padding: "1rem 1.5rem",
-                boxShadow: "var(--shadow-orange)",
                 textAlign: "center",
+                padding: "1.5rem 1rem",
+                borderRadius: "var(--radius-xl)",
+                background:
+                  s.accent === "orange"
+                    ? "rgba(254,122,54,0.05)"
+                    : "rgba(0,70,255,0.04)",
+                border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.14)"}`,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(16px)",
+                transition: `all 0.5s ease ${i * 0.1}s`,
               }}
-              className="animate-float"
             >
               <div
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "1.6rem",
-                  color: "#fff",
+                  fontSize: "clamp(1.75rem,3vw,2.5rem)",
+                  color:
+                    s.accent === "orange"
+                      ? "var(--color-brand-orange)"
+                      : "var(--color-brand-blue)",
                   lineHeight: 1,
+                  marginBottom: "0.5rem",
                 }}
               >
-                30
+                {s.val}
               </div>
               <div
                 style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  color: "rgba(255,255,255,0.85)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  marginTop: "0.15rem",
+                  fontSize: "0.8rem",
+                  color: "var(--color-text-tertiary)",
+                  lineHeight: 1.4,
                 }}
               >
-                Day Results
+                {s.label}
               </div>
             </div>
-          </div>
-
-          {/* RIGHT — value prop copy (iMedia right text block) */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(28px)",
-              transition: "all 0.7s ease 0.15s",
-            }}
-          >
-            <SectionTag label="What You Get" color="orange" />
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(2rem, 4vw, 3rem)",
-                marginTop: "1.25rem",
-                marginBottom: "1.25rem",
-                lineHeight: 1.1,
-              }}
-            >
-              Your brand, active on social{" "}
-              <span className="text-gradient-orange">every day</span> — without
-              lifting a finger.
-            </h2>
-
-            <p
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.85,
-                marginBottom: "1.5rem",
-              }}
-            >
-              Most businesses lose on social not because their product is bad —
-              but because posting consistently, creating great content, and
-              running smart ads is a full-time job. That's exactly what Serenly
-              does for you.
-            </p>
-            <p
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.85,
-                marginBottom: "2.5rem",
-              }}
-            >
-              From your first content strategy call to your 6th month of
-              compounding organic growth — we handle everything. You just
-              approve and watch the numbers climb.
-            </p>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "1.5rem",
-                flexWrap: "wrap",
-                marginBottom: "2.5rem",
-              }}
-            >
-              {[
-                { icon: "🗓️", text: "Content Calendar" },
-                { icon: "🎨", text: "Original Graphics" },
-                { icon: "📣", text: "Ad Campaigns" },
-                { icon: "💬", text: "Community Mgmt" },
-              ].map((item) => (
-                <div
-                  key={item.text}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    color: "var(--color-text-secondary)",
-                  }}
-                >
-                  <span style={{ fontSize: "1.1rem" }}>{item.icon}</span>{" "}
-                  {item.text}
-                </div>
-              ))}
-            </div>
-
-            <a href="#contact" className="btn btn-primary btn-lg">
-              Start Growing Today
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+          ))}
         </div>
       </div>
-
-      <style>{`@media(max-width:768px){ .promo-grid { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr !important;}}`}</style>
     </section>
   );
 }
 
-/* ══════ 4. PLATFORM DEEP-DIVE — tabbed Facebook / Instagram expanded view ══════ */
-function PlatformDeepDive({ activePlatform, setActivePlatform, platform }) {
+/* ══════ 3. AD FORMATS ══════ */
+function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
   const [ref, visible] = useFadeIn(0.08);
+  return (
+    <section
+      id="ad-formats"
+      ref={ref}
+      className="section-pad"
+      aria-label="Meta Ad Formats"
+    >
+      <div className="container-site">
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <Tag label="Ad Formats" color="orange" />
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
+            }}
+          >
+            The Right Ad Format{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              for Every Goal
+            </span>
+          </h2>
+          <p
+            style={{
+              maxWidth: 520,
+              margin: "0.875rem auto 0",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Meta offers four core ad formats. Each is suited to different
+            objectives, audiences, and business types. We choose — and often mix
+            — formats based on your campaign goal.
+          </p>
+        </div>
 
+        {/* Format tabs */}
+        <div
+          style={{
+            display: "flex",
+            gap: "0.625rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginBottom: "2.5rem",
+          }}
+        >
+          {AD_FORMATS.map((f) => (
+            <button
+              key={f.id}
+              className="format-tab"
+              onClick={() => setActiveFormat(f.id)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.65rem 1.25rem",
+                borderRadius: "var(--radius-full)",
+                border: `1.5px solid ${activeFormat === f.id ? (f.accent === "orange" ? "var(--color-brand-orange)" : "var(--color-brand-blue)") : "var(--color-border)"}`,
+                background:
+                  activeFormat === f.id
+                    ? f.accent === "orange"
+                      ? "rgba(254,122,54,0.1)"
+                      : "rgba(0,70,255,0.08)"
+                    : "var(--color-surface)",
+                color:
+                  activeFormat === f.id
+                    ? f.accent === "orange"
+                      ? "var(--color-brand-orange)"
+                      : "var(--color-brand-blue)"
+                    : "var(--color-text-secondary)",
+                fontFamily: "var(--font-body)",
+                fontWeight: 700,
+                fontSize: "0.875rem",
+                cursor: "pointer",
+                transition: "all 0.25s ease",
+              }}
+            >
+              {f.icon} {f.title}
+              {f.badge && (
+                <span
+                  style={{
+                    fontSize: "0.6rem",
+                    padding: "2px 7px",
+                    borderRadius: 999,
+                    fontWeight: 700,
+                    background:
+                      f.accent === "orange"
+                        ? "rgba(254,122,54,0.15)"
+                        : "rgba(0,70,255,0.12)",
+                    color:
+                      f.accent === "orange"
+                        ? "var(--color-brand-orange)"
+                        : "var(--color-brand-blue)",
+                  }}
+                >
+                  {f.badge}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Active format detail */}
+        <div
+          style={{
+            borderRadius: "var(--radius-2xl)",
+            background:
+              format.accent === "orange"
+                ? "linear-gradient(145deg,rgba(254,122,54,0.07),rgba(254,122,54,0.02))"
+                : "linear-gradient(145deg,rgba(0,70,255,0.06),rgba(0,70,255,0.02))",
+            border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
+            padding: "clamp(2rem,4vw,3rem)",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.55s ease",
+          }}
+        >
+          <div className="smm-grid-2" style={{ gap: "clamp(2rem,4vw,4rem)" }}>
+            <div>
+              <div
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: "var(--radius-lg)",
+                  fontSize: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "1.25rem",
+                  background:
+                    format.accent === "orange"
+                      ? "rgba(254,122,54,0.12)"
+                      : "rgba(0,70,255,0.1)",
+                  border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.28)" : "rgba(0,70,255,0.22)"}`,
+                }}
+              >
+                {format.icon}
+              </div>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.6rem,2.5vw,2.1rem)",
+                  marginBottom: "1rem",
+                }}
+              >
+                {format.title}
+              </h3>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  lineHeight: 1.85,
+                  color: "var(--color-text-secondary)",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                {format.desc}
+              </p>
+              {/* Pro tip */}
+              <div
+                style={{
+                  padding: "1rem 1.25rem",
+                  borderRadius: "var(--radius-lg)",
+                  background:
+                    format.accent === "orange"
+                      ? "rgba(254,122,54,0.08)"
+                      : "rgba(0,70,255,0.07)",
+                  border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
+                  display: "flex",
+                  gap: "0.75rem",
+                  alignItems: "flex-start",
+                }}
+              >
+                <span
+                  style={{ fontSize: "1.1rem", flexShrink: 0, marginTop: 1 }}
+                >
+                  💡
+                </span>
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.68rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color:
+                        format.accent === "orange"
+                          ? "var(--color-brand-orange)"
+                          : "var(--color-brand-blue)",
+                      marginBottom: 4,
+                    }}
+                  >
+                    Pro Tip
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.875rem",
+                      lineHeight: 1.65,
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    {format.tip}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontSize: "0.72rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color:
+                    format.accent === "orange"
+                      ? "var(--color-brand-orange)"
+                      : "var(--color-brand-blue)",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                Best Use Cases
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                {format.useCases.map((u, i) => (
+                  <div
+                    key={u}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.875rem",
+                      padding: "1rem 1.25rem",
+                      borderRadius: "var(--radius-lg)",
+                      background: "var(--color-surface)",
+                      border: "1px solid var(--color-border)",
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        flexShrink: 0,
+                        background:
+                          format.accent === "orange"
+                            ? "rgba(254,122,54,0.12)"
+                            : "rgba(0,70,255,0.1)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "0.7rem",
+                        fontWeight: 800,
+                        color:
+                          format.accent === "orange"
+                            ? "var(--color-brand-orange)"
+                            : "var(--color-brand-blue)",
+                      }}
+                    >
+                      0{i + 1}
+                    </span>
+                    {u}
+                  </div>
+                ))}
+              </div>
+              <a
+                href="/contact"
+                className="btn btn-primary btn-lg"
+                style={{
+                  marginTop: "2rem",
+                  display: "inline-flex",
+                  background:
+                    format.accent === "orange"
+                      ? "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)"
+                      : "linear-gradient(135deg,var(--color-brand-blue),#3369ff)",
+                  borderRadius: 12,
+                  boxShadow:
+                    format.accent === "orange"
+                      ? "0 8px 28px rgba(254,122,54,0.35)"
+                      : "0 8px 28px rgba(0,70,255,0.3)",
+                }}
+              >
+                Run {format.title} for My Business
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════ 4. RETARGETING ══════ */
+function RetargetingSection() {
+  const [ref, visible] = useFadeIn(0.08);
+  return (
+    <section
+      id="retargeting"
+      ref={ref}
+      aria-label="Meta Pixel Retargeting"
+      style={{
+        background: "var(--color-bg-secondary)",
+        borderTop: "1px solid var(--color-border)",
+        borderBottom: "1px solid var(--color-border)",
+        padding: "clamp(4rem,8vw,7rem) 0",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "10%",
+          right: "5%",
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle,rgba(254,122,54,0.1) 0%,transparent 70%)",
+          animation: "float 10s ease-in-out infinite",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="container-site">
+        <div className="smm-grid-2">
+          {/* LEFT — explanation */}
+          <div
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : "translateX(-24px)",
+              transition: "all 0.65s ease",
+            }}
+          >
+            <Tag label="Retargeting & Pixel" color="orange" />
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.9rem,3.5vw,2.7rem)",
+                marginTop: "1rem",
+                marginBottom: "1.25rem",
+                lineHeight: 1.1,
+              }}
+            >
+              Most visitors don't buy on the{" "}
+              <span
+                style={{
+                  background:
+                    "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                first visit.
+              </span>
+            </h2>
+            <p
+              style={{
+                fontSize: "1rem",
+                lineHeight: 1.85,
+                color: "var(--color-text-secondary)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              The Meta Pixel is a small piece of code installed on your website.
+              When someone visits, a cookie is placed on their browser. The next
+              time they're on Facebook or Instagram, your ads appear — keeping
+              your brand front of mind until they're ready to buy.
+            </p>
+            <p
+              style={{
+                fontSize: "1rem",
+                lineHeight: 1.85,
+                color: "var(--color-text-secondary)",
+                marginBottom: "2rem",
+              }}
+            >
+              Retargeting consistently delivers a significantly higher ROAS than
+              cold-audience campaigns because you're reaching people who already
+              know your brand. Combined with lookalike audiences — which mirror
+              your best customers' behaviour — it's the most efficient spend in
+              your entire ad account.
+            </p>
+            {/* How it works flow */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  left: 19,
+                  top: 24,
+                  bottom: 24,
+                  width: 2,
+                  background:
+                    "linear-gradient(180deg,var(--color-brand-orange),var(--color-brand-blue))",
+                  borderRadius: 2,
+                  opacity: 0.35,
+                }}
+              />
+              {[
+                { icon: "👆", step: "User visits your website" },
+                {
+                  icon: "🍪",
+                  step: "Meta Pixel drops a cookie on their browser",
+                },
+                { icon: "📲", step: "User opens Facebook or Instagram" },
+                { icon: "🎯", step: "Your ad appears in their feed" },
+                {
+                  icon: "💳",
+                  step: "They click, convert, and become a customer",
+                },
+              ].map((s, i) => (
+                <div
+                  key={s.step}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    padding: "0.875rem 0",
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "translateX(0)" : "translateX(-12px)",
+                    transition: `all 0.45s ease ${0.2 + i * 0.08}s`,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      flexShrink: 0,
+                      zIndex: 1,
+                      background: "var(--color-surface)",
+                      border: "2px solid var(--color-border)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {s.icon}
+                  </div>
+                  <span
+                    style={{
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    {s.step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — retargeting type cards */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "1rem",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : "translateX(24px)",
+              transition: "all 0.65s ease 0.15s",
+            }}
+          >
+            {RETARGETING_TYPES.map((rt, i) => (
+              <div
+                key={rt.title}
+                style={{
+                  padding: "1.5rem",
+                  borderRadius: "var(--radius-xl)",
+                  background:
+                    rt.color === "orange"
+                      ? "rgba(254,122,54,0.05)"
+                      : "rgba(0,70,255,0.04)",
+                  border: `1px solid ${rt.color === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.15)"}`,
+                  transition: "all 0.25s ease",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow =
+                    rt.color === "orange"
+                      ? "0 16px 40px rgba(254,122,54,0.18)"
+                      : "0 16px 40px rgba(0,70,255,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <div style={{ fontSize: "1.75rem", marginBottom: "0.875rem" }}>
+                  {rt.icon}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 800,
+                    marginBottom: "0.5rem",
+                    color:
+                      rt.color === "orange"
+                        ? "var(--color-brand-orange)"
+                        : "var(--color-brand-blue)",
+                  }}
+                >
+                  {rt.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    lineHeight: 1.65,
+                    color: "var(--color-text-tertiary)",
+                  }}
+                >
+                  {rt.desc}
+                </div>
+              </div>
+            ))}
+
+            {/* ROAS callout */}
+            <div
+              style={{
+                gridColumn: "1/-1",
+                padding: "1.25rem 1.5rem",
+                borderRadius: "var(--radius-xl)",
+                background:
+                  "linear-gradient(135deg,rgba(254,122,54,0.1),rgba(0,70,255,0.08))",
+                border: "1px solid rgba(254,122,54,0.25)",
+                display: "flex",
+                alignItems: "center",
+                gap: "1.25rem",
+              }}
+            >
+              <div style={{ fontSize: "2rem", flexShrink: 0 }}>📈</div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.6rem",
+                    color: "var(--color-brand-orange)",
+                    lineHeight: 1,
+                  }}
+                >
+                  3× Higher ROAS
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--color-text-tertiary)",
+                    marginTop: 4,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Retargeting campaigns consistently deliver 3× or more return
+                  on ad spend vs cold audiences — because you're re-engaging
+                  people who already trust your brand.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════ 5. STRATEGY PILLARS ══════ */
+function StrategySection() {
+  const [ref, visible] = useFadeIn(0.08);
+  return (
+    <section
+      id="strategy"
+      ref={ref}
+      className="section-pad"
+      aria-label="Meta Advertising Strategy"
+    >
+      <div className="container-site">
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <Tag label="Our Strategy" color="blue" />
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
+            }}
+          >
+            How We Make Your Ads{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg,var(--color-brand-blue),#3369ff)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Actually Work
+            </span>
+          </h2>
+          <p
+            style={{
+              maxWidth: 520,
+              margin: "0.875rem auto 0",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Most agencies post and pray. We follow a data-backed strategy built
+            on how Meta's auction, algorithm, and ad relevance scoring actually
+            operate.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,1fr)",
+            gap: "1.25rem",
+          }}
+          className="strategy-grid"
+        >
+          {STRATEGY_PILLARS.map((s, i) => (
+            <div
+              key={s.num}
+              className="strategy-card"
+              style={{
+                padding: "1.875rem",
+                borderRadius: "var(--radius-xl)",
+                background:
+                  s.accent === "orange"
+                    ? "linear-gradient(145deg,rgba(254,122,54,0.06),rgba(254,122,54,0.02))"
+                    : "linear-gradient(145deg,rgba(0,70,255,0.05),rgba(0,70,255,0.02))",
+                border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.14)"}`,
+                position: "relative",
+                overflow: "hidden",
+                cursor: "default",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `all 0.5s ease ${i * 0.08}s`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor =
+                  s.accent === "orange"
+                    ? "rgba(254,122,54,0.38)"
+                    : "rgba(0,70,255,0.32)";
+                e.currentTarget.style.boxShadow =
+                  s.accent === "orange"
+                    ? "0 20px 48px rgba(254,122,54,0.15)"
+                    : "0 20px 48px rgba(0,70,255,0.12)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor =
+                  s.accent === "orange"
+                    ? "rgba(254,122,54,0.18)"
+                    : "rgba(0,70,255,0.14)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.875rem",
+                  marginBottom: "1.125rem",
+                }}
+              >
+                <div
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: "var(--radius-md)",
+                    fontSize: "1.4rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      s.accent === "orange"
+                        ? "rgba(254,122,54,0.12)"
+                        : "rgba(0,70,255,0.1)",
+                    border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
+                  }}
+                >
+                  {s.icon}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "0.75rem",
+                    color:
+                      s.accent === "orange"
+                        ? "rgba(254,122,54,0.4)"
+                        : "rgba(0,70,255,0.35)",
+                  }}
+                >
+                  {s.num}
+                </div>
+              </div>
+              <h4
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "1.1rem",
+                  marginBottom: "0.625rem",
+                }}
+              >
+                {s.title}
+              </h4>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  lineHeight: 1.75,
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                {s.desc}
+              </p>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "-1.5rem",
+                  right: "0.75rem",
+                  fontFamily: "var(--font-display)",
+                  fontSize: "5rem",
+                  lineHeight: 1,
+                  color:
+                    s.accent === "orange"
+                      ? "rgba(254,122,54,0.04)"
+                      : "rgba(0,70,255,0.04)",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                }}
+              >
+                {s.num}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media(max-width:900px){.strategy-grid{grid-template-columns:1fr 1fr !important;}}@media(max-width:560px){.strategy-grid{grid-template-columns:1fr !important;}}`}</style>
+    </section>
+  );
+}
+
+/* ══════ 6. PLATFORMS DEEP-DIVE ══════ */
+function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
+  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="platforms"
       ref={ref}
-      className="section-padding"
-      style={{ background: "var(--color-bg-secondary)" }}
+      aria-label="Facebook and Instagram Marketing Services"
+      style={{
+        background: "var(--color-bg-secondary)",
+        borderTop: "1px solid var(--color-border)",
+        borderBottom: "1px solid var(--color-border)",
+        padding: "clamp(4rem,8vw,7rem) 0",
+      }}
     >
       <div className="container-site">
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <SectionTag label="Platforms" color="blue" />
+          <Tag label="Platform Services" color="blue" />
           <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
+            style={{
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
+            }}
           >
             What We Do on Each Platform
           </h2>
           <p
             style={{
               maxWidth: 480,
-              margin: "1rem auto 0",
-              fontSize: "1.05rem",
+              margin: "0.875rem auto 0",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              color: "var(--color-text-secondary)",
             }}
           >
-            Two platforms, two strategies, one seamless approach — each one
-            optimised for how that audience actually behaves.
+            Two platforms, two tailored strategies — each optimised for how that
+            audience actually scrolls, engages, and buys.
           </p>
         </div>
 
-        {/* Tab buttons — styled like iMedia tab strip */}
+        {/* Platform tabs */}
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "0.5rem",
+            gap: "0.75rem",
             marginBottom: "3rem",
           }}
         >
@@ -1248,11 +2078,12 @@ function PlatformDeepDive({ activePlatform, setActivePlatform, platform }) {
                 alignItems: "center",
                 gap: "0.6rem",
                 padding: "0.75rem 2rem",
-                borderRadius: "var(--radius-full)",
+                borderRadius: 999,
+                cursor: "pointer",
                 border: `2px solid ${activePlatform === p.id ? p.color : "var(--color-border)"}`,
                 background:
                   activePlatform === p.id
-                    ? `${p.color}15`
+                    ? `${p.color}12`
                     : "var(--color-surface)",
                 color:
                   activePlatform === p.id
@@ -1261,400 +2092,634 @@ function PlatformDeepDive({ activePlatform, setActivePlatform, platform }) {
                 fontFamily: "var(--font-body)",
                 fontWeight: 700,
                 fontSize: "0.95rem",
-                cursor: "pointer",
-                transition: "all 0.3s var(--ease-smooth)",
+                transition: "all 0.3s ease",
                 boxShadow:
-                  activePlatform === p.id ? `0 8px 24px ${p.color}30` : "none",
+                  activePlatform === p.id ? `0 8px 24px ${p.color}28` : "none",
               }}
             >
-              {p.icon} {p.label}
+              {p.icon}
+              {p.label}
             </button>
           ))}
         </div>
 
-        {/* Active platform expanded view */}
         <div
+          className="smm-grid-2"
           style={{
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(24px)",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
             transition: "all 0.6s ease",
           }}
         >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "clamp(2rem, 4vw, 5rem)",
-              alignItems: "center",
-            }}
-            className="deepdive-platform-grid"
-          >
-            {/* Left — platform image */}
-            <div style={{ position: "relative" }}>
-              <div
-                style={{
-                  borderRadius: "var(--radius-2xl)",
-                  overflow: "hidden",
-                  aspectRatio: "4/3",
-                  boxShadow: "var(--shadow-lg)",
-                }}
-              >
-                <img
-                  src={activePlatform === "facebook" ? FB_IMG : IG_IMG}
-                  alt={platform.label}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    transition: "opacity 0.4s ease",
-                  }}
-                />
+          {/* Left — stats & info */}
+          <div>
+            {/* Stat banner */}
+            <div
+              style={{
+                padding: "1.5rem 2rem",
+                borderRadius: "var(--radius-xl)",
+                marginBottom: "2rem",
+                background: `linear-gradient(135deg,${platform.color}15,${platform.color}08)`,
+                border: `1px solid ${platform.color}30`,
+                display: "flex",
+                alignItems: "center",
+                gap: "1.5rem",
+              }}
+            >
+              <div style={{ color: platform.color, flexShrink: 0 }}>
+                {platform.icon}
+              </div>
+              <div>
                 <div
                   style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `linear-gradient(to top, ${platform.color}55 0%, transparent 55%)`,
-                  }}
-                />
-              </div>
-
-              {/* Platform badge */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "1.25rem",
-                  left: "1.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  background: "rgba(0,0,0,0.6)",
-                  backdropFilter: "blur(12px)",
-                  borderRadius: "var(--radius-full)",
-                  padding: "0.4rem 0.9rem",
-                  border: `1px solid ${platform.color}55`,
-                }}
-              >
-                <span style={{ color: platform.color }}>{platform.icon}</span>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#fff",
+                    fontFamily: "var(--font-display)",
+                    fontSize: "2.2rem",
+                    color: platform.color,
+                    lineHeight: 1,
                   }}
                 >
-                  {platform.label}
-                </span>
+                  {platform.stat.val}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--color-text-tertiary)",
+                    marginTop: 4,
+                  }}
+                >
+                  {platform.stat.label}
+                </div>
               </div>
             </div>
 
-            {/* Right — service breakdown */}
-            <div>
+            <h3
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.6rem,2.5vw,2.1rem)",
+                marginBottom: "1rem",
+              }}
+            >
+              {platform.tagline}
+            </h3>
+            <p
+              style={{
+                fontSize: "0.975rem",
+                lineHeight: 1.85,
+                color: "var(--color-text-secondary)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              {platform.desc}
+            </p>
+
+            {/* Ad placements */}
+            <div style={{ marginBottom: "1.5rem" }}>
               <div
                 style={{
-                  fontSize: "0.7rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
+                  fontSize: "0.68rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   color: platform.color,
                   marginBottom: "0.75rem",
                 }}
               >
-                {platform.label} Services
+                Ad Placements
               </div>
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(1.75rem, 3vw, 2.25rem)",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                {platform.tagline}
-              </h3>
-              <p
-                style={{
-                  fontSize: "1rem",
-                  lineHeight: 1.85,
-                  color: "var(--color-text-secondary)",
-                  marginBottom: "2rem",
-                }}
-              >
-                {platform.desc}
-              </p>
-
-              {/* Service tiles — 2-col mini grid */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "0.875rem",
-                }}
-              >
-                {platform.services.map((svc, i) => (
-                  <div
-                    key={svc.title}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {platform.placements.map((pl) => (
+                  <span
+                    key={pl}
                     style={{
-                      padding: "1rem",
-                      borderRadius: "var(--radius-lg)",
-                      background: "var(--color-surface)",
-                      border: "1px solid var(--color-border)",
-                      opacity: visible ? 1 : 0,
-                      transform: visible ? "translateY(0)" : "translateY(12px)",
-                      transition: `all 0.4s ease ${0.2 + i * 0.07}s`,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = `${platform.color}55`;
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "var(--color-border)";
-                      e.currentTarget.style.transform = "translateY(0)";
+                      fontSize: "0.78rem",
+                      fontWeight: 600,
+                      padding: "4px 12px",
+                      borderRadius: 999,
+                      background: `${platform.color}12`,
+                      border: `1px solid ${platform.color}28`,
+                      color: platform.color,
                     }}
                   >
-                    <div
-                      style={{
-                        fontSize: "0.7rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: platform.color,
-                        marginBottom: "0.4rem",
-                      }}
-                    >
-                      {svc.title}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.82rem",
-                        color: "var(--color-text-tertiary)",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {svc.detail}
-                    </div>
-                  </div>
+                    {pl}
+                  </span>
                 ))}
               </div>
             </div>
+
+            <a
+              href="/contact"
+              className="btn btn-primary btn-lg"
+              style={{
+                background: `linear-gradient(135deg,${platform.color},${platform.color}cc)`,
+                boxShadow: `0 8px 28px ${platform.color}35`,
+                borderRadius: 12,
+              }}
+            >
+              Get {platform.label} Strategy
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+
+          {/* Right — service tiles */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0.875rem",
+            }}
+          >
+            {platform.services.map((svc, i) => (
+              <div
+                key={svc.title}
+                className="svc-tile"
+                style={{
+                  padding: "1.125rem",
+                  borderRadius: "var(--radius-lg)",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  cursor: "default",
+                  transition: "all 0.25s ease",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(12px)",
+                  transition: `all 0.4s ease ${0.15 + i * 0.07}s`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${platform.color}44`;
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--color-border)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.68rem",
+                    fontWeight: 800,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: platform.color,
+                    marginBottom: "0.4rem",
+                  }}
+                >
+                  {svc.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "var(--color-text-tertiary)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {svc.detail}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-
-      <style>{`@media(max-width:768px){ .deepdive-platform-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
 
-/* ══════ 5. PROCESS — iMedia horizontal dot timeline ══════ */
+/* ══════ 7. PROCESS ══════ */
 function ProcessSection() {
-  const [ref, visible] = useFadeIn(0.15);
-
+  const [ref, visible] = useFadeIn(0.1);
   return (
     <section
+      id="process"
       ref={ref}
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        padding: "var(--spacing-section) 0",
-        background:
-          "linear-gradient(135deg, rgba(254,122,54,0.05) 0%, rgba(0,70,255,0.04) 100%)",
-        borderTop: "1px solid var(--color-border)",
-        borderBottom: "1px solid var(--color-border)",
-      }}
+      className="section-pad"
+      aria-label="Our Social Media Marketing Process"
     >
-      {/* iMedia floating blobs */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          right: "5%",
-          width: 150,
-          height: 150,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(225,48,108,0.08) 0%, transparent 70%)",
-          animation: "float 9s ease-in-out infinite",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        className="container-site"
-        style={{ position: "relative", zIndex: 1 }}
-      >
-        {/* Centred header */}
+      <div className="container-site">
         <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <SectionTag label="Our Process" color="orange" />
+          <Tag label="Our Process" color="orange" />
           <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
-          >
-            How We Manage Your Social Media
-          </h2>
-          <p
             style={{
-              maxWidth: 480,
-              margin: "1rem auto 0",
-              fontSize: "1.05rem",
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
             }}
           >
-            We always break the job into clear stages — so you know exactly
-            what's happening and when, every single month.
-          </p>
+            How We Manage Your{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Social Media
+            </span>
+          </h2>
         </div>
 
-        {/* iMedia horizontal timeline */}
-        <div style={{ position: "relative" }} className="timeline-outer">
-          {/* Connecting line */}
+        {/* Horizontal timeline */}
+        <div
+          style={{
+            position: "relative",
+            overflowX: "auto",
+            paddingBottom: "0.5rem",
+          }}
+        >
+          {/* Line */}
           <div
             style={{
               position: "absolute",
-              top: "1.6rem",
+              top: 18,
               left: "10%",
               right: "10%",
               height: 3,
               borderRadius: 2,
-              background: `linear-gradient(90deg, ${PROCESS.map((p) => p.color).join(", ")})`,
+              background: `linear-gradient(90deg,${PROCESS.map((p) => p.color).join(",")})`,
               opacity: visible ? 0.35 : 0,
               transition: "opacity 0.8s ease 0.3s",
-              zIndex: 0,
             }}
           />
-
-          {/* Steps */}
+          {/* Dots */}
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "flex-start",
               position: "relative",
               zIndex: 1,
+              minWidth: 500,
             }}
           >
-            {PROCESS.map((step, i) => (
+            {PROCESS.map((p, i) => (
               <div
-                key={step.num}
+                key={p.num}
                 style={{
+                  flex: 1,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  flex: 1,
-                  textAlign: "center",
-                  padding: "0 0.75rem",
+                  padding: "0 0.5rem",
                   opacity: visible ? 1 : 0,
                   transform: visible ? "translateY(0)" : "translateY(20px)",
-                  transition: `all 0.55s ease ${i * 0.12}s`,
+                  transition: `all 0.5s ease ${i * 0.12}s`,
                 }}
               >
-                {/* iMedia coloured dot */}
                 <div
                   style={{
-                    width: 36,
-                    height: 36,
+                    width: 38,
+                    height: 38,
                     borderRadius: "50%",
-                    background: step.color,
+                    background: p.color,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 700,
-                    fontSize: "0.85rem",
                     color: "#fff",
-                    boxShadow: `0 6px 20px ${step.color}55`,
-                    marginBottom: "1.25rem",
+                    fontWeight: 800,
+                    fontSize: "0.875rem",
                     flexShrink: 0,
                     zIndex: 2,
+                    boxShadow: `0 6px 20px ${p.color}55`,
+                    marginBottom: "1.25rem",
                   }}
                 >
-                  {step.num}
+                  {p.num}
                 </div>
-
                 <div
                   style={{
-                    fontSize: "0.875rem",
-                    fontWeight: 700,
+                    fontSize: "0.8rem",
+                    fontWeight: 800,
+                    textAlign: "center",
+                    marginBottom: "0.5rem",
                     color: "var(--color-text-primary)",
-                    lineHeight: 1.3,
                   }}
                 >
-                  {step.label}
+                  {p.title}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Process detail cards below timeline */}
+          {/* Detail cards */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              gap: "1rem",
-              marginTop: "2.5rem",
+              gridTemplateColumns: "repeat(5,1fr)",
+              gap: "0.875rem",
+              marginTop: "1.5rem",
+              minWidth: 500,
             }}
-            className="process-cards"
           >
-            {[
-              "We audit your current profiles, understand your audience, and build a strategy around your goals.",
-              "A full 30-day content calendar is planned and shared for your review before we start creating.",
-              "Graphics, video scripts, captions & hashtags — all created to match your brand voice and convert.",
-              "We post at optimal times, respond to comments, and manage your inbox to keep your community warm.",
-              "Monthly analytics report delivered — what worked, what we're improving, and next month's plan.",
-            ].map((desc, i) => (
+            {PROCESS.map((p, i) => (
               <div
-                key={i}
+                key={p.num}
                 style={{
-                  padding: "1.25rem",
+                  padding: "1.125rem",
                   borderRadius: "var(--radius-lg)",
                   background: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
-                  fontSize: "0.82rem",
+                  border: `1px solid var(--color-border)`,
+                  borderTopColor: p.color,
+                  borderTopWidth: 2,
+                  fontSize: "0.78rem",
                   color: "var(--color-text-secondary)",
                   lineHeight: 1.65,
-                  borderTopColor: PROCESS[i].color,
-                  borderTopWidth: 2,
                   opacity: visible ? 1 : 0,
                   transition: `all 0.5s ease ${0.5 + i * 0.1}s`,
                 }}
               >
-                {desc}
+                {p.desc}
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media(max-width: 768px) {
-          .timeline-outer { overflow-x: auto; }
-          .process-cards { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
 
-/* ══════ 7. CTA ══════ */
-function CtaBanner() {
-  const [ref, visible] = useFadeIn(0.2);
-
+/* ══════ 8. RESULTS ══════ */
+function ResultsSection() {
+  const [ref, visible] = useFadeIn(0.1);
   return (
-    <section ref={ref} className="section-padding">
+    <section
+      ref={ref}
+      style={{
+        background:
+          "linear-gradient(135deg,rgba(254,122,54,0.07) 0%,rgba(0,70,255,0.05) 50%,rgba(225,48,108,0.06) 100%)",
+        borderTop: "1px solid var(--color-border)",
+        borderBottom: "1px solid var(--color-border)",
+        padding: "clamp(4rem,8vw,6rem) 0",
+      }}
+    >
+      <div className="container-site">
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <Tag label="Real Results" color="orange" />
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
+            }}
+          >
+            Numbers That Actually Matter
+          </h2>
+          <p
+            style={{
+              maxWidth: 460,
+              margin: "0.875rem auto 0",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Benchmark figures from Meta industry data and our managed client
+            campaigns.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4,1fr)",
+            gap: "1.25rem",
+          }}
+          className="results-grid"
+        >
+          {RESULTS.map((r, i) => (
+            <div
+              key={r.label}
+              className="result-card"
+              style={{
+                padding: "2rem 1.5rem",
+                borderRadius: "var(--radius-xl)",
+                textAlign: "center",
+                background: "var(--color-surface)",
+                border: `1px solid ${r.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.16)"}`,
+                cursor: "default",
+                transition: "all 0.3s ease",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `all 0.5s ease ${i * 0.1}s`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow =
+                  r.accent === "orange"
+                    ? "0 20px 48px rgba(254,122,54,0.18)"
+                    : "0 20px 48px rgba(0,70,255,0.14)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(2rem,3.5vw,3rem)",
+                  lineHeight: 1,
+                  marginBottom: "0.75rem",
+                  color:
+                    r.accent === "orange"
+                      ? "var(--color-brand-orange)"
+                      : "var(--color-brand-blue)",
+                }}
+              >
+                {r.val}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  marginBottom: "0.375rem",
+                }}
+              >
+                {r.label}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--color-text-tertiary)",
+                  lineHeight: 1.4,
+                }}
+              >
+                {r.sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media(max-width:768px){.results-grid{grid-template-columns:1fr 1fr !important;}}`}</style>
+    </section>
+  );
+}
+
+/* ══════ 9. FAQ ══════ */
+function FaqSection({ openFaq, setOpenFaq }) {
+  const [ref, visible] = useFadeIn(0.08);
+  return (
+    <section
+      id="faq"
+      ref={ref}
+      className="section-pad"
+      aria-label="Social Media Marketing FAQ"
+    >
+      <div className="container-site" style={{ maxWidth: 820 }}>
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <Tag label="FAQ" color="blue" />
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              marginTop: "1rem",
+              fontSize: "clamp(1.9rem,3.5vw,2.8rem)",
+            }}
+          >
+            Questions About Meta Ads
+          </h2>
+          <p
+            style={{
+              maxWidth: 480,
+              margin: "0.875rem auto 0",
+              fontSize: "1rem",
+              lineHeight: 1.8,
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            Everything you need to know before running your first — or next —
+            Meta advertising campaign.
+          </p>
+        </div>
+
+        <div
+          style={{
+            borderRadius: "var(--radius-2xl)",
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border)",
+            overflow: "hidden",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s ease",
+          }}
+        >
+          {FAQS.map((faq, i) => {
+            const isOpen = openFaq === i;
+            return (
+              <div key={i} className="faq-item">
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "1.5rem 2rem",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "1rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.975rem",
+                      fontWeight: 700,
+                      color: "var(--color-text-primary)",
+                      lineHeight: 1.4,
+                      fontFamily: "var(--font-body)",
+                    }}
+                  >
+                    {faq.q}
+                  </span>
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: "50%",
+                      flexShrink: 0,
+                      background: isOpen
+                        ? "rgba(254,122,54,0.12)"
+                        : "var(--color-bg-secondary)",
+                      border: `1px solid ${isOpen ? "rgba(254,122,54,0.3)" : "var(--color-border)"}`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "all 0.3s ease",
+                      color: isOpen
+                        ? "var(--color-brand-orange)"
+                        : "var(--color-text-tertiary)",
+                    }}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      style={{
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0)",
+                        transition: "transform 0.3s ease",
+                      }}
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
+                </button>
+                {isOpen && (
+                  <div
+                    style={{
+                      padding: "0 2rem 1.5rem",
+                      animation: "slideUp 0.25s ease",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "0.9rem",
+                        lineHeight: 1.85,
+                        color: "var(--color-text-secondary)",
+                        margin: 0,
+                      }}
+                    >
+                      {faq.a}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════ 10. CTA ══════ */
+function CtaSection() {
+  const [ref, visible] = useFadeIn(0.15);
+  return (
+    <section ref={ref} className="section-pad">
       <div className="container-site">
         <div
           style={{
             borderRadius: "var(--radius-2xl)",
             overflow: "hidden",
             position: "relative",
-            /* iMedia gradient bg adapted to Serenly */
             background:
-              "linear-gradient(135deg, rgba(254,122,54,0.1) 0%, rgba(0,70,255,0.08) 50%, rgba(225,48,108,0.08) 100%)",
-            border: "1px solid rgba(254,122,54,0.2)",
+              "linear-gradient(135deg,rgba(254,122,54,0.1) 0%,rgba(0,70,255,0.08) 50%,rgba(225,48,108,0.08) 100%)",
+            border: "1px solid rgba(254,122,54,0.22)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(28px)",
             transition: "all 0.7s ease",
           }}
         >
-          {/* Blobs inside CTA */}
           <div
             style={{
               position: "absolute",
@@ -1664,7 +2729,7 @@ function CtaBanner() {
               height: 400,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(254,122,54,0.12) 0%, transparent 70%)",
+                "radial-gradient(circle,rgba(254,122,54,0.12) 0%,transparent 70%)",
               pointerEvents: "none",
             }}
           />
@@ -1677,20 +2742,25 @@ function CtaBanner() {
               height: 300,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(0,70,255,0.1) 0%, transparent 70%)",
+                "radial-gradient(circle,rgba(0,70,255,0.1) 0%,transparent 70%)",
               pointerEvents: "none",
             }}
           />
           <div
-            className="bg-dot-grid"
-            style={{ position: "absolute", inset: 0, opacity: 0.3 }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
           />
 
           <div
             style={{
               position: "relative",
               zIndex: 1,
-              padding: "clamp(3rem, 6vw, 5rem) clamp(2rem, 5vw, 5rem)",
+              padding: "clamp(3rem,6vw,5rem) clamp(2rem,5vw,5rem)",
               display: "grid",
               gridTemplateColumns: "1fr auto",
               gap: "3rem",
@@ -1699,65 +2769,87 @@ function CtaBanner() {
             className="cta-inner"
           >
             <div>
-              <SectionTag label="Get Started" color="orange" />
+              <Tag label="Get Started Today" color="orange" />
               <h2
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+                  fontSize: "clamp(2rem,4.5vw,3.25rem)",
                   marginTop: "1.25rem",
                   marginBottom: "1rem",
                   lineHeight: 1.1,
                 }}
               >
                 Ready to grow on{" "}
-                <span className="text-gradient-orange">Facebook</span>
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#1877F2,#3369ff)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Facebook
+                </span>
                 {" & "}
                 <span style={{ color: "#E1306C" }}>Instagram?</span>
               </h2>
               <p
                 style={{
-                  fontSize: "1.05rem",
+                  fontSize: "1rem",
                   maxWidth: 500,
-                  lineHeight: 1.8,
+                  lineHeight: 1.85,
                   color: "var(--color-text-secondary)",
                 }}
               >
-                Book a free social media audit and we'll show you exactly where
-                your profiles are leaving growth on the table — and how Serenly
-                will fix it in 30 days.
+                Book a free social media audit. We'll review your profiles,
+                analyse your competitor ads in the Meta Ad Library, and show you
+                exactly what's holding your brand back — and how Serenly will
+                fix it in 30 days.
               </p>
             </div>
-
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "1rem",
+                gap: "0.875rem",
                 flexShrink: 0,
               }}
             >
-              <a href="#contact" className="btn btn-primary btn-lg">
+              <a
+                href="/contact"
+                className="btn btn-primary btn-lg"
+                style={{
+                  background:
+                    "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                  boxShadow: "0 8px 32px rgba(254,122,54,0.45)",
+                  borderRadius: 12,
+                  whiteSpace: "nowrap",
+                }}
+              >
                 Get Free SMM Audit
                 <svg
-                  width="18"
-                  height="18"
+                  width="17"
+                  height="17"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
-              <a href="#platforms" className="btn btn-ghost btn-lg">
-                View Services
+              <a
+                href="#platforms"
+                className="btn btn-ghost btn-lg"
+                style={{ borderRadius: 12, textAlign: "center" }}
+              >
+                View Platform Services
               </a>
             </div>
           </div>
         </div>
       </div>
-
-      <style>{`@media(max-width:768px){ .cta-inner { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@media(max-width:768px){.cta-inner{grid-template-columns:1fr !important;}}`}</style>
     </section>
   );
 }

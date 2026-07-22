@@ -1,369 +1,256 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import assets from "../assets/assets";
 
-const SERVICES = [
-  { label: "Branding", href: "/branding" },
-  { label: "Meta Ads Management", href: "/smm" },
-  { label: "SEO Optimization", href: "/seo" },
-  { label: "Website Development", href: "/web-dev" },
+const SERVICE_LINKS = [
+  { label: "All Services", href: "/services", desc: "See everything we offer" },
+  {
+    label: "Web Development",
+    href: "/web-dev",
+    desc: "Fast, custom-built websites",
+  },
+  {
+    label: "Brand Identity",
+    href: "/branding",
+    desc: "Logos, guidelines & assets",
+  },
+  {
+    label: "Social Media & Meta Ads",
+    href: "/smm",
+    desc: "Content, community & ROI",
+  },
+  { label: "SEO Optimisation", href: "/seo", desc: "Rank higher, get found" },
+  {
+    label: "School Management System",
+    href: "/our-system",
+    desc: "Serenly EduCore platform",
+  },
 ];
 
-const MORE_LINKS = [
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Blogs", href: "/blogs" },
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
-  const { isDark, toggleTheme } = useTheme();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef(null);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const closeTimer = useRef(null);
+  const { isDark, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 16);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const openServices = () => {
+    clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+  };
+  const closeServicesDelayed = () => {
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
+  };
+
+  const linkClass = ({ isActive }) =>
+    `text-sm font-medium tracking-wide transition-colors ${
+      isActive ? "text-primary" : "text-foreground/80 hover:text-primary"
+    }`;
 
   return (
-    <>
-      <header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 80,
-          height: 70,
-          display: "flex",
-          alignItems: "center",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          background: "var(--color-surface-overlay)",
-          borderBottom: "1px solid var(--color-border-subtle)",
-          boxShadow: scrolled ? "0 2px 28px rgba(0,0,0,0.07)" : "none",
-          transition: "box-shadow 0.3s ease, background 0.4s ease",
-        }}
-      >
-        <div
-          className="container-site"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          {/* ── LOGO ── */}
-          <a
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              textDecoration: "none",
-              flexShrink: 0,
-            }}
-          >
-            <img
-              src={assets.logo}
-              className="h-22"
-              alt="Serenly Digital Marketing Company Logo"
-            />
-          </a>
+    <header
+      className={`fixed top-0 left-0 w-full z-50 bg-background border-b border-border transition-shadow duration-300 ${
+        isScrolled ? "shadow-sm" : ""
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-8 h-20">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 shrink-0">
+          <img
+            src={assets.logo}
+            alt="Serenly"
+            className="h-9 w-9 object-contain"
+          />
+          <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
+            Serenly
+          </span>
+        </Link>
 
-          {/* ── DESKTOP NAV ── */}
-          <nav
-            style={{ display: "flex", alignItems: "center", gap: 24 }}
-            className="desk-nav"
+        {/* Center Nav */}
+        <nav className="hidden lg:flex items-center gap-8">
+          <NavLink to="/" end className={linkClass}>
+            Home
+          </NavLink>
+
+          {/* Services dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={openServices}
+            onMouseLeave={closeServicesDelayed}
           >
-            {/* Services Dropdown */}
-            <div ref={dropdownRef} style={{ position: "relative" }}>
-              <button
-                onClick={() => setServicesOpen((o) => !o)}
-                className="nav-link services-trigger"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  fontSize: "0.875rem",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  color: "var(--color-text-primary)",
-                  fontFamily: "inherit",
-                }}
+            <button
+              type="button"
+              onClick={() => setServicesOpen((v) => !v)}
+              className="flex items-center gap-1.5 text-sm font-medium tracking-wide text-foreground/80 hover:text-primary transition-colors"
+              aria-expanded={servicesOpen}
+            >
+              Services
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {servicesOpen && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-80"
+                onMouseEnter={openServices}
+                onMouseLeave={closeServicesDelayed}
               >
-                Services
-                <ChevronDown
-                  size={14}
-                  strokeWidth={2}
-                  style={{
-                    transition: "transform 0.2s ease",
-                    transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)",
-                  }}
-                />
-              </button>
-
-              {servicesOpen && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "calc(100% + 14px)",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "var(--color-surface-overlay)",
-                    backdropFilter: "blur(28px)",
-                    WebkitBackdropFilter: "blur(28px)",
-                    border: "1px solid var(--color-border-subtle)",
-                    borderRadius: 14,
-                    padding: "8px",
-                    minWidth: 220,
-                    boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
-                    zIndex: 100,
-                  }}
-                >
-                  {/* Small arrow pointer */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -6,
-                      left: "50%",
-                      transform: "translateX(-50%) rotate(45deg)",
-                      width: 10,
-                      height: 10,
-                      background: "var(--color-surface-overlay)",
-                      border: "1px solid var(--color-border-subtle)",
-                      borderRight: "none",
-                      borderBottom: "none",
-                    }}
-                  />
-                  {SERVICES.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
+                <div className="bg-background border border-border shadow-xl py-2">
+                  {SERVICE_LINKS.map((link) => (
+                    <Link
+                      key={link.href}
+                      to={link.href}
                       onClick={() => setServicesOpen(false)}
-                      style={{
-                        display: "block",
-                        padding: "10px 14px",
-                        borderRadius: 9,
-                        fontSize: "0.875rem",
-                        color: "var(--color-text-primary)",
-                        textDecoration: "none",
-                        transition: "background 0.15s ease",
-                        whiteSpace: "nowrap",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background =
-                          "var(--color-surface-hover, rgba(254,122,54,0.08))")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
+                      className="flex flex-col gap-0.5 px-5 py-3 hover:bg-muted/40 transition-colors group"
                     >
-                      {s.label}
-                    </a>
+                      <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {link.label}
+                      </span>
+                      <span className="text-xs text-foreground/50">
+                        {link.desc}
+                      </span>
+                    </Link>
                   ))}
                 </div>
-              )}
-            </div>
-
-            {/* Divider dot */}
-            <span
-              style={{
-                width: 4,
-                height: 4,
-                borderRadius: "50%",
-                background: "var(--color-border-strong)",
-                flexShrink: 0,
-              }}
-            />
-
-            {MORE_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="nav-link"
-                style={{ fontSize: "0.875rem" }}
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* ── ACTIONS ── */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              flexShrink: 0,
-            }}
-          >
-            <button
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label={
-                isDark ? "Switch to light mode" : "Switch to dark mode"
-              }
-            >
-              {isDark ? (
-                <Sun size={16} strokeWidth={2} />
-              ) : (
-                <Moon size={16} strokeWidth={2} />
-              )}
-            </button>
-
-            <a
-              href="/contact"
-              className="btn btn-primary btn-md desk-cta"
-              style={{ borderRadius: 10, fontSize: "0.875rem" }}
-            >
-              Get Started
-            </a>
-
-            <button
-              onClick={() => setMenuOpen((o) => !o)}
-              className="mob-btn"
-              aria-label="Toggle menu"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "var(--color-text-primary)",
-                padding: 4,
-                display: "none",
-              }}
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+              </div>
+            )}
           </div>
+
+          <NavLink to="/about" className={linkClass}>
+            About Us
+          </NavLink>
+          <NavLink to="/blogs" className={linkClass}>
+            Blog
+          </NavLink>
+          <NavLink to="/contact" className={linkClass}>
+            Contact
+          </NavLink>
+        </nav>
+
+        {/* Right side */}
+        <div className="hidden lg:flex items-center gap-4">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle dark mode"
+            className="w-9 h-9 flex items-center justify-center border border-border text-foreground hover:border-foreground transition-colors"
+          >
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <Link
+            to="/contact"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-sm font-semibold tracking-wide transition-colors"
+          >
+            Let’s Meet & Talk
+          </Link>
         </div>
 
-        {/* ── MOBILE DROPDOWN ── */}
-        {menuOpen && (
-          <div
-            style={{
-              position: "absolute",
-              top: 70,
-              left: 0,
-              right: 0,
-              background: "var(--color-surface-overlay)",
-              backdropFilter: "blur(28px)",
-              WebkitBackdropFilter: "blur(28px)",
-              borderBottom: "1px solid var(--color-border)",
-              padding: "1rem 1.5rem 1.5rem",
-              zIndex: 99,
-            }}
+        {/* Mobile Toggle */}
+        <div className="lg:hidden flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label="Toggle dark mode"
+            className="w-9 h-9 flex items-center justify-center border border-border text-foreground"
           >
-            {/* Mobile Services accordion */}
-            <div>
-              <button
-                onClick={() => setMobileServicesOpen((o) => !o)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  background: "none",
-                  border: "none",
-                  padding: "0.875rem 0",
-                  borderBottom: "1px solid var(--color-border-subtle)",
-                  color: "var(--color-text-primary)",
-                  fontSize: "1rem",
-                  cursor: "pointer",
-                  fontFamily: "inherit",
-                }}
-              >
-                Services
-                <ChevronDown
-                  size={16}
-                  style={{
-                    transition: "transform 0.2s ease",
-                    transform: mobileServicesOpen
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
-                  }}
-                />
-              </button>
-              {mobileServicesOpen && (
-                <div style={{ paddingLeft: "1rem" }}>
-                  {SERVICES.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      className="nav-link"
-                      style={{
-                        display: "block",
-                        padding: "0.75rem 0",
-                        borderBottom: "1px solid var(--color-border-subtle)",
-                        fontSize: "0.9375rem",
-                        opacity: 0.85,
-                      }}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {s.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <button
+            className="text-foreground p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full max-h-[calc(100dvh-5rem)] overflow-y-auto bg-background border-b border-border shadow-xl py-6 px-6 flex flex-col gap-1">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-serif text-foreground py-3"
+          >
+            Home
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMobileServicesOpen((v) => !v)}
+            className="flex items-center justify-between text-lg font-serif text-foreground py-3"
+          >
+            Services
+            <ChevronDown
+              size={18}
+              className={`transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {mobileServicesOpen && (
+            <div className="flex flex-col pl-4 border-l border-border mb-2">
+              {SERVICE_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-sm text-foreground/70 py-2.5"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
+          )}
 
-            {/* Rest of mobile links */}
-            {MORE_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="nav-link"
-                style={{
-                  display: "block",
-                  padding: "0.875rem 0",
-                  borderBottom: "1px solid var(--color-border-subtle)",
-                  fontSize: "1rem",
-                }}
-                onClick={() => setMenuOpen(false)}
-              >
-                {l.label}
-              </a>
-            ))}
-
-            <a
-              href="/contact"
-              className="btn btn-primary btn-md"
-              style={{
-                marginTop: "1.25rem",
-                width: "100%",
-                justifyContent: "center",
-                borderRadius: 10,
-              }}
-            >
-              Get Started
-            </a>
-          </div>
-        )}
-      </header>
-
-      <style>{`
-        @media (max-width: 1060px) { .desk-nav { display:none !important; } .mob-btn { display:flex !important; } }
-        @media (max-width: 640px)  { .desk-cta { display:none !important; } }
-      `}</style>
-    </>
+          <Link
+            to="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-serif text-foreground py-3"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/blogs"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-serif text-foreground py-3"
+          >
+            Blog
+          </Link>
+          <Link
+            to="/contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-serif text-foreground py-3"
+          >
+            Contact
+          </Link>
+          <div className="h-px w-full bg-border my-3"></div>
+          <Link
+            to="/contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="bg-primary text-primary-foreground text-center px-6 py-3 text-sm font-semibold tracking-wide"
+          >
+            Get Started
+          </Link>
+        </div>
+      )}
+    </header>
   );
 }

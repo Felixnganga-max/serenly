@@ -1,18 +1,28 @@
-import React from "react";
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import ProductSections from "../components/ProductSections";
-import NewsLetter from "../components/NewsLetter";
-import Footer from "../components/Footer";
+import React from 'react';
+import Hero from '../components/Hero';
+import ServicesIntro from '../components/ServicesIntro';
+import ServicesList from '../components/ServicesList';
+import About from '../components/About';
+import Portfolio from '../components/Portfolio';
+import Process from '../components/Process';
+import Testimonials from '../components/Testimonials';
+import BlogSection from '../components/BlogSection';
+import ClosingCTA from '../components/ClosingCTA';
 
-const Home = () => {
+export default function Home() {
   return (
-    <div>
-      <Hero />
-      <ProductSections />
-      <NewsLetter />
+    <div className="min-h-screen bg-background text-foreground font-sans">
+      <main>
+        <Hero />
+        <ServicesIntro />
+        <ServicesList />
+        <About />
+        <Portfolio />
+        <Process />
+        <Testimonials />
+        <BlogSection />
+        <ClosingCTA />
+      </main>
     </div>
   );
-};
-
-export default Home;
+}

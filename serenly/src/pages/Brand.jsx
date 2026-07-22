@@ -4,6 +4,7 @@
 // Unsplash images used as placeholders — swap with your own assets later
 
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 /* ─── Unsplash placeholder images ─── */
 const HERO_BG =
@@ -1133,7 +1134,7 @@ function PortfolioSection({
 
         {/* View all CTA */}
         <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <a href="#contact" className="btn btn-outline-orange btn-lg">
+          <a href="/contact" className="btn btn-outline-orange btn-lg">
             Start Your Branding Project
             <svg
               width="18"
@@ -1325,16 +1326,16 @@ function CtaBanner() {
                 flexWrap: "wrap",
               }}
             >
-              <a href="#contact" className="btn btn-primary btn-xl">
+              <a href="/contact" className="btn btn-primary btn-xl">
                 Get Free Brand Audit
               </a>
-              <a
-                href="#portfolio"
+              <Link
+                to="/#portfolio"
                 className="btn btn-ghost btn-xl"
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "#fff" }}
               >
                 See More Work
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,382 +1,153 @@
-// src/components/Footer.jsx
-import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 import assets from "../assets/assets";
-
-/* Facebook SVG icon */
-function FacebookIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
-
-/* Instagram SVG icon */
-function InstagramIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-const FOOTER_NAV = {
-  Services: [
-    { label: "Brand Identity & Strategy", href: "/branding" },
-    { label: "Social Media Marketing", href: "/smm" },
-    { label: "SEO Optimization", href: "/seo" },
-    { label: "Web Development", href: "/web-dev" },
-  ],
-  Company: [
-    { label: "About Us", href: "/about" },
-    { label: "Campaigns", href: "/campaigns" },
-    { label: "Blog", href: "/blogs" },
-    { label: "Contact Us", href: "/contact" },
-  ],
-  Legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
-  ],
-};
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        background: "var(--color-bg-secondary)",
-        borderTop: "1px solid var(--color-border-subtle)",
-        paddingTop: "4.5rem",
-        paddingBottom: "2rem",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Top gradient line accent */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "10%",
-          right: "10%",
-          height: 1,
-          background:
-            "linear-gradient(90deg,transparent,rgba(254,122,54,0.4),rgba(0,70,255,0.3),transparent)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div className="container-site">
-        {/* ── MAIN GRID ── */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr",
-            gap: "3rem",
-            marginBottom: "3.5rem",
-          }}
-          className="footer-main"
-        >
-          {/* Brand column */}
-          <div>
-            {/* Logo */}
-            <a
-              href="/"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                textDecoration: "none",
-                marginBottom: "1.25rem",
-              }}
-            >
-         
-           <img src={assets.logo} alt="Serenly Digital Marketing Company Logo" />
-            </a>
-
-            <p
-              style={{
-                fontSize: "0.9rem",
-                lineHeight: 1.85,
-                maxWidth: 270,
-                color: "var(--color-text-tertiary)",
-                marginBottom: "1.75rem",
-              }}
-            >
-              Serenly is a results-driven digital marketing agency helping
-              ambitious businesses across Kenya and Africa grow their brand,
-              dominate search, and convert online audiences into loyal
-              customers.
+    <footer className="bg-neutral-950 text-white/80 pt-24 pb-8 px-6 lg:px-12 border-t border-white/10 text-sm font-light">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+          <div className="lg:col-span-5 flex flex-col pr-0 lg:pr-12">
+            <Link to="/" className="flex items-center gap-3 mb-6 w-fit">
+              <img src={assets.logo} alt="Serenly" className="h-8 w-8 object-contain" />
+              <h3 className="font-serif text-3xl font-bold text-white tracking-tight">
+                Serenly
+              </h3>
+            </Link>
+            <p className="leading-relaxed mb-8 max-w-md">
+              A results-driven digital marketing agency helping ambitious
+              businesses across Kenya and Africa grow their brand and dominate
+              search.
             </p>
-
-            {/* Contact snippets */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.625rem",
-                marginBottom: "1.75rem",
-              }}
-            >
-              {[
-                { icon: <Mail size={14} />, text: "hello@serenly.agency" },
-                { icon: <Phone size={14} />, text: "+254 700 000 000" },
-                { icon: <MapPin size={14} />, text: "Nairobi, Kenya" },
-              ].map((item) => (
-                <div
-                  key={item.text}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.625rem",
-                  }}
-                >
-                  <span style={{ color: "#FE7A36", flexShrink: 0 }}>
-                    {item.icon}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "0.8625rem",
-                      color: "var(--color-text-tertiary)",
-                    }}
-                  >
-                    {item.text}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Social — Facebook & Instagram ONLY */}
-            <div style={{ display: "flex", gap: "0.625rem" }}>
-              {/* Facebook */}
+            <div className="flex flex-col space-y-2 mt-auto">
               <a
-                href="https://facebook.com/serenly"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Serenly on Facebook"
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: "50%",
-                  background: "#1877F2",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  textDecoration: "none",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  transition: "all 0.25s var(--ease-spring)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-3px) scale(1.1)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 20px rgba(24,119,242,0.35)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                href="mailto:contact@serenlydm.com"
+                className="hover:text-primary transition-colors w-fit"
               >
-                <FacebookIcon />
+                contact@serenlydm.com
               </a>
-
-              {/* Instagram */}
               <a
-                href="https://instagram.com/serenly"
+                href="tel:+254797743366"
+                className="hover:text-primary transition-colors w-fit"
+              >
+                +254 797 743 366
+              </a>
+              <span>Nairobi, Kenya</span>
+              <a
+                href="https://wa.me/254797743366"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Serenly on Instagram"
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  textDecoration: "none",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  transition: "all 0.25s var(--ease-spring)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-3px) scale(1.1)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 20px rgba(253,29,29,0.35)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                className="text-primary font-semibold mt-4 w-fit hover:underline"
               >
-                <InstagramIcon />
+                WhatsApp us →
               </a>
             </div>
           </div>
-
-          {/* Link columns */}
-          {Object.entries(FOOTER_NAV).map(([title, links]) => (
-            <div key={title}>
-              <h5
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "1rem",
-                  marginBottom: "1.25rem",
-                  color: "var(--color-text-primary)",
-                }}
-              >
-                {title}
-              </h5>
-              <ul style={{ listStyle: "none", padding: 0 }}>
-                {links.map((link) => (
-                  <li key={link.label} style={{ marginBottom: "0.7rem" }}>
-                    <a
-                      href={link.href}
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "0.8875rem",
-                        color: "var(--color-text-tertiary)",
-                        textDecoration: "none",
-                        transition: "color 0.2s",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "#FE7A36";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color =
-                          "var(--color-text-tertiary)";
-                      }}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
+          <div className="lg:col-span-4 flex flex-col">
+            <h4 className="font-semibold text-white tracking-wider uppercase text-xs mb-8">
+              Services
+            </h4>
+            <ul className="space-y-4">
+              <li>
+                <Link to="/web-dev" className="hover:text-white transition-colors">
+                  Web Development
+                </Link>
+              </li>
+              <li>
+                <Link to="/seo" className="hover:text-white transition-colors">
+                  SEO Optimization
+                </Link>
+              </li>
+              <li>
+                <Link to="/smm" className="hover:text-white transition-colors">
+                  Social Media Marketing
+                </Link>
+              </li>
+              <li>
+                <Link to="/branding" className="hover:text-white transition-colors">
+                  Brand Identity
+                </Link>
+              </li>
+              <li>
+                <Link to="/our-system" className="hover:text-white transition-colors">
+                  School Management System
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-white transition-colors">
+                  All Services
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="lg:col-span-3 flex flex-col gap-12">
+            <div>
+              <h4 className="font-semibold text-white tracking-wider uppercase text-xs mb-8">
+                Company
+              </h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link to="/about" className="hover:text-white transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/#portfolio" className="hover:text-white transition-colors">
+                    Portfolio
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blogs" className="hover:text-white transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-white transition-colors">
+                    Contact
+                  </Link>
+                </li>
               </ul>
             </div>
-          ))}
-        </div>
-
-        {/* ── CTA strip ── */}
-        <div
-          style={{
-            borderRadius: "var(--radius-xl)",
-            padding: "1.5rem 2rem",
-            marginBottom: "2.5rem",
-            background:
-              "linear-gradient(135deg,rgba(254,122,54,0.09),rgba(0,70,255,0.06))",
-            border: "1px solid rgba(254,122,54,0.16)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "1rem",
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "1.0625rem",
-                color: "var(--color-text-primary)",
-                marginBottom: 2,
-              }}
-            >
-              Ready to grow your business?
-            </div>
-            <div
-              style={{
-                fontSize: "0.875rem",
-                color: "var(--color-text-tertiary)",
-              }}
-            >
-              Get a free digital marketing audit — no strings attached.
+            <div>
+              <h4 className="font-semibold text-white tracking-wider uppercase text-xs mb-8">
+                Legal
+              </h4>
+              <ul className="space-y-4">
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-white transition-colors"
+                  >
+                    Terms of Service
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-          <a
-            href="/contact"
-            className="btn btn-primary btn-md"
-            style={{ borderRadius: 10, flexShrink: 0 }}
-          >
-            Get Free Audit <ArrowRight size={15} strokeWidth={2.5} />
-          </a>
         </div>
-
-        {/* ── Bottom bar ── */}
-        <div
-          style={{
-            height: 1,
-            background: "var(--color-border)",
-            marginBottom: "1.5rem",
-          }}
-        />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "0.875rem",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "0.8125rem",
-              color: "var(--color-text-tertiary)",
-            }}
-          >
-            © {new Date().getFullYear()} Serenly Digital Agency. All rights
-            reserved.
-          </p>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            {[
-              { l: "Privacy Policy", href: "/privacy" },
-              { l: "Terms", href: "/terms" },
-            ].map((item) => (
-              <a
-                key={item.l}
-                href={item.href}
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "0.8125rem",
-                  color: "var(--color-text-tertiary)",
-                  textDecoration: "none",
-                  transition: "color 0.2s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "var(--color-text-secondary)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "var(--color-text-tertiary)")
-                }
-              >
-                {item.l}
-              </a>
-            ))}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+          <p>© 2026 Serenly Digital Marketing Agency. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-white transition-colors">
+              LinkedIn
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Instagram
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Twitter
+            </a>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media(max-width:1024px){.footer-main{grid-template-columns:1fr 1fr !important; gap:2rem !important;}}
-        @media(max-width:640px) {.footer-main{grid-template-columns:1fr !important;}}
-      `}</style>
     </footer>
   );
 }

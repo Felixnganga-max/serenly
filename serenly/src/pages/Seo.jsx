@@ -442,7 +442,7 @@ function HeroSection() {
                 marginBottom: "3rem",
               }}
             >
-              <a href="#audit" className="btn btn-primary btn-lg">
+              <a href="/contact" className="btn btn-primary btn-lg">
                 Get Free SEO Audit
                 <svg
                   width="18"
@@ -960,7 +960,7 @@ function ServicesIntroSection() {
               }}
             />
 
-            <a href="#audit" className="btn btn-primary btn-md">
+            <a href="#services" className="btn btn-primary btn-md">
               View All Services
               <svg
                 width="16"
@@ -1982,7 +1982,7 @@ function CtaBanner() {
                 flexShrink: 0,
               }}
             >
-              <a href="#contact" className="btn btn-secondary btn-lg">
+              <a href="/contact" className="btn btn-secondary btn-lg">
                 Get Free Audit
                 <svg
                   width="18"
