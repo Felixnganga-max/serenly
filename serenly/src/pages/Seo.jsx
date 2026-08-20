@@ -1,28 +1,62 @@
-// src/pages/SEO.jsx
-// Serenly — SEO Optimization Service Page
-// Design: Fusion of Compatto (full-bleed hero + numbered steps + bento grid)
-//         and Phlox (split stats + headline left / cards right layout)
-// Stack: React + Tailwind v4 CSS tokens (index.css)
-
 import React, { useEffect, useRef, useState } from "react";
+import {
+  Search,
+  FileText,
+  Link2,
+  MapPin,
+  ArrowRight,
+  ArrowUp,
+} from "lucide-react";
 
-/* ─── Unsplash placeholders ─── */
 const HERO_BG =
   "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=1600&q=80";
-const AUDIT_IMG =
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80";
-const ONPAGE_IMG =
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80";
-const LINK_IMG =
-  "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=900&q=80";
-const LOCAL_IMG =
-  "https://images.unsplash.com/photo-1569168713092-2aa02a9c97e2?w=900&q=80";
 
-/* ─── Data ─── */
+const ACCENT = {
+  orange: {
+    text: "text-brand-orange",
+    hoverText: "group-hover:text-brand-orange",
+    border: "border-brand-orange",
+    icon: "bg-brand-orange/10 border-brand-orange/25 text-brand-orange",
+    tag: "section-tag-orange",
+    gradient: "text-gradient-orange",
+    watermark: "text-brand-orange/5",
+    dot: "bg-brand-orange",
+    rank: "bg-brand-orange/10 border-brand-orange/30 text-brand-orange",
+    bar: "bg-gradient-to-r from-brand-orange to-transparent",
+    hoverBorder: "",
+  },
+  blue: {
+    text: "text-brand-blue",
+    hoverText: "group-hover:text-brand-blue",
+    border: "border-brand-blue",
+    icon: "bg-brand-blue/[0.08] border-brand-blue/20 text-brand-blue",
+    tag: "section-tag-blue",
+    gradient: "text-gradient-blue",
+    watermark: "text-brand-blue/5",
+    dot: "bg-brand-blue",
+    rank: "bg-brand-blue/[0.08] border-brand-blue/20 text-brand-blue",
+    bar: "bg-gradient-to-r from-brand-blue to-transparent",
+    hoverBorder: "hover:!border-brand-blue/25",
+  },
+  green: {
+    text: "text-brand-green",
+    hoverText: "group-hover:text-brand-green",
+    border: "border-brand-green",
+    icon: "bg-brand-green/10 border-brand-green/25 text-brand-green",
+    tag: "section-tag-green",
+    gradient: "text-gradient-green",
+    watermark: "text-brand-green/5",
+    dot: "bg-brand-green-light",
+    rank: "bg-brand-green/10 border-brand-green/30 text-brand-green",
+    bar: "bg-gradient-to-r from-brand-green to-transparent",
+    hoverBorder: "hover:!border-brand-green/25",
+  },
+};
+
 const STATS = [
   { val: "340%", label: "Average ROI", accent: "orange" },
   { val: "#1", label: "Page Rankings", accent: "blue" },
-  { val: "12k+", label: "Leads Generated", accent: "orange" },
+  { val: "12k+", label: "Leads Generated", accent: "green" },
   { val: "98%", label: "Client Retention", accent: "blue" },
 ];
 
@@ -30,128 +64,65 @@ const SEO_SERVICES = [
   {
     id: "audit",
     num: "01",
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="M21 21l-4.35-4.35" />
-        <path d="M11 8v6M8 11h6" />
-      </svg>
-    ),
+    icon: Search,
     title: "SEO Audit & Strategy",
-    short:
-      "Deep technical and content audit that maps every gap between you and page one.",
     accent: "orange",
     badge: "Foundation",
-    image: AUDIT_IMG,
+    short:
+      "Deep technical and content audit that maps every gap between you and page one.",
     features: [
       "Full technical SEO crawl & health report",
       "Keyword gap analysis vs. top competitors",
       "Content opportunity mapping",
       "Core Web Vitals & page speed audit",
-      "Backlink profile analysis",
-      "12-month SEO roadmap with priorities",
     ],
   },
   {
     id: "onpage",
     num: "02",
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-      </svg>
-    ),
+    icon: FileText,
     title: "On-Page Optimisation",
-    short:
-      "Every page tuned for search engines and humans — so rankings rise and bounce rates fall.",
     accent: "blue",
     badge: "Core SEO",
-    image: ONPAGE_IMG,
+    short:
+      "Every page tuned for search engines and humans — rankings rise, bounce rates fall.",
     features: [
       "Title tags, meta descriptions & heading hierarchy",
-      "Semantic keyword integration into content",
-      "Schema markup & structured data implementation",
+      "Schema markup & structured data",
       "Image compression, alt text & lazy loading",
       "Internal linking architecture overhaul",
-      "URL structure & canonical tag management",
     ],
   },
   {
     id: "linkbuilding",
     num: "03",
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-      </svg>
-    ),
+    icon: Link2,
     title: "Link Building & Off-Page",
-    short:
-      "High-authority backlinks that signal trust and push you past competitors who've been stuck for years.",
-    accent: "orange",
+    accent: "green",
     badge: "Authority",
-    image: LINK_IMG,
+    short:
+      "High-authority backlinks that signal trust and move you past stalled competitors.",
     features: [
       "Manual outreach to DA 40+ publications",
       "Guest posting on relevant industry sites",
       "Digital PR & brand mention campaigns",
-      "Broken link building & resource page targeting",
       "Competitor backlink gap exploitation",
-      "Monthly link acquisition reports",
     ],
   },
   {
     id: "local",
     num: "04",
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-        <circle cx="12" cy="10" r="3" />
-      </svg>
-    ),
+    icon: MapPin,
     title: "Local SEO",
-    short:
-      "Dominate Nairobi, Kenya and East African searches — so customers near you find you first.",
     accent: "blue",
     badge: "Local Domination",
-    image: LOCAL_IMG,
+    short:
+      "Dominate Nairobi and East African searches — nearby customers find you first.",
     features: [
       "Google Business Profile setup & optimisation",
-      "NAP consistency audit across all directories",
-      "Local keyword targeting & content strategy",
+      "NAP consistency across all directories",
       "Review generation & reputation management",
       "Local citation building (500+ directories)",
-      "Geo-targeted landing pages for key areas",
     ],
   },
 ];
@@ -160,34 +131,34 @@ const PROCESS_STEPS = [
   {
     num: "1",
     title: "Free SEO Audit",
-    desc: "We run a comprehensive crawl of your site — technical health, keyword gaps, backlink profile, and competitor analysis — all delivered as a clear action report.",
     accent: "orange",
     image:
       "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&q=80",
+    desc: "A full crawl of your site — technical health, keyword gaps, backlinks, competitors — as one clear action report.",
   },
   {
     num: "2",
     title: "Strategy & Roadmap",
-    desc: "Based on audit findings, we build a prioritised 12-month SEO roadmap targeting the keywords and content gaps that will deliver the fastest and most significant ranking gains.",
     accent: "blue",
     image:
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=700&q=80",
+    desc: "A prioritised 12-month roadmap targeting the keywords and gaps with the fastest ranking gains.",
   },
   {
     num: "3",
     title: "Execution & Optimisation",
-    desc: "Our team handles everything — on-page fixes, content creation, technical improvements, and link acquisition — executed to a tight monthly sprint schedule.",
-    accent: "orange",
+    accent: "green",
     image:
       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=700&q=80",
+    desc: "On-page fixes, content, technical work, and link acquisition — on a tight monthly sprint schedule.",
   },
   {
     num: "4",
     title: "Report & Refine",
-    desc: "Every month you receive a clear analytics report — rankings, traffic, leads, and conversions — with insights on what's working and where we're pushing next.",
     accent: "blue",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80",
+    desc: "A clear monthly report — rankings, traffic, leads, conversions — and where we push next.",
   },
 ];
 
@@ -195,55 +166,65 @@ const BENTO_REASONS = [
   {
     id: "results",
     title: "Results, Not Vanity Metrics",
-    desc: "We track rankings, organic traffic, leads, and revenue — not just impressions. Every report ties back to business outcomes.",
     accent: "orange",
     icon: "📈",
     size: "wide",
+    desc: "We track rankings, traffic, leads, and revenue — every report ties back to a business outcome.",
   },
   {
     id: "local",
     title: "Kenya & Africa Specialists",
-    desc: "We understand the local search landscape, Swahili keyword intent, and what Kenyan consumers actually type into Google.",
     accent: "blue",
     icon: "🌍",
     size: "normal",
+    desc: "We know the local search landscape and what Kenyan consumers actually type into Google.",
   },
   {
     id: "transparent",
     title: "Full Transparency",
-    desc: "You get live dashboard access, monthly reports, and a direct line to your SEO strategist — no black boxes.",
-    accent: "orange",
+    accent: "green",
     icon: "🔍",
     size: "normal",
+    desc: "Live dashboard access, monthly reports, and a direct line to your strategist.",
   },
   {
     id: "technical",
     title: "Technical + Content Combined",
-    desc: "Most agencies do one or the other. We do both — so nothing is left on the table.",
     accent: "blue",
     icon: "⚙️",
     size: "normal",
+    desc: "Most agencies do one or the other. We do both, so nothing is left on the table.",
   },
   {
     id: "speed",
     title: "Fast Onboarding",
-    desc: "From audit to live execution in 14 days. No endless onboarding calls.",
     accent: "orange",
     icon: "⚡",
     size: "normal",
+    desc: "From audit to live execution in 14 days — no endless onboarding calls.",
   },
   {
     id: "proven",
     title: "340% Average ROI",
-    desc: "Across our SEO clients, the average return on investment over 12 months is 340% — backed by tracked data.",
-    accent: "blue",
+    accent: "green",
     icon: "✦",
     size: "wide",
+    desc: "Across our SEO clients, the average 12-month return is 340%, backed by tracked data.",
   },
 ];
 
-/* ─── Shared utilities ─── */
-function useFadeIn(threshold = 0.1) {
+const KEYWORDS = [
+  { kw: "digital marketing agency nairobi", pos: 1 },
+  { kw: "seo services kenya", pos: 2 },
+  { kw: "social media marketing nairobi", pos: 1 },
+  { kw: "web design company kenya", pos: 3 },
+  { kw: "branding agency nairobi", pos: 1 },
+  { kw: "google ads management kenya", pos: 2 },
+  { kw: "content marketing africa", pos: 4 },
+  { kw: "ecommerce website kenya", pos: 2 },
+];
+
+function useReveal(threshold = 0.1) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -262,153 +243,41 @@ function useFadeIn(threshold = 0.1) {
   return [ref, visible];
 }
 
-function SectionTag({ label, color = "orange" }) {
-  return (
-    <span className={`section-tag section-tag-${color}`}>
-      <span
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          display: "inline-block",
-          background:
-            color === "orange"
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)",
-        }}
-      />
-      {label}
-    </span>
-  );
-}
+const reveal = (visible, anim = "animate-fade-up", extra = "") =>
+  visible ? `${anim} ${extra}` : "opacity-0";
 
-/* ══════════════════════════════════════════════════════════════
-   MAIN
-══════════════════════════════════════════════════════════════ */
 export default function SEO() {
-  const [activeStep, setActiveStep] = useState(0);
-
   return (
-    <div
-      style={{
-        background: "var(--color-bg-primary)",
-        color: "var(--color-text-primary)",
-        overflowX: "hidden",
-      }}
-    >
-      <HeroSection />
-      <StatsRow />
-      <ServicesIntroSection />
-      <ProcessSection activeStep={activeStep} setActiveStep={setActiveStep} />
-      <BentoSection />
-      <ResultsStrip />
-      <CtaBanner />
+    <div className="bg-background text-foreground overflow-x-hidden">
+      <Hero />
+      <Stats />
+      <ServicesIntro />
+      <Process />
+      <Bento />
+      <Results />
+      <Cta />
     </div>
   );
 }
 
-/* ══════ 1. HERO — full-bleed image with text overlay (Compatto style) ══════ */
-function HeroSection() {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
+function Hero() {
   return (
-    <section
-      style={{
-        position: "relative",
-        minHeight: "88vh",
-        display: "flex",
-        alignItems: "flex-end",
-        overflow: "hidden",
-      }}
-    >
-      {/* Full-bleed background image */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url(${HERO_BG})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-          transform: loaded ? "scale(1)" : "scale(1.04)",
-          transition: "transform 1.2s var(--ease-smooth)",
-          filter: "brightness(0.28)",
-        }}
+    <section className="relative min-h-[88vh] flex items-end overflow-hidden">
+      <img
+        src={HERO_BG}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover brightness-[0.28]"
       />
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-950/70 to-brand-blue/10" />
+      <div className="bg-dot-grid absolute inset-0 opacity-30" />
+      <div className="glow-orange w-[700px] h-[700px] -top-24 -right-24 opacity-40" />
+      <div className="glow-blue w-[500px] h-[500px] bottom-10 -left-24 opacity-30" />
 
-      {/* Layered overlays */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(135deg, rgba(12,12,14,0.7) 0%, rgba(0,70,255,0.08) 100%)",
-          zIndex: 1,
-        }}
-      />
-      <div
-        className="bg-dot-grid"
-        style={{ position: "absolute", inset: 0, opacity: 0.35, zIndex: 2 }}
-      />
-
-      {/* Glow blobs */}
-      <div
-        className="glow-orange"
-        style={{
-          width: 700,
-          height: 700,
-          top: "-10%",
-          right: "5%",
-          zIndex: 1,
-          opacity: 0.5,
-        }}
-      />
-      <div
-        className="glow-blue"
-        style={{
-          width: 500,
-          height: 500,
-          bottom: "10%",
-          left: "0%",
-          zIndex: 1,
-          opacity: 0.4,
-        }}
-      />
-
-      {/* ── CONTENT ── */}
-      <div
-        className="container-site"
-        style={{
-          position: "relative",
-          zIndex: 3,
-          paddingBottom: "6rem",
-          width: "100%",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(2rem, 5vw, 6rem)",
-            alignItems: "flex-end",
-          }}
-          className="hero-grid"
-        >
-          {/* Left — main headline */}
+      <div className="container-site relative z-10 pb-24 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 items-end">
           <div>
-       
             <h1
-              className="animate-fade-up delay-100"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(3rem, 7vw, 5.5rem)",
-                lineHeight: 1.05,
-                color: "var(--color-neutral-0)",
-                marginBottom: "1.75rem",
-              }}
+              className={`font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-neutral-0 mb-7 ${reveal(true)}`}
             >
               Rank Higher.
               <br />
@@ -416,91 +285,37 @@ function HeroSection() {
               <br />
               <span className="text-gradient-orange">Grow Faster.</span>
             </h1>
-
             <p
-              className="animate-fade-up delay-200"
-              style={{
-                fontSize: "clamp(1rem, 1.6vw, 1.15rem)",
-                color: "rgba(245,245,245,0.65)",
-                maxWidth: 520,
-                lineHeight: 1.85,
-                marginBottom: "2.5rem",
-              }}
+              className={`text-neutral-0/65 max-w-lg leading-relaxed mb-10 ${reveal(true, "animate-fade-up", "delay-100")}`}
             >
               What good is a great website if no one finds it? Serenly builds
-              search strategies that get your business ranking on page one —
-              driving consistent, high-intent organic traffic that converts into
-              real revenue.
+              search strategies that get you ranking on page one — driving
+              organic traffic that converts into real revenue.
             </p>
-
             <div
-              className="animate-fade-up delay-300"
-              style={{
-                display: "flex",
-                gap: "1rem",
-                flexWrap: "wrap",
-                marginBottom: "3rem",
-              }}
+              className={`flex flex-wrap gap-4 mb-12 ${reveal(true, "animate-fade-up", "delay-200")}`}
             >
               <a href="/contact" className="btn btn-primary btn-lg">
-                Get Free SEO Audit
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                Get Free SEO Audit <ArrowRight size={18} />
               </a>
               <a
                 href="#services"
-                className="btn btn-ghost btn-lg"
-                style={{ borderColor: "rgba(255,255,255,0.25)", color: "#fff" }}
+                className="btn btn-ghost btn-lg !border-neutral-0/25 !text-neutral-0"
               >
                 See Our Services
               </a>
             </div>
-
-            {/* Phlox-style service anchor links */}
             <div
-              className="animate-fade-up delay-400"
-              style={{
-                display: "flex",
-                gap: "1.75rem",
-                flexWrap: "wrap",
-                borderTop: "1px solid rgba(255,255,255,0.1)",
-                paddingTop: "1.5rem",
-              }}
+              className={`flex flex-wrap gap-7 border-t border-neutral-0/10 pt-6 ${reveal(true, "animate-fade-up", "delay-300")}`}
             >
               {["SEO Audit", "On-Page", "Link Building", "Local SEO"].map(
                 (s, i) => (
                   <a
                     key={s}
                     href={`#${s.toLowerCase().replace(" ", "")}`}
-                    style={{
-                      fontSize: "0.72rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      color: "rgba(245,245,245,0.45)",
-                      textDecoration: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.4rem",
-                      transition: "color 0.2s ease",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color =
-                        "var(--color-brand-orange)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "rgba(245,245,245,0.45)")
-                    }
+                    className="text-xs font-bold tracking-widest uppercase text-neutral-0/45 hover:text-brand-orange transition-colors flex items-center gap-2"
                   >
-                    {i > 0 && <span style={{ opacity: 0.3 }}>·</span>}
+                    {i > 0 && <span className="opacity-30">·</span>}
                     {s}
                   </a>
                 ),
@@ -508,1103 +323,359 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — live ranking widget (Compatto floated card style) */}
           <div
-            className="animate-slide-right delay-200 hero-right-col"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              alignItems: "flex-end",
-            }}
+            className={`flex flex-col gap-4 ${reveal(true, "animate-slide-right", "delay-200")}`}
           >
-            {/* Fake SERP card */}
-            <div
-              className="glass"
-              style={{
-                borderRadius: "var(--radius-xl)",
-                padding: "1.5rem",
-                width: "100%",
-                maxWidth: 400,
-                background: "rgba(12,12,14,0.75)",
-                border: "1px solid rgba(254,122,54,0.2)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.6rem",
-                  marginBottom: "1.25rem",
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    height: 36,
-                    borderRadius: "var(--radius-md)",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "0 1rem",
-                    gap: "0.5rem",
-                  }}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="rgba(245,245,245,0.4)"
-                    strokeWidth="2"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "rgba(245,245,245,0.5)",
-                    }}
-                  >
-                    digital marketing agency nairobi
-                  </span>
-                </div>
-              </div>
-
-              {/* SERP results */}
-              {[
-                {
-                  rank: 1,
-                  domain: "serenly.agency",
-                  title: "Serenly | Top Digital Marketing Agency in Kenya",
-                  highlight: true,
-                },
-                {
-                  rank: 2,
-                  domain: "competitor-a.co.ke",
-                  title: "Digital Marketing Services Kenya",
-                  highlight: false,
-                },
-                {
-                  rank: 3,
-                  domain: "competitor-b.com",
-                  title: "Best Marketing Agency Nairobi",
-                  highlight: false,
-                },
-              ].map((r) => (
-                <div
-                  key={r.rank}
-                  style={{
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    marginBottom: "0.5rem",
-                    background: r.highlight
-                      ? "rgba(254,122,54,0.08)"
-                      : "transparent",
-                    border: `1px solid ${r.highlight ? "rgba(254,122,54,0.25)" : "transparent"}`,
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      marginBottom: "0.2rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        width: 18,
-                        height: 18,
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: r.highlight
-                          ? "var(--color-brand-orange)"
-                          : "rgba(255,255,255,0.08)",
-                        color: r.highlight ? "#fff" : "rgba(245,245,245,0.4)",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {r.rank}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.65rem",
-                        color: r.highlight
-                          ? "rgba(254,122,54,0.8)"
-                          : "rgba(245,245,245,0.35)",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {r.domain}
-                    </span>
-                    {r.highlight && (
-                      <span
-                        style={{
-                          fontSize: "0.55rem",
-                          fontWeight: 700,
-                          letterSpacing: "0.08em",
-                          padding: "0.1rem 0.4rem",
-                          borderRadius: "var(--radius-full)",
-                          background: "rgba(254,122,54,0.15)",
-                          color: "var(--color-brand-orange)",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        You
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      color: r.highlight
-                        ? "rgba(245,245,245,0.9)"
-                        : "rgba(245,245,245,0.4)",
-                      paddingLeft: "1.5rem",
-                      fontWeight: r.highlight ? 600 : 400,
-                    }}
-                  >
-                    {r.title}
-                  </div>
-                </div>
-              ))}
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginTop: "1rem",
-                  paddingTop: "0.75rem",
-                  borderTop: "1px solid rgba(255,255,255,0.07)",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "rgba(245,245,245,0.35)",
-                  }}
-                >
-                  Keyword rank
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    color: "#22c55e",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.3rem",
-                  }}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <polyline points="18 15 12 9 6 15" />
-                  </svg>
-                  ↑ 24 positions
-                </span>
-              </div>
-            </div>
-
-            {/* Mini stat cards row */}
-            <div
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                width: "100%",
-                maxWidth: 400,
-              }}
-            >
-              {[
-                {
-                  label: "Organic Traffic",
-                  val: "+218%",
-                  sub: "this quarter",
-                  color: "orange",
-                },
-                {
-                  label: "Avg. Position",
-                  val: "3.2",
-                  sub: "from 31.4",
-                  color: "blue",
-                },
-              ].map((s) => (
-                <div
-                  key={s.label}
-                  className="glass"
-                  style={{
-                    flex: 1,
-                    padding: "1rem",
-                    borderRadius: "var(--radius-lg)",
-                    border: `1px solid ${s.color === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.2)"}`,
-                    background: "rgba(12,12,14,0.7)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.62rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "rgba(245,245,245,0.4)",
-                      marginBottom: "0.4rem",
-                    }}
-                  >
-                    {s.label}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "1.5rem",
-                      color:
-                        s.color === "orange"
-                          ? "var(--color-brand-orange)"
-                          : "var(--color-brand-blue-light)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {s.val}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.65rem",
-                      color: "rgba(245,245,245,0.35)",
-                      marginTop: "0.2rem",
-                    }}
-                  >
-                    {s.sub}
-                  </div>
-                </div>
-              ))}
+            <SerpCard />
+            <div className="flex gap-3">
+              <MiniStat
+                label="Organic Traffic"
+                val="+218%"
+                sub="this quarter"
+                orange
+              />
+              <MiniStat label="Avg. Position" val="3.2" sub="from 31.4" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom fade — Compatto style */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 180,
-          background:
-            "linear-gradient(to bottom, transparent, var(--color-bg-primary))",
-          zIndex: 3,
-        }}
-      />
-
-      <style>{`
-        @media(max-width: 860px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-right-col { align-items: stretch !important; }
-        }
-      `}</style>
+      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-b from-transparent to-background" />
     </section>
   );
 }
 
-/* ══════ 2. STATS ROW — Compatto "numbers" card style ══════ */
-function StatsRow() {
-  const [ref, visible] = useFadeIn(0.15);
-
+function SerpCard() {
+  const results = [
+    {
+      rank: 1,
+      domain: "serenly.agency",
+      title: "Serenly | Top Digital Marketing Agency in Kenya",
+      you: true,
+    },
+    {
+      rank: 2,
+      domain: "competitor-a.co.ke",
+      title: "Digital Marketing Services Kenya",
+    },
+    {
+      rank: 3,
+      domain: "competitor-b.com",
+      title: "Best Marketing Agency Nairobi",
+    },
+  ];
   return (
-    <div
-      ref={ref}
-      style={{
-        borderBottom: "1px solid var(--color-border)",
-        background: "var(--color-surface-raised)",
-      }}
-    >
-      <div className="container-site">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            borderLeft: "1px solid var(--color-border)",
-          }}
-          className="stats-row"
-        >
-          {STATS.map((s, i) => (
-            <div
-              key={s.label}
-              style={{
-                padding: "2.5rem 2rem",
-                borderRight: "1px solid var(--color-border)",
-                borderTop: "1px solid var(--color-border)",
-                position: "relative",
-                overflow: "hidden",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(16px)",
-                transition: `all 0.55s ease ${i * 0.1}s`,
-              }}
-            >
-              {/* Subtle corner glow */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: 80,
-                  height: 80,
-                  borderRadius: "50%",
-                  background:
-                    s.accent === "orange"
-                      ? "radial-gradient(circle, rgba(254,122,54,0.1) 0%, transparent 70%)"
-                      : "radial-gradient(circle, rgba(0,70,255,0.08) 0%, transparent 70%)",
-                  pointerEvents: "none",
-                }}
-              />
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2rem, 3.5vw, 3rem)",
-                  color:
-                    s.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
-                  lineHeight: 1,
-                  marginBottom: "0.5rem",
-                }}
-              >
-                {s.val}
-              </div>
-              <div
-                style={{
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="glass !bg-neutral-950/75 !border-brand-orange/20 p-6 w-full max-w-sm">
+      <div className="flex items-center gap-2 h-9 px-4 bg-neutral-0/[0.06] border border-neutral-0/10 mb-5">
+        <Search size={12} className="text-neutral-0/40 shrink-0" />
+        <span className="text-xs text-neutral-0/50 truncate">
+          digital marketing agency nairobi
+        </span>
       </div>
-      <style>{`@media(max-width:640px){ .stats-row { grid-template-columns: repeat(2,1fr) !important; } }`}</style>
+      {results.map((r) => (
+        <div
+          key={r.rank}
+          className={`p-3 mb-2 border ${r.you ? "bg-brand-orange/[0.08] border-brand-orange/25" : "border-transparent"}`}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className={`w-[18px] h-[18px] rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${r.you ? "bg-brand-orange text-neutral-0" : "bg-neutral-0/10 text-neutral-0/40"}`}
+            >
+              {r.rank}
+            </span>
+            <span
+              className={`text-[11px] font-semibold ${r.you ? "text-brand-orange/90" : "text-neutral-0/35"}`}
+            >
+              {r.domain}
+            </span>
+            {r.you && (
+              <span className="text-[9px] font-bold tracking-wide uppercase px-1.5 py-0.5 rounded-full bg-brand-orange/15 text-brand-orange">
+                You
+              </span>
+            )}
+          </div>
+          <div
+            className={`text-xs pl-[26px] ${r.you ? "text-neutral-0/90 font-semibold" : "text-neutral-0/40"}`}
+          >
+            {r.title}
+          </div>
+        </div>
+      ))}
+      <div className="flex justify-between items-center mt-4 pt-3 border-t border-neutral-0/[0.07]">
+        <span className="text-xs text-neutral-0/35">Keyword rank</span>
+        <span className="text-sm font-bold text-brand-green-light flex items-center gap-1">
+          <ArrowUp size={12} strokeWidth={2.5} /> 24 positions
+        </span>
+      </div>
     </div>
   );
 }
 
-/* ══════ 3. SERVICES INTRO — Phlox "headline left + 2×2 cards right" layout ══════ */
-function ServicesIntroSection() {
-  const [ref, visible] = useFadeIn(0.08);
+function MiniStat({ label, val, sub, orange }) {
+  return (
+    <div
+      className={`glass !bg-neutral-950/70 p-4 flex-1 ${orange ? "!border-brand-orange/20" : "!border-brand-blue/20"}`}
+    >
+      <div className="text-[10px] font-bold uppercase tracking-wide text-neutral-0/40 mb-1.5">
+        {label}
+      </div>
+      <div
+        className={`font-display text-2xl leading-none ${orange ? "text-brand-orange" : "text-brand-blue-light"}`}
+      >
+        {val}
+      </div>
+      <div className="text-[11px] text-neutral-0/35 mt-1">{sub}</div>
+    </div>
+  );
+}
 
+function Stats() {
+  const [ref, visible] = useReveal(0.15);
+  return (
+    <div ref={ref} className="bg-surface-raised">
+      <div className="container-site grid grid-cols-2 md:grid-cols-4 border-l border-t border-border">
+        {STATS.map((s, i) => {
+          const a = ACCENT[s.accent];
+          return (
+            <div
+              key={s.label}
+              className={`relative p-8 md:p-10 border-r border-b border-border ${i === 3 ? "bg-brand-periwinkle/15" : ""} ${reveal(visible, "animate-fade-up", `delay-${i * 100}`)}`}
+            >
+              <div
+                className={`font-display text-4xl md:text-5xl mb-2 ${a.text}`}
+              >
+                {s.val}
+              </div>
+              <div className="text-xs font-bold uppercase tracking-wide text-text-tertiary">
+                {s.label}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ServicesIntro() {
+  const [ref, visible] = useReveal();
   return (
     <section
       id="services"
       ref={ref}
-      className="section-padding"
-      style={{ background: "var(--color-bg-secondary)" }}
+      className="section-padding bg-bg-secondary"
     >
       <div className="container-site">
-        {/* Top: headline LEFT + intro RIGHT — pure Phlox layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(2rem, 5vw, 7rem)",
-            alignItems: "flex-end",
-            marginBottom: "4.5rem",
-          }}
-          className="svc-header"
-        >
-          {/* Left headline */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-24px)",
-              transition: "all 0.65s ease",
-            }}
-          >
-            <SectionTag label="Our Services" color="orange" />
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)",
-                lineHeight: 1.08,
-                marginTop: "1.25rem",
-              }}
-            >
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-24 items-end mb-16">
+          <div className={reveal(visible, "animate-slide-left")}>
+            <span className="section-tag section-tag-orange">Our Services</span>
+            <h2 className="mt-5 max-w-xl">
               We're here to make your{" "}
               <span className="text-gradient-orange">website</span> rank higher{" "}
               <span className="text-gradient-blue">and convert better.</span>
             </h2>
-
-            <div
-              style={{
-                width: 48,
-                height: 3,
-                borderRadius: 2,
-                background:
-                  "linear-gradient(90deg, var(--color-brand-orange), var(--color-brand-blue))",
-                margin: "1.5rem 0 2rem",
-              }}
-            />
-
+            <div className="w-12 h-[3px] my-7 bg-gradient-to-r from-brand-orange to-brand-blue" />
             <a href="#services" className="btn btn-primary btn-md">
-              View All Services
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
+              View All Services <ArrowRight size={16} />
             </a>
           </div>
-
-          {/* Right intro text */}
           <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(24px)",
-              transition: "all 0.65s ease 0.15s",
-            }}
+            className={`space-y-4 text-text-secondary leading-relaxed ${reveal(visible, "animate-slide-right", "delay-100")}`}
           >
-            <p
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.85,
-                marginBottom: "1.25rem",
-              }}
-            >
+            <p>
               SEO isn't a one-time fix — it's a compound strategy. The
-              businesses that dominate search results are the ones that invest
-              consistently in all four pillars: technical health, on-page
-              relevance, authority, and local presence.
+              businesses that dominate search invest consistently across four
+              pillars: technical health, on-page relevance, authority, and local
+              presence.
             </p>
-            <p style={{ fontSize: "1.05rem", lineHeight: 1.85 }}>
-              Serenly handles every pillar so you rank for the keywords your
-              customers are actually typing into Google — and stay there.
+            <p>
+              Serenly handles every pillar, so you rank for what customers
+              actually type into Google — and stay there.
             </p>
           </div>
         </div>
 
-        {/* 2 × 2 service cards — Phlox icon cards layout */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            gap: "1.5rem",
-          }}
-          className="svc-cards-grid"
-        >
+        <div className="grid md:grid-cols-2 gap-6">
           {SEO_SERVICES.map((svc, i) => (
             <ServiceCard key={svc.id} svc={svc} index={i} visible={visible} />
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media(max-width: 768px) {
-          .svc-header { grid-template-columns: 1fr !important; }
-          .svc-cards-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
 
 function ServiceCard({ svc, index, visible }) {
-  const [hovered, setHovered] = useState(false);
-  const isOrange = svc.accent === "orange";
-
+  const a = ACCENT[svc.accent];
+  const Icon = svc.icon;
   return (
     <a
       href={`#${svc.id}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "block",
-        textDecoration: "none",
-        borderRadius: "var(--radius-xl)",
-        padding: "2rem",
-        background: "var(--color-surface)",
-        border: "1px solid",
-        borderColor: hovered
-          ? isOrange
-            ? "rgba(254,122,54,0.4)"
-            : "rgba(0,70,255,0.35)"
-          : "var(--color-border)",
-        transition: "all 0.35s var(--ease-spring)",
-        transform: hovered ? "translateY(-5px)" : "translateY(0)",
-        boxShadow: hovered
-          ? isOrange
-            ? "var(--shadow-orange)"
-            : "var(--shadow-blue)"
-          : "var(--shadow-sm)",
-        opacity: visible ? 1 : 0,
-        transitionDelay: `${index * 90}ms`,
-        cursor: "pointer",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className={`card group block relative overflow-hidden p-8 ${a.hoverBorder} ${reveal(visible, "animate-fade-up", `delay-${index * 100}`)}`}
     >
-      {/* Background number watermark */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "-1rem",
-          right: "1rem",
-          fontFamily: "var(--font-display)",
-          fontSize: "6rem",
-          lineHeight: 1,
-          fontWeight: 400,
-          color: isOrange ? "rgba(254,122,54,0.05)" : "rgba(0,70,255,0.05)",
-          userSelect: "none",
-          pointerEvents: "none",
-          transition: "color 0.3s ease",
-        }}
+      <span
+        className={`font-display text-8xl leading-none absolute -bottom-4 right-4 select-none pointer-events-none ${a.watermark}`}
       >
         {svc.num}
-      </div>
+      </span>
 
-      {/* Icon */}
       <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: "var(--radius-md)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: isOrange ? "rgba(254,122,54,0.1)" : "rgba(0,70,255,0.08)",
-          border: `1px solid ${isOrange ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
-          color: isOrange
-            ? "var(--color-brand-orange)"
-            : "var(--color-brand-blue)",
-          marginBottom: "1.25rem",
-          transition: "transform 0.3s var(--ease-spring)",
-          transform: hovered ? "scale(1.1) rotate(-4deg)" : "scale(1)",
-        }}
+        className={`w-14 h-14 flex items-center justify-center border mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 ${a.icon}`}
       >
-        {svc.icon}
+        <Icon size={26} strokeWidth={1.6} />
       </div>
-
-      {/* Badge */}
-      <div style={{ marginBottom: "0.75rem" }}>
-        <span
-          style={{
-            fontSize: "0.62rem",
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            padding: "0.25rem 0.65rem",
-            borderRadius: "var(--radius-full)",
-            background: isOrange
-              ? "rgba(254,122,54,0.08)"
-              : "rgba(0,70,255,0.07)",
-            border: `1px solid ${isOrange ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
-            color: isOrange
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)",
-          }}
-        >
-          {svc.badge}
-        </span>
-      </div>
-
-      <h4
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "1.35rem",
-          marginBottom: "0.6rem",
-          color: hovered
-            ? isOrange
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)"
-            : "var(--color-text-primary)",
-          transition: "color 0.2s ease",
-        }}
-      >
-        {svc.title}
-      </h4>
-
-      <p
-        style={{
-          fontSize: "0.9375rem",
-          lineHeight: 1.75,
-          color: "var(--color-text-secondary)",
-          marginBottom: "1.5rem",
-        }}
-      >
+      <span className={`section-tag ${a.tag} mb-3`}>{svc.badge}</span>
+      <h4 className={`mb-2 transition-colors ${a.hoverText}`}>{svc.title}</h4>
+      <p className="text-sm text-text-secondary leading-relaxed mb-5">
         {svc.short}
       </p>
 
-      {/* Mini feature list */}
-      <ul
-        style={{
-          listStyle: "none",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-        }}
-      >
-        {svc.features.slice(0, 3).map((f) => (
-          <li
-            key={f}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "0.6rem",
-              fontSize: "0.875rem",
-              color: "var(--color-text-secondary)",
-            }}
-          >
+      <ul className="space-y-2 mb-5">
+        {svc.features.map((f) => (
+          <li key={f} className="flex gap-2.5 text-sm text-text-secondary">
             <span
-              style={{
-                width: 16,
-                height: 16,
-                borderRadius: "50%",
-                flexShrink: 0,
-                marginTop: "0.15rem",
-                background: isOrange
-                  ? "rgba(254,122,54,0.12)"
-                  : "rgba(0,70,255,0.09)",
-                border: `1px solid ${isOrange ? "rgba(254,122,54,0.3)" : "rgba(0,70,255,0.25)"}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: isOrange
-                  ? "var(--color-brand-orange)"
-                  : "var(--color-brand-blue)",
-                fontSize: "0.55rem",
-                fontWeight: 700,
-              }}
+              className={`w-4 h-4 border shrink-0 mt-0.5 flex items-center justify-center text-[10px] font-bold ${a.icon}`}
             >
               ✓
             </span>
             {f}
           </li>
         ))}
-        {svc.features.length > 3 && (
-          <li
-            style={{
-              fontSize: "0.8rem",
-              color: isOrange
-                ? "var(--color-brand-orange)"
-                : "var(--color-brand-blue)",
-              fontWeight: 600,
-              paddingLeft: "1.4rem",
-            }}
-          >
-            + {svc.features.length - 3} more included
-          </li>
-        )}
       </ul>
 
-      {/* Arrow CTA */}
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: hovered ? "0.85rem" : "0.5rem",
-          marginTop: "1.5rem",
-          fontSize: "0.875rem",
-          fontWeight: 700,
-          color: isOrange
-            ? "var(--color-brand-orange)"
-            : "var(--color-brand-blue)",
-          transition: "gap 0.25s ease",
-        }}
+        className={`flex items-center gap-2 text-sm font-bold transition-all group-hover:gap-3 ${a.text}`}
       >
-        Learn More
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+        Learn more <ArrowRight size={15} strokeWidth={2.5} />
       </div>
     </a>
   );
 }
 
-/* ══════ 4. PROCESS — Compatto numbered steps with image right ══════ */
-function ProcessSection({ activeStep, setActiveStep }) {
-  const [ref, visible] = useFadeIn(0.08);
+function Process() {
+  const [ref, visible] = useReveal();
+  const [active, setActive] = useState(0);
+  const step = PROCESS_STEPS[active];
+  const a = ACCENT[step.accent];
 
   return (
     <section ref={ref} id="process" className="section-padding">
       <div className="container-site">
-        <div style={{ marginBottom: "4rem" }}>
-          <SectionTag label="How It Works" color="blue" />
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              marginTop: "1.25rem",
-              maxWidth: 480,
-            }}
-          >
+        <div className="mb-16">
+          <span className="section-tag section-tag-blue">How It Works</span>
+          <h2 className="mt-5 max-w-md">
             How We <span className="text-gradient-blue">Simplify</span> Your SEO
             Journey
           </h2>
         </div>
 
-        {/* Compatto layout: steps left panel + active image right */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(2rem, 5vw, 5rem)",
-            alignItems: "start",
-          }}
-          className="process-grid"
-        >
-          {/* Left: numbered steps list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {PROCESS_STEPS.map((step, i) => {
-              const isActive = activeStep === i;
-              const isOrange = step.accent === "orange";
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          <div>
+            {PROCESS_STEPS.map((s, i) => {
+              const isActive = active === i;
+              const sa = ACCENT[s.accent];
               return (
-                <div
-                  key={step.num}
-                  onClick={() => setActiveStep(i)}
-                  style={{
-                    cursor: "pointer",
-                    borderLeft: `3px solid ${
-                      isActive
-                        ? isOrange
-                          ? "var(--color-brand-orange)"
-                          : "var(--color-brand-blue)"
-                        : "var(--color-border)"
-                    }`,
-                    paddingLeft: "2rem",
-                    paddingBlock: "1.75rem",
-                    transition: "all 0.3s ease",
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateX(0)" : "translateX(-20px)",
-                    transitionDelay: `${i * 0.1}s`,
-                    background: isActive
-                      ? "var(--color-bg-secondary)"
-                      : "transparent",
-                    borderRadius: isActive
-                      ? `0 var(--radius-lg) var(--radius-lg) 0`
-                      : 0,
-                  }}
+                <button
+                  key={s.num}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className={`w-full text-left pl-8 py-7 border-l-[3px] transition-colors duration-300 ${isActive ? `${sa.border} bg-bg-secondary` : "border-border"}`}
                 >
-                  {/* Big number — Compatto style */}
                   <div
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "3rem",
-                      lineHeight: 1,
-                      color: isActive
-                        ? isOrange
-                          ? "var(--color-brand-orange)"
-                          : "var(--color-brand-blue)"
-                        : "var(--color-text-tertiary)",
-                      marginBottom: "0.5rem",
-                      transition: "color 0.3s ease",
-                      opacity: isActive ? 1 : 0.4,
-                    }}
+                    className={`font-display text-5xl leading-none mb-2 transition-opacity ${isActive ? `${sa.text} opacity-100` : "text-text-tertiary opacity-40"}`}
                   >
-                    {step.num}
+                    {s.num}
                   </div>
-
                   <h4
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "1.25rem",
-                      marginBottom: "0.5rem",
-                      color: isActive
-                        ? "var(--color-text-primary)"
-                        : "var(--color-text-secondary)",
-                      transition: "color 0.3s ease",
-                    }}
+                    className={
+                      isActive ? "text-foreground" : "text-text-secondary"
+                    }
                   >
-                    {step.title}
+                    {s.title}
                   </h4>
-
-                  {/* Description slides in when active */}
                   <div
-                    style={{
-                      maxHeight: isActive ? 120 : 0,
-                      overflow: "hidden",
-                      transition: "max-height 0.4s var(--ease-smooth)",
-                    }}
+                    className={`overflow-hidden transition-[max-height] duration-500 ${isActive ? "max-h-32 mt-2" : "max-h-0"}`}
                   >
-                    <p
-                      style={{
-                        fontSize: "0.9375rem",
-                        lineHeight: 1.75,
-                        paddingTop: "0.25rem",
-                      }}
-                    >
-                      {step.desc}
-                    </p>
+                    <p className="text-sm leading-relaxed">{s.desc}</p>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
 
-          {/* Right: active step image — Compatto image panel */}
           <div
-            style={{
-              position: "sticky",
-              top: "6rem",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(24px)",
-              transition: "opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s",
-            }}
+            className={`lg:sticky lg:top-24 ${reveal(visible, "animate-slide-right", "delay-200")}`}
           >
-            <div
-              style={{
-                position: "relative",
-                borderRadius: "var(--radius-2xl)",
-                overflow: "hidden",
-                aspectRatio: "4/3",
-              }}
-            >
-              {PROCESS_STEPS.map((step, i) => (
+            <div className="relative aspect-[4/3] overflow-hidden">
+              {PROCESS_STEPS.map((s, i) => (
                 <img
-                  key={step.num}
-                  src={step.image}
-                  alt={step.title}
-                  style={{
-                    position: i === 0 ? "relative" : "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    opacity: activeStep === i ? 1 : 0,
-                    transition: "opacity 0.5s ease",
-                  }}
+                  key={s.num}
+                  src={s.image}
+                  alt={s.title}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${active === i ? "opacity-100" : "opacity-0"}`}
                 />
               ))}
-
-              {/* Overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%)",
-                }}
-              />
-
-              {/* Step label overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "1.5rem",
-                  left: "1.5rem",
-                  right: "1.5rem",
-                }}
-              >
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
                 <div
-                  style={{
-                    fontSize: "0.65rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color:
-                      PROCESS_STEPS[activeStep].accent === "orange"
-                        ? "var(--color-brand-orange)"
-                        : "var(--color-brand-blue-light)",
-                    marginBottom: "0.4rem",
-                  }}
+                  className={`text-xs font-bold tracking-widest uppercase mb-1 ${a.text}`}
                 >
-                  Step {PROCESS_STEPS[activeStep].num}
+                  Step {step.num}
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.35rem",
-                    color: "#fff",
-                  }}
-                >
-                  {PROCESS_STEPS[activeStep].title}
+                <div className="font-display text-2xl text-neutral-0">
+                  {step.title}
                 </div>
               </div>
             </div>
-
-            {/* Step dots */}
-            <div
-              style={{
-                display: "flex",
-                gap: "0.5rem",
-                marginTop: "1.25rem",
-                justifyContent: "center",
-              }}
-            >
-              {PROCESS_STEPS.map((_, i) => (
+            <div className="flex gap-2 justify-center mt-5">
+              {PROCESS_STEPS.map((s, i) => (
                 <button
                   key={i}
-                  onClick={() => setActiveStep(i)}
-                  style={{
-                    width: activeStep === i ? 28 : 8,
-                    height: 8,
-                    borderRadius: "var(--radius-full)",
-                    border: "none",
-                    cursor: "pointer",
-                    background:
-                      activeStep === i
-                        ? PROCESS_STEPS[i].accent === "orange"
-                          ? "var(--color-brand-orange)"
-                          : "var(--color-brand-blue)"
-                        : "var(--color-border-strong)",
-                    transition: "all 0.3s ease",
-                    padding: 0,
-                  }}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  aria-label={`Show step ${i + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 ${active === i ? `w-7 ${ACCENT[s.accent].dot}` : "w-2 bg-border-strong"}`}
                 />
               ))}
             </div>
           </div>
         </div>
       </div>
-
-      <style>{`@media(max-width: 768px){ .process-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
 
-/* ══════ 5. BENTO GRID — "Why Choose Serenly" Compatto bottom cards ══════ */
-function BentoSection() {
-  const [ref, visible] = useFadeIn(0.08);
-
+function Bento() {
+  const [ref, visible] = useReveal();
   return (
-    <section
-      ref={ref}
-      style={{
-        background: "var(--color-bg-secondary)",
-        padding: "var(--spacing-section) 0",
-      }}
-    >
+    <section ref={ref} className="section-padding bg-bg-secondary">
       <div className="container-site">
-        <div style={{ marginBottom: "3.5rem" }}>
-          <SectionTag label="Why Serenly" color="orange" />
-          <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
-          >
+        <div className="mb-14">
+          <span className="section-tag section-tag-orange">Why Serenly</span>
+          <h2 className="mt-5">
             Why Choose <span className="text-gradient-orange">Serenly</span> for
             SEO
           </h2>
         </div>
-
-        {/* Bento grid — mirrors Compatto bottom card grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gridTemplateRows: "auto auto",
-            gap: "1.25rem",
-          }}
-          className="bento-grid"
-        >
+        <div className="grid md:grid-cols-3 gap-5">
           {BENTO_REASONS.map((item, i) => {
-            const isOrange = item.accent === "orange";
-            const isWide = item.size === "wide";
+            const a = ACCENT[item.accent];
             return (
               <div
                 key={item.id}
-                style={{
-                  gridColumn: isWide ? "span 2" : "span 1",
-                  borderRadius: "var(--radius-xl)",
-                  padding: "2rem",
-                  background: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
-                  position: "relative",
-                  overflow: "hidden",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(20px)",
-                  transition: `all 0.55s ease ${i * 0.08}s`,
-                }}
-                className="bento-card"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = isOrange
-                    ? "rgba(254,122,54,0.35)"
-                    : "rgba(0,70,255,0.3)";
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = isOrange
-                    ? "var(--shadow-orange)"
-                    : "var(--shadow-blue)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                className={`card relative overflow-hidden p-8 ${item.size === "wide" ? "md:col-span-2" : ""} ${item.id === "transparent" ? "bg-brand-periwinkle/10" : ""} ${a.hoverBorder} ${reveal(visible, "animate-fade-up", `delay-${i * 100}`)}`}
               >
-                {/* Background number */}
                 <div
-                  style={{
-                    position: "absolute",
-                    bottom: "-1.5rem",
-                    right: "1.5rem",
-                    fontFamily: "var(--font-display)",
-                    fontSize: "7rem",
-                    lineHeight: 1,
-                    color: isOrange
-                      ? "rgba(254,122,54,0.05)"
-                      : "rgba(0,70,255,0.05)",
-                    userSelect: "none",
-                    pointerEvents: "none",
-                  }}
+                  className={`absolute top-0 left-0 right-0 h-[3px] opacity-50 ${a.bar}`}
+                />
+                <span
+                  className={`font-display text-8xl leading-none absolute -bottom-6 right-6 select-none pointer-events-none ${a.watermark}`}
                 >
                   0{i + 1}
-                </div>
-
-                {/* Subtle top glow */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 3,
-                    background: isOrange
-                      ? "linear-gradient(90deg, var(--color-brand-orange), transparent)"
-                      : "linear-gradient(90deg, var(--color-brand-blue), transparent)",
-                    opacity: 0.5,
-                  }}
-                />
-
-                <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-                  {item.icon}
-                </div>
-
-                <h4
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.2rem",
-                    marginBottom: "0.75rem",
-                    color: "var(--color-text-primary)",
-                  }}
-                >
-                  {item.title}
-                </h4>
-
-                <p style={{ fontSize: "0.9375rem", lineHeight: 1.75 }}>
+                </span>
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <h4 className="mb-3">{item.title}</h4>
+                <p className="text-sm text-text-secondary leading-relaxed">
                   {item.desc}
                 </p>
               </div>
@@ -1612,393 +683,123 @@ function BentoSection() {
           })}
         </div>
       </div>
-
-      <style>{`
-        @media(max-width: 768px) {
-          .bento-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .bento-card {
-            grid-column: span 1 !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
 
-/* ══════ 6. RESULTS STRIP — live ranking mockup ticker ══════ */
-function ResultsStrip() {
-  const [ref, visible] = useFadeIn(0.15);
-  const keywords = [
-    { kw: "digital marketing agency nairobi", pos: 1 },
-    { kw: "seo services kenya", pos: 2 },
-    { kw: "social media marketing nairobi", pos: 1 },
-    { kw: "web design company kenya", pos: 3 },
-    { kw: "branding agency nairobi", pos: 1 },
-    { kw: "google ads management kenya", pos: 2 },
-    { kw: "content marketing africa", pos: 4 },
-    { kw: "ecommerce website kenya", pos: 2 },
-  ];
+function Results() {
+  const [ref, visible] = useReveal();
+  const rankClass = (pos) =>
+    pos === 1
+      ? ACCENT.orange.rank
+      : pos === 2
+        ? ACCENT.green.rank
+        : pos === 3
+          ? ACCENT.blue.rank
+          : "bg-bg-tertiary border-border text-text-tertiary";
 
   return (
     <section ref={ref} className="section-padding">
-      <div className="container-site">
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.4fr",
-            gap: "clamp(2rem, 5vw, 5rem)",
-            alignItems: "center",
-          }}
-          className="results-grid"
-        >
-          {/* Left */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-24px)",
-              transition: "all 0.65s ease",
-            }}
-          >
-            <SectionTag label="Real Results" color="blue" />
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                marginTop: "1.25rem",
-                marginBottom: "1.25rem",
-              }}
-            >
-              Rankings We've <span className="text-gradient-blue">Earned</span>{" "}
-              for Clients
-            </h2>
-            <p
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.85,
-                marginBottom: "2rem",
-              }}
-            >
-              Every position in this list is a real keyword our clients rank for
-              today — not projections, not estimates. Just consistent,
-              compounding organic results.
-            </p>
-            <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-              {[
-                { val: "+218%", label: "Organic traffic" },
-                { val: "6mo", label: "Avg. to page one" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "2.25rem",
-                      color: "var(--color-brand-blue)",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {s.val}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "var(--color-text-tertiary)",
-                      marginTop: "0.25rem",
-                    }}
-                  >
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right — keyword ranking list */}
-          <div
-            style={{
-              borderRadius: "var(--radius-xl)",
-              border: "1px solid var(--color-border)",
-              overflow: "hidden",
-              background: "var(--color-surface)",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(24px)",
-              transition: "all 0.65s ease 0.15s",
-            }}
-          >
-            {/* Header bar */}
-            <div
-              style={{
-                padding: "1rem 1.5rem",
-                borderBottom: "1px solid var(--color-border)",
-                background: "var(--color-surface-raised)",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.6rem",
-              }}
-            >
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "#22c55e",
-                  boxShadow: "0 0 6px #22c55e",
-                }}
-              />
-              <span
-                style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                Live Keyword Rankings — Serenly Clients
-              </span>
-            </div>
-
-            {/* Column headers */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr auto",
-                padding: "0.75rem 1.5rem",
-                borderBottom: "1px solid var(--color-border-subtle)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                Keyword
-              </span>
-              <span
-                style={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                Position
-              </span>
-            </div>
-
-            {keywords.map((k, i) => (
-              <div
-                key={k.kw}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr auto",
-                  padding: "0.9rem 1.5rem",
-                  borderBottom:
-                    i < keywords.length - 1
-                      ? "1px solid var(--color-border-subtle)"
-                      : "none",
-                  alignItems: "center",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateX(0)" : "translateX(12px)",
-                  transition: `all 0.4s ease ${0.3 + i * 0.06}s`,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.6rem",
-                  }}
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="rgba(254,122,54,0.5)"
-                    strokeWidth="2"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                  </svg>
-                  <span
-                    style={{
-                      fontSize: "0.875rem",
-                      color: "var(--color-text-secondary)",
-                    }}
-                  >
-                    {k.kw}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "var(--radius-sm)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background:
-                      k.pos === 1
-                        ? "rgba(254,122,54,0.12)"
-                        : k.pos <= 3
-                          ? "rgba(0,70,255,0.08)"
-                          : "var(--color-bg-tertiary)",
-                    border:
-                      k.pos === 1
-                        ? "1px solid rgba(254,122,54,0.3)"
-                        : k.pos <= 3
-                          ? "1px solid rgba(0,70,255,0.2)"
-                          : "1px solid var(--color-border)",
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 700,
-                    fontSize: "0.8rem",
-                    color:
-                      k.pos === 1
-                        ? "var(--color-brand-orange)"
-                        : k.pos <= 3
-                          ? "var(--color-brand-blue)"
-                          : "var(--color-text-tertiary)",
-                  }}
-                >
-                  #{k.pos}
-                </div>
+      <div className="container-site grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-center">
+        <div className={reveal(visible, "animate-slide-left")}>
+          <span className="section-tag section-tag-blue">Real Results</span>
+          <h2 className="mt-5 mb-5">
+            Rankings We've <span className="text-gradient-blue">Earned</span>{" "}
+            for Clients
+          </h2>
+          <p className="text-text-secondary leading-relaxed mb-8">
+            Every position here is a real keyword our clients rank for today —
+            not projections. Just consistent, compounding organic results.
+          </p>
+          <div className="flex gap-8">
+            <div>
+              <div className="font-display text-4xl text-brand-blue leading-none">
+                +218%
               </div>
-            ))}
+              <div className="text-xs font-bold uppercase tracking-wide text-text-tertiary mt-1">
+                Organic traffic
+              </div>
+            </div>
+            <div>
+              <div className="font-display text-4xl text-brand-green leading-none">
+                6mo
+              </div>
+              <div className="text-xs font-bold uppercase tracking-wide text-text-tertiary mt-1">
+                Avg. to page one
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <style>{`@media(max-width: 768px){ .results-grid { grid-template-columns: 1fr !important; } }`}</style>
+        <div
+          className={`card overflow-hidden ${reveal(visible, "animate-slide-right", "delay-100")}`}
+        >
+          <div className="flex items-center gap-2.5 px-6 py-4 bg-surface-raised border-b border-border">
+            <span className="w-2 h-2 rounded-full bg-brand-green-light" />
+            <span className="text-xs font-bold uppercase tracking-wide text-text-tertiary">
+              Live Keyword Rankings — Serenly Clients
+            </span>
+          </div>
+          <div className="grid grid-cols-[1fr_auto] px-6 py-3 border-b border-border-subtle text-[11px] font-bold uppercase tracking-wide text-text-tertiary">
+            <span>Keyword</span>
+            <span>Position</span>
+          </div>
+          {KEYWORDS.map((k, i) => (
+            <div
+              key={k.kw}
+              className={`grid grid-cols-[1fr_auto] items-center px-6 py-3.5 ${i < KEYWORDS.length - 1 ? "border-b border-border-subtle" : ""}`}
+            >
+              <div className="flex items-center gap-2.5 text-sm text-text-secondary">
+                <Search size={12} className="text-brand-orange/50 shrink-0" />
+                {k.kw}
+              </div>
+              <div
+                className={`w-7 h-7 flex items-center justify-center border font-bold text-sm ${rankClass(k.pos)}`}
+              >
+                #{k.pos}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
 
-/* ══════ 7. CTA ══════ */
-function CtaBanner() {
-  const [ref, visible] = useFadeIn(0.2);
-
+function Cta() {
+  const [ref, visible] = useReveal(0.2);
   return (
-    <section
-      ref={ref}
-      style={{
-        background: "var(--color-bg-secondary)",
-        padding: "var(--spacing-section) 0",
-      }}
-    >
+    <section ref={ref} className="section-padding bg-bg-secondary">
       <div className="container-site">
         <div
-          style={{
-            borderRadius: "var(--radius-2xl)",
-            overflow: "hidden",
-            position: "relative",
-            background:
-              "linear-gradient(135deg, #0c0c0e 0%, #111116 55%, #0c0c0e 100%)",
-            border: "1px solid rgba(0,70,255,0.15)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(28px)",
-            transition: "all 0.7s ease",
-          }}
+          className={`relative overflow-hidden bg-gradient-to-br from-neutral-950 via-[#111116] to-neutral-950 border border-brand-blue/15 ${reveal(visible, "animate-scale-in")}`}
         >
-          <div
-            className="bg-line-grid"
-            style={{ position: "absolute", inset: 0, opacity: 0.2 }}
-          />
-          <div
-            className="glow-blue"
-            style={{
-              width: 600,
-              height: 600,
-              top: "-30%",
-              right: "-5%",
-              opacity: 0.5,
-            }}
-          />
-          <div
-            className="glow-orange"
-            style={{
-              width: 450,
-              height: 450,
-              bottom: "-30%",
-              left: "10%",
-              opacity: 0.45,
-            }}
-          />
+          <div className="bg-line-grid absolute inset-0 opacity-20" />
+          <div className="glow-blue w-[600px] h-[600px] -top-40 -right-10 opacity-50" />
+          <div className="glow-orange w-[450px] h-[450px] -bottom-40 left-10 opacity-40" />
 
-          <div
-            style={{
-              position: "relative",
-              zIndex: 1,
-              padding: "clamp(3rem, 6vw, 5rem) clamp(2rem, 5vw, 5rem)",
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              gap: "3rem",
-              alignItems: "center",
-            }}
-            className="cta-inner"
-          >
+          <div className="relative grid lg:grid-cols-[1fr_auto] gap-10 items-center p-10 md:p-16">
             <div>
-              <SectionTag label="Free SEO Audit" color="blue" />
-              <h2
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
-                  color: "var(--color-neutral-0)",
-                  marginTop: "1.25rem",
-                  marginBottom: "1rem",
-                  lineHeight: 1.1,
-                }}
-              >
+              <span className="section-tag section-tag-blue">
+                Free SEO Audit
+              </span>
+              <h2 className="text-neutral-0 mt-5 mb-4">
                 Ready to rank <span className="text-gradient-blue">#1</span> on
                 Google?
               </h2>
-              <p
-                style={{
-                  color: "rgba(245,245,245,0.55)",
-                  fontSize: "1.05rem",
-                  maxWidth: 500,
-                  lineHeight: 1.8,
-                }}
-              >
+              <p className="text-neutral-0/55 max-w-lg leading-relaxed">
                 Get your free SEO audit today — we'll show you exactly where
-                you're losing rankings, traffic, and revenue to competitors, and
-                how to take it back.
+                you're losing rankings, traffic, and revenue, and how to take it
+                back.
               </p>
             </div>
-
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                flexShrink: 0,
-              }}
-            >
+            <div className="flex flex-col gap-3 shrink-0">
               <a href="/contact" className="btn btn-secondary btn-lg">
-                Get Free Audit
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                Get Free Audit <ArrowRight size={18} />
               </a>
               <a
                 href="#services"
-                className="btn btn-ghost btn-lg"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#fff" }}
+                className="btn btn-ghost btn-lg !border-neutral-0/20 !text-neutral-0"
               >
                 Explore Services
               </a>
@@ -2006,8 +807,6 @@ function CtaBanner() {
           </div>
         </div>
       </div>
-
-      <style>{`@media(max-width:768px){ .cta-inner { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }

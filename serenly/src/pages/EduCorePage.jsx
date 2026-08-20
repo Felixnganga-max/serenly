@@ -340,9 +340,11 @@ const Icons = {
 const GLOBAL_CSS = `
   ${FONTS_CSS}
 
+  @layer base {
+
   :root {
-    --orange: #FE7A36;
-    --blue: #0046FF;
+    --orange: #ef6905;
+    --blue: #0055da;
     --font-display: 'Marcellus', Georgia, serif;
     --font-body: 'Dosis', system-ui, sans-serif;
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -353,7 +355,7 @@ const GLOBAL_CSS = `
     --bg: #FAFAFA;
     --bg2: #F3F3F6;
     --surface: rgba(255,255,255,0.92);
-    --surface2: #FFFFFF;
+    --surface2: #f5f5f5;
     --border: rgba(0,0,0,0.07);
     --border2: rgba(0,0,0,0.13);
     --text: #0A0A0F;
@@ -392,7 +394,7 @@ const GLOBAL_CSS = `
     -webkit-font-smoothing: antialiased;
     transition: background 0.4s, color 0.4s;
   }
-  ::selection { background: rgba(254,122,54,0.18); color: var(--text); }
+  ::selection { background: rgba(239, 105, 5,0.18); color: var(--text); }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--bg2); }
   ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
@@ -404,6 +406,8 @@ const GLOBAL_CSS = `
   @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
   @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   @keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
+
+  } /* end @layer base */
 `;
 
 // ── Reusable primitives ──────────────────────────────────────────────
@@ -418,14 +422,19 @@ const s = {
 function Tag({ children, color = "orange" }) {
   const styles = {
     orange: {
-      bg: "rgba(254,122,54,0.08)",
-      border: "rgba(254,122,54,0.22)",
-      color: "#FE7A36",
+      bg: "rgba(239, 105, 5,0.08)",
+      border: "rgba(239, 105, 5,0.22)",
+      color: "#ef6905",
     },
     blue: {
-      bg: "rgba(0,70,255,0.06)",
-      border: "rgba(0,70,255,0.18)",
-      color: "#0046FF",
+      bg: "rgba(0, 85, 218,0.06)",
+      border: "rgba(0, 85, 218,0.18)",
+      color: "#0055da",
+    },
+    green: {
+      bg: "rgba(91, 126, 60,0.08)",
+      border: "rgba(14,115,80,0.28)",
+      color: "#7a9c59",
     },
   }[color];
   return (
@@ -461,14 +470,14 @@ function Chip({ children, accent }) {
         gap: "0.35rem",
         padding: "0.3rem 0.8rem",
         borderRadius: 999,
-        background: accent ? "rgba(254,122,54,0.1)" : "var(--chip-bg)",
-        border: `1px solid ${accent ? "rgba(254,122,54,0.28)" : "var(--chip-border)"}`,
+        background: accent ? "rgba(239, 105, 5,0.1)" : "var(--chip-bg)",
+        border: `1px solid ${accent ? "rgba(239, 105, 5,0.28)" : "var(--chip-border)"}`,
         fontFamily: "var(--font-body)",
         fontSize: "0.68rem",
         fontWeight: 700,
         letterSpacing: "0.08em",
         textTransform: "uppercase",
-        color: accent ? "#FE7A36" : "var(--text2)",
+        color: accent ? "#ef6905" : "var(--text2)",
         marginRight: "0.4rem",
         marginBottom: "1.4rem",
       }}
@@ -488,24 +497,24 @@ function BtnPrimary({ href, children, style: extraStyle }) {
         gap: "0.55rem",
         padding: "0.9rem 2rem",
         borderRadius: 999,
-        background: "#FE7A36",
-        color: "#fff",
+        background: "#ef6905",
+        color: "#f5f5f5",
         fontFamily: "var(--font-body)",
         fontSize: "0.875rem",
         fontWeight: 700,
         letterSpacing: "0.02em",
         textDecoration: "none",
-        boxShadow: "0 6px 28px rgba(254,122,54,0.38)",
+        boxShadow: "0 6px 28px rgba(239, 105, 5,0.38)",
         transition: "transform 0.2s var(--ease-spring), box-shadow 0.2s",
         ...extraStyle,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "scale(1.04)";
-        e.currentTarget.style.boxShadow = "0 12px 44px rgba(254,122,54,0.55)";
+        e.currentTarget.style.boxShadow = "0 12px 44px rgba(239, 105, 5,0.55)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "";
-        e.currentTarget.style.boxShadow = "0 6px 28px rgba(254,122,54,0.38)";
+        e.currentTarget.style.boxShadow = "0 6px 28px rgba(239, 105, 5,0.38)";
       }}
     >
       {children}
@@ -532,7 +541,7 @@ function BtnGhost({ href, children }) {
         textDecoration: "none",
         transition: "border-color 0.2s",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#FE7A36")}
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#ef6905")}
       onMouseLeave={(e) =>
         (e.currentTarget.style.borderColor = "var(--border2)")
       }
@@ -571,7 +580,7 @@ function DashboardMockup() {
           inset: -4,
           borderRadius: 24,
           background:
-            "linear-gradient(135deg,rgba(254,122,54,0.32),rgba(0,70,255,0.2),transparent)",
+            "linear-gradient(135deg,rgba(239, 105, 5,0.32),rgba(0, 85, 218,0.2),transparent)",
           filter: "blur(3px)",
           zIndex: 0,
         }}
@@ -656,7 +665,7 @@ function DashboardMockup() {
                 fontFamily: "var(--font-body)",
                 fontSize: "0.58rem",
                 fontWeight: 800,
-                color: "#FE7A36",
+                color: "#ef6905",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
                 marginBottom: "0.75rem",
@@ -675,7 +684,7 @@ function DashboardMockup() {
                   padding: "0.42rem 0.6rem",
                   borderRadius: 7,
                   marginBottom: 2,
-                  background: i === 0 ? "rgba(254,122,54,0.11)" : "transparent",
+                  background: i === 0 ? "rgba(239, 105, 5,0.11)" : "transparent",
                 }}
               >
                 <div
@@ -684,7 +693,7 @@ function DashboardMockup() {
                     height: 5,
                     borderRadius: "50%",
                     flexShrink: 0,
-                    background: i === 0 ? "#FE7A36" : "var(--text3)",
+                    background: i === 0 ? "#ef6905" : "var(--text3)",
                   }}
                 />
                 <span
@@ -692,7 +701,7 @@ function DashboardMockup() {
                     fontFamily: "var(--font-body)",
                     fontSize: "0.7rem",
                     fontWeight: i === 0 ? 700 : 400,
-                    color: i === 0 ? "#FE7A36" : "var(--text2)",
+                    color: i === 0 ? "#ef6905" : "var(--text2)",
                   }}
                 >
                   {item}
@@ -799,9 +808,9 @@ function DashboardMockup() {
                       borderRadius: "3px 3px 0 0",
                       background:
                         i === 7
-                          ? "#FE7A36"
+                          ? "#ef6905"
                           : i === 3
-                            ? "#0046FF"
+                            ? "#0055da"
                             : "var(--border2)",
                     }}
                   />
@@ -814,8 +823,8 @@ function DashboardMockup() {
                 alignItems: "center",
                 gap: "0.5rem",
                 padding: "0.48rem 0.85rem",
-                background: "rgba(254,122,54,0.07)",
-                border: "1px solid rgba(254,122,54,0.2)",
+                background: "rgba(239, 105, 5,0.07)",
+                border: "1px solid rgba(239, 105, 5,0.2)",
                 borderRadius: 999,
               }}
             >
@@ -824,7 +833,7 @@ function DashboardMockup() {
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#FE7A36",
+                  background: "#ef6905",
                   animation: "pulse 1.8s ease-in-out infinite",
                 }}
               />
@@ -833,7 +842,7 @@ function DashboardMockup() {
                   fontFamily: "var(--font-body)",
                   fontSize: "0.62rem",
                   fontWeight: 700,
-                  color: "#FE7A36",
+                  color: "#ef6905",
                 }}
               >
                 AI Insight: 3 students require additional support in Mathematics
@@ -922,7 +931,7 @@ function Hero() {
           right: "-20%",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle,rgba(254,122,54,0.1) 0%,transparent 65%)",
+            "radial-gradient(circle,rgba(239, 105, 5,0.1) 0%,transparent 65%)",
           filter: "blur(60px)",
           pointerEvents: "none",
         }}
@@ -936,7 +945,7 @@ function Hero() {
           left: "-10%",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle,rgba(0,70,255,0.07) 0%,transparent 65%)",
+            "radial-gradient(circle,rgba(201,211,243,0.16) 0%,transparent 65%)",
           filter: "blur(60px)",
           pointerEvents: "none",
         }}
@@ -984,7 +993,7 @@ function Hero() {
               marginBottom: "1.25rem",
             }}
           >
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>EduCore</em>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>EduCore</em>
             {" — "}The comprehensive school{" "}
             <span style={{ position: "relative", display: "inline-block" }}>
               management solution
@@ -1002,7 +1011,7 @@ function Hero() {
               >
                 <path
                   d="M2 8 Q50 2 100 7 Q150 12 198 6"
-                  stroke="#FE7A36"
+                  stroke="#ef6905"
                   strokeWidth="2.5"
                   fill="none"
                   strokeLinecap="round"
@@ -1135,10 +1144,10 @@ function Hero() {
           }}
         >
           {[
-            { v: "12+", l: "Integrated Modules" },
-            { v: "AI", l: "Advanced Analytics" },
-            { v: "CBC", l: "Curriculum Compliant" },
-            { v: "99.9%", l: "Uptime Guarantee" },
+            { v: "12+", l: "Integrated Modules", c: "#ef6905" },
+            { v: "AI", l: "Advanced Analytics", c: "#0055da" },
+            { v: "CBC", l: "Curriculum Compliant", c: "#7a9c59" },
+            { v: "99.9%", l: "Uptime Guarantee", c: "#0055da" },
           ].map((stat) => (
             <div
               key={stat.l}
@@ -1153,7 +1162,7 @@ function Hero() {
                   fontFamily: "var(--font-body)",
                   fontSize: "1.7rem",
                   fontWeight: 800,
-                  color: "#FE7A36",
+                  color: stat.c,
                   marginBottom: "0.2rem",
                   letterSpacing: "-0.03em",
                 }}
@@ -1234,7 +1243,7 @@ function FeaturesMarquee() {
                 width: 4,
                 height: 4,
                 borderRadius: "50%",
-                background: "#FE7A36",
+                background: "#ef6905",
                 display: "inline-block",
               }}
             />
@@ -1271,7 +1280,7 @@ const UNSPLASH = {
 const MODULES = [
   {
     icon: "Users",
-    color: "#FE7A36",
+    color: "#ef6905",
     title: "Staff Management",
     tag: "Personnel Administration",
     img: "teacher",
@@ -1286,7 +1295,7 @@ const MODULES = [
   },
   {
     icon: "GraduationCap",
-    color: "#0046FF",
+    color: "#0055da",
     title: "Student Information System",
     tag: "Academic Records",
     img: "student",
@@ -1301,7 +1310,7 @@ const MODULES = [
   },
   {
     icon: "CreditCard",
-    color: "#FE7A36",
+    color: "#7a9c59",
     title: "Fee Management",
     tag: "Financial Operations",
     img: "fees",
@@ -1316,7 +1325,7 @@ const MODULES = [
   },
   {
     icon: "BookOpen",
-    color: "#0046FF",
+    color: "#0055da",
     title: "Academic & CBC Management",
     tag: "Curriculum Integration",
     img: "academics",
@@ -1331,7 +1340,7 @@ const MODULES = [
   },
   {
     icon: "Brain",
-    color: "#FE7A36",
+    color: "#ef6905",
     title: "AI Examination Builder",
     tag: "Artificial Intelligence",
     img: "exam",
@@ -1346,7 +1355,7 @@ const MODULES = [
   },
   {
     icon: "Clock",
-    color: "#0046FF",
+    color: "#7a9c59",
     title: "Timetable & Attendance",
     tag: "Scheduling",
     img: "timetable",
@@ -1361,7 +1370,7 @@ const MODULES = [
   },
   {
     icon: "BarChart",
-    color: "#FE7A36",
+    color: "#ef6905",
     title: "Analytics & Performance",
     tag: "Intelligence",
     img: "analytics",
@@ -1376,7 +1385,7 @@ const MODULES = [
   },
   {
     icon: "Library",
-    color: "#0046FF",
+    color: "#0055da",
     title: "Library Management",
     tag: "Resource Management",
     img: "library",
@@ -1391,7 +1400,7 @@ const MODULES = [
   },
   {
     icon: "Heart",
-    color: "#FE7A36",
+    color: "#7a9c59",
     title: "Parent Portal",
     tag: "Stakeholder Engagement",
     img: "parents",
@@ -1406,7 +1415,7 @@ const MODULES = [
   },
   {
     icon: "Star",
-    color: "#0046FF",
+    color: "#0055da",
     title: "Co-Curricular Management",
     tag: "Student Development",
     img: "activities",
@@ -1442,7 +1451,7 @@ function ModuleCard({ module, index }) {
           : "translateY(24px)",
         transition: `opacity 0.65s ease ${delay}ms, transform 0.4s var(--ease-spring), box-shadow 0.4s, border-color 0.3s`,
         background: "var(--surface2)",
-        border: `1px solid ${hovered ? "rgba(254,122,54,0.22)" : "var(--border)"}`,
+        border: `1px solid ${hovered ? "rgba(239, 105, 5,0.22)" : "var(--border)"}`,
         borderRadius: 20,
         overflow: "hidden",
         display: "flex",
@@ -1625,7 +1634,7 @@ function FeaturesSection() {
             transition: "opacity 0.65s, transform 0.65s",
           }}
         >
-          <Tag color="orange">Comprehensive Feature Set</Tag>
+          <Tag color="green">Comprehensive Feature Set</Tag>
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -1636,7 +1645,7 @@ function FeaturesSection() {
             }}
           >
             Twelve integrated modules.{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#7a9c59", fontStyle: "italic" }}>
               One unified platform.
             </em>
           </h2>
@@ -1677,6 +1686,7 @@ const SECURITY_ITEMS = [
     icon: "Lock",
     num: "01",
     title: "End-to-End Encryption",
+    color: "#0055da",
     description:
       "All data — student records, financial transactions, examination results — is encrypted both in transit and at rest. Access is restricted exclusively to authorized personnel.",
   },
@@ -1684,6 +1694,7 @@ const SECURITY_ITEMS = [
     icon: "Server",
     num: "02",
     title: "Enterprise-Grade Infrastructure",
+    color: "#7a9c59",
     description:
       "EduCore operates on dedicated VPS infrastructure with isolated environments. Your institution's data remains completely segregated from all other clients.",
   },
@@ -1691,6 +1702,7 @@ const SECURITY_ITEMS = [
     icon: "Shield",
     num: "03",
     title: "Automated Daily Backups",
+    color: "#0055da",
     description:
       "System data is automatically backed up every 24 hours. In the event of any system issue, we can restore your complete environment to the previous day's state.",
   },
@@ -1698,6 +1710,7 @@ const SECURITY_ITEMS = [
     icon: "Globe",
     num: "04",
     title: "99.9% Uptime Guarantee",
+    color: "#0055da",
     description:
       "Built on enterprise hosting with redundancy at every layer. EduCore remains accessible when your institution needs it — including during critical examination periods.",
   },
@@ -1705,6 +1718,7 @@ const SECURITY_ITEMS = [
     icon: "Lock",
     num: "05",
     title: "Role-Based Access Control",
+    color: "#7a9c59",
     description:
       "Teachers access teacher-appropriate data. Administrators have comprehensive visibility. Parents see only their child's information. Every user receives precisely calibrated permissions.",
   },
@@ -1712,6 +1726,7 @@ const SECURITY_ITEMS = [
     icon: "Zap",
     num: "06",
     title: "Real-Time Cross-Platform Synchronization",
+    color: "#0055da",
     description:
       "Changes made by a teacher on any device appear instantly across administrative dashboards and parent portals. Always synchronized, always accurate.",
   },
@@ -1776,7 +1791,7 @@ function ParallaxImage({ src, speed, style: extraStyle, visible }) {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(135deg,rgba(0,70,255,0.08) 0%,transparent 60%)",
+            "linear-gradient(135deg,rgba(0, 85, 218,0.08) 0%,transparent 60%)",
         }}
       />
     </div>
@@ -1816,7 +1831,7 @@ function SecuritySection() {
           transform: "translate(-50%,-50%)",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle,rgba(0,70,255,0.05) 0%,transparent 65%)",
+            "radial-gradient(circle,rgba(0, 85, 218,0.05) 0%,transparent 65%)",
           filter: "blur(80px)",
           pointerEvents: "none",
         }}
@@ -1845,7 +1860,7 @@ function SecuritySection() {
             }}
           >
             Your student data is{" "}
-            <em style={{ color: "#0046FF", fontStyle: "italic" }}>
+            <em style={{ color: "#0055da", fontStyle: "italic" }}>
               protected with enterprise-grade security.
             </em>
           </h2>
@@ -1911,7 +1926,7 @@ function SecuritySection() {
                   width: 8,
                   height: 8,
                   borderRadius: "50%",
-                  background: "#0046FF",
+                  background: "#0055da",
                   display: "block",
                   animation: "pulse 2s infinite",
                 }}
@@ -1951,7 +1966,7 @@ function SecuritySection() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.querySelector(".sec-num").style.color =
-                      "#0046FF";
+                      item.color;
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.querySelector(".sec-num").style.color =
@@ -1982,7 +1997,7 @@ function SecuritySection() {
                         marginBottom: "0.35rem",
                       }}
                     >
-                      <span style={{ color: "#0046FF", display: "flex" }}>
+                      <span style={{ color: item.color, display: "flex" }}>
                         <IconComp />
                       </span>
                       <div
@@ -2060,7 +2075,7 @@ function PricingSection() {
             }}
           >
             One flat rate.{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               Everything included.
             </em>
           </h2>
@@ -2090,10 +2105,10 @@ function PricingSection() {
           <div
             style={{
               background: "var(--surface2)",
-              border: "2px solid rgba(254,122,54,0.28)",
+              border: "2px solid rgba(239, 105, 5,0.28)",
               borderRadius: 24,
               overflow: "hidden",
-              boxShadow: "0 20px 60px rgba(254,122,54,0.08)",
+              boxShadow: "0 20px 60px rgba(239, 105, 5,0.08)",
             }}
           >
             {/* Head */}
@@ -2101,7 +2116,7 @@ function PricingSection() {
               style={{
                 padding: "2.5rem",
                 background:
-                  "linear-gradient(135deg,rgba(254,122,54,0.07),rgba(0,70,255,0.04))",
+                  "linear-gradient(135deg,rgba(239, 105, 5,0.07),rgba(201,211,243,0.06),rgba(0, 85, 218,0.04))",
                 borderBottom: "1px solid var(--border)",
                 position: "relative",
                 overflow: "hidden",
@@ -2116,7 +2131,7 @@ function PricingSection() {
                   height: 120,
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(circle,rgba(254,122,54,0.14) 0%,transparent 70%)",
+                    "radial-gradient(circle,rgba(239, 105, 5,0.14) 0%,transparent 70%)",
                 }}
               />
               <div
@@ -2138,7 +2153,7 @@ function PricingSection() {
                       fontWeight: 800,
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
-                      color: "#FE7A36",
+                      color: "#ef6905",
                       marginBottom: "0.5rem",
                     }}
                   >
@@ -2276,13 +2291,13 @@ function PricingSection() {
                         width: 18,
                         height: 18,
                         borderRadius: "50%",
-                        background: "rgba(254,122,54,0.1)",
+                        background: "rgba(239, 105, 5,0.1)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         flexShrink: 0,
                         marginTop: 2,
-                        color: "#FE7A36",
+                        color: "#ef6905",
                       }}
                     >
                       <Icons.Check />
@@ -2340,7 +2355,7 @@ function CTASection() {
           transform: "translate(-50%,-50%)",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle,rgba(254,122,54,0.08) 0%,transparent 65%)",
+            "radial-gradient(circle,rgba(239, 105, 5,0.08) 0%,transparent 65%)",
           filter: "blur(60px)",
           pointerEvents: "none",
         }}
@@ -2375,7 +2390,7 @@ function CTASection() {
             }}
           >
             Your institution deserves{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               unified management.
             </em>
           </h2>
@@ -2446,7 +2461,7 @@ function Footer() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "1.25rem",
-            color: "#FE7A36",
+            color: "#ef6905",
           }}
         >
           EduCore

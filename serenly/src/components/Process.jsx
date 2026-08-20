@@ -13,14 +13,14 @@ export default function Process() {
       <div className="max-w-7xl mx-auto">
         <div className="max-w-3xl mb-16">
           <p className="text-xs uppercase tracking-[0.2em] font-medium text-foreground/50 mb-6">How We Work</p>
-          <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] text-foreground mb-6">From first call to live results</h2>
+          <h2 className="font-display text-4xl md:text-5xl leading-[1.1] text-foreground mb-6">From first call to live results</h2>
           <p className="text-lg text-foreground/70 font-light leading-relaxed">A clear, transparent process — so you always know exactly where things stand.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step, index) => (
             <div key={index} className="border border-border p-8 flex flex-col h-full bg-background hover:bg-muted/30 transition-colors">
               <span className="text-primary font-mono text-xl mb-8">{step.number}</span>
-              <h3 className="font-serif text-2xl mb-4 text-foreground">{step.title}</h3>
+              <h3 className="font-display text-2xl mb-4 text-foreground">{step.title}</h3>
               <p className="text-foreground/70 font-light leading-relaxed flex-1">{step.description}</p>
             </div>
           ))}

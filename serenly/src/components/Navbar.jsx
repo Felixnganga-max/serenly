@@ -1,47 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react";
+import { Menu, X, Moon, Sun, LayoutDashboard, LogIn } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 import assets from "../assets/assets";
-
-const SERVICE_LINKS = [
-  { label: "All Services", href: "/services", desc: "See everything we offer" },
-  {
-    label: "Web Development",
-    href: "/web-dev",
-    desc: "Fast, custom-built websites",
-  },
-  {
-    label: "Brand Identity",
-    href: "/branding",
-    desc: "Logos, guidelines & assets",
-  },
-  {
-    label: "Social Media & Meta Ads",
-    href: "/smm",
-    desc: "Content, community & ROI",
-  },
-  { label: "SEO Optimisation", href: "/seo", desc: "Rank higher, get found" },
-  {
-    label: "School Management System",
-    href: "/our-system",
-    desc: "Serenly EduCore platform",
-  },
-];
-
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const closeTimer = useRef(null);
   const { isDark, toggleTheme } = useTheme();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -50,26 +18,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const openServices = () => {
-    clearTimeout(closeTimer.current);
-    setServicesOpen(true);
-  };
-  const closeServicesDelayed = () => {
-    closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
-  };
-
   const linkClass = ({ isActive }) =>
-    `text-sm font-medium tracking-wide transition-colors ${
-      isActive ? "text-primary" : "text-foreground/80 hover:text-primary"
-    }`;
+    `nav-link ${isActive ? "active" : ""}`;
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 bg-background border-b border-border transition-shadow duration-300 ${
+      className={`sticky top-0 left-0 w-full z-50 h-[72px] flex items-center px-6 lg:px-12 bg-surface-overlay backdrop-blur-2xl border-b border-border-subtle transition-shadow duration-300 ${
         isScrolled ? "shadow-sm" : ""
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between gap-8 h-20">
+      <div className="container-site !px-0 flex items-center gap-8 w-full">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 shrink-0">
           <img
@@ -77,63 +35,19 @@ export default function Navbar() {
             alt="Serenly"
             className="h-9 w-9 object-contain"
           />
-          <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
+          <span className="font-display text-2xl tracking-tight text-foreground">
             Serenly
           </span>
         </Link>
 
-        {/* Center Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        {/* Nav links sit close to the logo */}
+        <nav className="hidden lg:flex items-center gap-8 ml-10 xl:ml-16">
           <NavLink to="/" end className={linkClass}>
             Home
           </NavLink>
-
-          {/* Services dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={openServices}
-            onMouseLeave={closeServicesDelayed}
-          >
-            <button
-              type="button"
-              onClick={() => setServicesOpen((v) => !v)}
-              className="flex items-center gap-1.5 text-sm font-medium tracking-wide text-foreground/80 hover:text-primary transition-colors"
-              aria-expanded={servicesOpen}
-            >
-              Services
-              <ChevronDown
-                size={14}
-                className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {servicesOpen && (
-              <div
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-80"
-                onMouseEnter={openServices}
-                onMouseLeave={closeServicesDelayed}
-              >
-                <div className="bg-background border border-border shadow-xl py-2">
-                  {SERVICE_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      to={link.href}
-                      onClick={() => setServicesOpen(false)}
-                      className="flex flex-col gap-0.5 px-5 py-3 hover:bg-muted/40 transition-colors group"
-                    >
-                      <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                        {link.label}
-                      </span>
-                      <span className="text-xs text-foreground/50">
-                        {link.desc}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
+          <NavLink to="/services" className={linkClass}>
+            Services
+          </NavLink>
           <NavLink to="/about" className={linkClass}>
             About Us
           </NavLink>
@@ -145,36 +59,57 @@ export default function Navbar() {
           </NavLink>
         </nav>
 
-        {/* Right side */}
-        <div className="hidden lg:flex items-center gap-4">
+        {/* Actions pushed to the far right */}
+        <div className="hidden lg:flex items-center gap-4 ml-auto">
+          <Link
+            to={isAuthenticated ? "/admin" : "/admin/login"}
+            aria-label={isAuthenticated ? "Go to dashboard" : "Admin login"}
+            title={isAuthenticated ? "Dashboard" : "Login"}
+            className="theme-toggle"
+          >
+            {isAuthenticated ? (
+              <LayoutDashboard size={16} />
+            ) : (
+              <LogIn size={16} />
+            )}
+          </Link>
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle dark mode"
-            className="w-9 h-9 flex items-center justify-center border border-border text-foreground hover:border-foreground transition-colors"
+            className="theme-toggle"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <Link
-            to="/contact"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-sm font-semibold tracking-wide transition-colors"
-          >
-            Let’s Meet & Talk
+          <Link to="/contact" className="btn btn-primary btn-md">
+            Let's Meet & Talk
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <div className="lg:hidden flex items-center gap-2">
+        <div className="lg:hidden flex items-center gap-2 ml-auto">
+          <Link
+            to={isAuthenticated ? "/admin" : "/admin/login"}
+            aria-label={isAuthenticated ? "Go to dashboard" : "Admin login"}
+            title={isAuthenticated ? "Dashboard" : "Login"}
+            className="theme-toggle"
+          >
+            {isAuthenticated ? (
+              <LayoutDashboard size={16} />
+            ) : (
+              <LogIn size={16} />
+            )}
+          </Link>
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle dark mode"
-            className="w-9 h-9 flex items-center justify-center border border-border text-foreground"
+            className="theme-toggle"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <button
-            className="text-foreground p-2"
+            className="p-2 text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -183,69 +118,56 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — always solid, never transparent */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full max-h-[calc(100dvh-5rem)] overflow-y-auto bg-background border-b border-border shadow-xl py-6 px-6 flex flex-col gap-1">
+        <div className="lg:hidden absolute top-full left-0 w-full max-h-[calc(100dvh-72px)] overflow-y-auto bg-surface border-b border-border shadow-xl py-6 px-6 flex flex-col gap-1">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-serif text-foreground py-3"
+            className="text-lg font-display text-foreground py-3"
           >
             Home
           </Link>
-
-          <button
-            type="button"
-            onClick={() => setMobileServicesOpen((v) => !v)}
-            className="flex items-center justify-between text-lg font-serif text-foreground py-3"
+          <Link
+            to="/services"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-display text-foreground py-3"
           >
             Services
-            <ChevronDown
-              size={18}
-              className={`transition-transform duration-200 ${mobileServicesOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-          {mobileServicesOpen && (
-            <div className="flex flex-col pl-4 border-l border-border mb-2">
-              {SERVICE_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm text-foreground/70 py-2.5"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          )}
-
+          </Link>
           <Link
             to="/about"
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-serif text-foreground py-3"
+            className="text-lg font-display text-foreground py-3"
           >
             About Us
           </Link>
           <Link
             to="/blogs"
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-serif text-foreground py-3"
+            className="text-lg font-display text-foreground py-3"
           >
             Blog
           </Link>
           <Link
             to="/contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="text-lg font-serif text-foreground py-3"
+            className="text-lg font-display text-foreground py-3"
           >
             Contact
           </Link>
-          <div className="h-px w-full bg-border my-3"></div>
+          <Link
+            to={isAuthenticated ? "/admin" : "/admin/login"}
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-lg font-display text-foreground py-3"
+          >
+            {isAuthenticated ? "Dashboard" : "Admin Login"}
+          </Link>
+          <div className="divider my-3" />
           <Link
             to="/contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="bg-primary text-primary-foreground text-center px-6 py-3 text-sm font-semibold tracking-wide"
+            className="btn btn-primary btn-lg justify-center"
           >
             Get Started
           </Link>

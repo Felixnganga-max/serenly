@@ -3,32 +3,21 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Reveal, ParallaxScope, ParallaxLayer } from "../components/Parallax";
+import assets from "../assets/assets";
 
 // ─────────────────────────────────────────────────────────────
-// IMAGES
+// IMAGES — sourced entirely from local brand assets
 // ─────────────────────────────────────────────────────────────
 const IMG = {
-  hero: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=85&auto=format&fit=crop",
-  about_main:
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1400&q=80&auto=format&fit=crop",
-  about_accent:
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80&auto=format&fit=crop",
-  mission:
-    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80&auto=format&fit=crop",
-  felix:
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop",
-  stack_bg:
-    "https://images.unsplash.com/photo-1562654501-a0ccc0fc3fb1?w=1400&q=80&auto=format&fit=crop",
-  news1:
-    "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=700&q=80&auto=format&fit=crop",
-  news2:
-    "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&q=80&auto=format&fit=crop",
-  news3:
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80&auto=format&fit=crop",
-  atmos1:
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80&auto=format&fit=crop",
-  atmos2:
-    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=80&auto=format&fit=crop",
+  about_accent: assets.hero1,
+  mission: assets.brand,
+  stack_bg: assets.heroo,
+  news1: assets.se,
+  news2: assets.smm,
+  news3: assets.sc,
+  atmos1: assets.hero3,
+  atmos2: assets.hero4,
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -73,48 +62,33 @@ function useParallax(speed = 0.08) {
 // ─────────────────────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────────────────────
-const FELIX_STACK = [
+// The three words the story philosophy keeps coming back to — trust,
+// reliability, dependability — built by retelling the same story consistently.
+const STORY_VALUES = [
   {
-    name: "Spring Boot",
-    color: "#6DB33F",
-    desc: "Enterprise Java microservices & REST APIs",
+    name: "Trust",
+    color: "#ef6905",
+    desc: "Earned when a brand tells the same true story, consistently.",
   },
   {
-    name: "Django",
-    color: "#44B78B",
-    desc: "Robust Python web apps & admin systems",
+    name: "Reliability",
+    color: "#0055da",
+    desc: "Your audience knows what to expect from you, every time.",
   },
   {
-    name: "Node.js",
-    color: "#68A063",
-    desc: "Scalable real-time JS backend systems",
-  },
-  {
-    name: "REST & GraphQL",
-    color: "#E535AB",
-    desc: "API design, integration & documentation",
-  },
-  {
-    name: "PostgreSQL",
-    color: "#336791",
-    desc: "Relational database architecture & optimisation",
-  },
-  {
-    name: "Docker & CI/CD",
-    color: "#2496ED",
-    desc: "Containerised deployments & automated pipelines",
+    name: "Dependability",
+    color: "#5b7e3c",
+    desc: "The go-to brand isn't the loudest — it's the one people can count on.",
   },
 ];
 
-const FELIX_TRAITS = [
-  "Agile & Scrum delivery",
-  "Microservices architecture",
-  "System design & scalability",
-  "M-Pesa & payments integration",
-  "Cloud infrastructure (AWS/GCP)",
-  "DevOps & CI/CD pipelines",
-  "Domain-driven design (DDD)",
-  "Test-driven development (TDD)",
+const FOUNDER_TRAITS = [
+  "Brand storytelling & positioning",
+  "Content strategy across channels",
+  "Social media amplification",
+  "SEO-driven storytelling",
+  "Reputation & narrative management",
+  "Community building & retention",
 ];
 
 const SERVICES = [
@@ -122,7 +96,7 @@ const SERVICES = [
     id: "branding",
     num: "01",
     icon: "✦",
-    accent: "#FE7A36",
+    accent: "#ef6905",
     label: "Branding & Design",
     headline: "Identities that command attention.",
     body: "From your logo to your packaging, we build the cohesive brand that earns trust at first glance and stays in memory long after.",
@@ -136,7 +110,7 @@ const SERVICES = [
     id: "smm",
     num: "02",
     icon: "◈",
-    accent: "#0046FF",
+    accent: "#0055da",
     label: "Meta Ads",
     headline: "Ads that dominate. Content that converts.",
     body: "We run Meta Ads exclusively — because deep specialisation beats generalism every time. One platform, done exceptionally.",
@@ -150,7 +124,7 @@ const SERVICES = [
     id: "seo",
     num: "03",
     icon: "⬡",
-    accent: "#FE7A36",
+    accent: "#5b7e3c",
     label: "SEO Optimisation",
     headline: "Rank higher. Get found. Grow faster.",
     body: "We rank websites at the top of Google and keep them there — through technical depth, buyer-intent keywords, and authority that compounds.",
@@ -164,7 +138,7 @@ const SERVICES = [
     id: "web",
     num: "04",
     icon: "⬢",
-    accent: "#0046FF",
+    accent: "#0055da",
     label: "Website Development",
     headline: "Fast. Beautiful. Built to perform.",
     body: "Every website we deliver is designed beautifully, coded cleanly, and ranked strategically. Felix leads all complex systems personally.",
@@ -281,11 +255,13 @@ const TOOLS = [
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&family=Marcellus&display=swap');
 
+  @layer base {
+
   :root {
     --font-display: 'Marcellus', Georgia, serif;
     --font-body: 'Dosis', system-ui, sans-serif;
-    --orange: #FE7A36;
-    --blue: #0046FF;
+    --orange: #ef6905;
+    --blue: #0055da;
     --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
     --ease-smooth: cubic-bezier(0.4,0,0.2,1);
   }
@@ -294,7 +270,7 @@ const GLOBAL_CSS = `
     --color-bg-primary:#FAFAFA;
     --color-bg-secondary:#F3F3F6;
     --color-surface:rgba(255,255,255,0.92);
-    --color-surface-raised:#FFFFFF;
+    --color-surface-raised:#f5f5f5;
     --color-border:rgba(0,0,0,0.07);
     --color-border-strong:rgba(0,0,0,0.13);
     --color-text-primary:#0A0A0F;
@@ -330,7 +306,7 @@ const GLOBAL_CSS = `
     transition: background 0.4s, color 0.4s;
   }
   h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); font-weight: 400; }
-  ::selection { background: rgba(254,122,54,0.18); color: var(--color-text-primary); }
+  ::selection { background: rgba(239, 105, 5,0.18); color: var(--color-text-primary); }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--color-bg-secondary); }
   ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 0; }
@@ -358,7 +334,10 @@ const GLOBAL_CSS = `
     .journey-layout .journey-image { order: -1; aspect-ratio: 16/10 !important; }
   }
   @media (max-width: 768px) {
-    .hero-intro-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+    .about-hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    .about-hero-copy { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+    .about-image-strip { flex-wrap: wrap !important; height: auto !important; }
+    .about-image-strip > div { flex: 1 1 50% !important; height: 160px !important; }
     .stat-grid-3 { grid-template-columns: 1fr !important; }
     .stat-grid-3 > div { border-right: none !important; border-bottom: 1px solid var(--color-border); }
     .stat-grid-3 > div:last-child { border-bottom: none !important; }
@@ -385,13 +364,21 @@ const GLOBAL_CSS = `
     .leadership-grid { grid-template-columns: 1fr !important; }
     .journey-steps-track { flex-wrap: wrap; row-gap: 0.75rem; }
   }
+
+  } /* end @layer base */
 `;
 
 // ─────────────────────────────────────────────────────────────
 // SECTION TAG
 // ─────────────────────────────────────────────────────────────
 function SectionTag({ label, color = "orange" }) {
-  const accent = color === "orange" ? "#FE7A36" : "#0046FF";
+  const PALETTE = {
+    orange: { text: "#ef6905", bg: "rgba(239, 105, 5,0.08)", border: "rgba(239, 105, 5,0.22)" },
+    blue: { text: "#0055da", bg: "rgba(0, 85, 218,0.06)", border: "rgba(0, 85, 218,0.18)" },
+    green: { text: "#5b7e3c", bg: "rgba(91, 126, 60,0.08)", border: "rgba(91, 126, 60,0.22)" },
+  };
+  const swatch = PALETTE[color] || PALETTE.orange;
+  const accent = swatch.text;
   return (
     <div
       style={{
@@ -399,10 +386,9 @@ function SectionTag({ label, color = "orange" }) {
         alignItems: "center",
         gap: "0.5rem",
         padding: "0.35rem 1rem",
-        borderRadius: 0,
-        background:
-          color === "orange" ? "rgba(254,122,54,0.08)" : "rgba(0,70,255,0.06)",
-        border: `1px solid ${color === "orange" ? "rgba(254,122,54,0.22)" : "rgba(0,70,255,0.18)"}`,
+        borderRadius: "var(--radius-soft)",
+        background: swatch.bg,
+        border: `1px solid ${swatch.border}`,
         color: accent,
         fontFamily: "var(--font-body)",
         fontSize: "0.65rem",
@@ -416,12 +402,101 @@ function SectionTag({ label, color = "orange" }) {
         style={{
           width: 5,
           height: 5,
-          borderRadius: 0,
+          borderRadius: "var(--radius-soft)",
           background: accent,
           display: "block",
         }}
       />
       {label}
+    </div>
+  );
+}
+
+// A monogram placeholder standing in for a real founder photo — avoids
+// passing off a stock photo as a specific named person. Swap for an actual
+// photo of Felix whenever one is ready.
+function FounderAvatar({ withCaption = false }) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        borderRadius: "var(--radius-soft)",
+        overflow: "hidden",
+        aspectRatio: "3/4",
+        boxShadow: "var(--shadow-md)",
+        border: "1px solid var(--color-border)",
+        background:
+          "linear-gradient(155deg, #0A0A0F 0%, #16161d 55%, #1c1410 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(circle at 30% 25%, rgba(239, 105, 5,0.22) 0%, transparent 55%)",
+        }}
+      />
+      <span
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(3.5rem,9vw,6rem)",
+          color: "rgba(255,255,255,0.92)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        FN
+      </span>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 4,
+          background: "#ef6905",
+        }}
+      />
+      {withCaption && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 12,
+            left: 0,
+            right: 0,
+            padding: "0 1.5rem",
+            zIndex: 1,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "1.6rem",
+              color: "#f5f5f5",
+              lineHeight: 1.1,
+              marginBottom: "0.25rem",
+            }}
+          >
+            Felix Ngunga
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "#ef6905",
+            }}
+          >
+            Founder, Serenly
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -435,227 +510,232 @@ function HeroBanner() {
     setTimeout(() => setLoaded(true), 60);
   }, []);
 
+  const bodyText = {
+    fontFamily: "var(--font-body)",
+    fontSize: "0.9rem",
+    color: "var(--color-text-secondary)",
+    lineHeight: 1.8,
+    margin: 0,
+  };
+
   return (
-    <section
-      style={{
-        position: "relative",
-        minHeight: "clamp(560px,68vh,760px)",
-        display: "flex",
-        alignItems: "flex-end",
-        overflow: "hidden",
-      }}
-    >
-      {/* Full-bleed image */}
-      <div style={{ position: "absolute", inset: 0 }}>
-        <img
-          src={IMG.hero}
-          alt=""
-          style={{
-            width: "100%",
-            height: "115%",
-            objectFit: "cover",
-            objectPosition: "center 30%",
-            display: "block",
-            animation: loaded
-              ? "bgPan 14s ease-in-out alternate infinite"
-              : "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 35%, rgba(0,0,0,0.88) 82%, rgba(0,0,0,0.97) 100%)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 60%)",
-          }}
-        />
-      </div>
-
-      {/* Orange glow top-right */}
-      <div
+    <>
+      {/* ── Light editorial intro — "About Us" heading + story-first copy ── */}
+      <section
         style={{
-          position: "absolute",
-          width: "40vw",
-          height: "40vw",
-          top: "-15%",
-          right: "-5%",
-          borderRadius: 0,
-          background:
-            "radial-gradient(circle, rgba(254,122,54,0.18) 0%, transparent 70%)",
-          filter: "blur(40px)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        className="container-site"
-        style={{
-          position: "relative",
-          zIndex: 2,
-          paddingBottom: "clamp(2.5rem,6vh,4rem)",
-          width: "100%",
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? "none" : "translateY(20px)",
-          transition: "opacity 0.8s ease, transform 0.8s ease",
+          background: "var(--color-bg-primary)",
+          paddingTop: "clamp(2.75rem,7vh,5.5rem)",
+          paddingBottom: "clamp(3rem,6vh,4.5rem)",
         }}
       >
-        {/* Breadcrumb */}
         <div
+          className="container-site"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.4)",
-            marginBottom: "1.25rem",
-            fontFamily: "var(--font-body)",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "none" : "translateY(16px)",
+            transition: "opacity 0.8s ease, transform 0.8s ease",
           }}
         >
-          <a
-            href="/"
+          {/* Breadcrumb */}
+          <div
             style={{
-              color: "rgba(255,255,255,0.4)",
-              textDecoration: "none",
-              transition: "color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#FE7A36")}
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(255,255,255,0.4)")
-            }
-          >
-            Home
-          </a>
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-          <span style={{ color: "#FE7A36" }}>About Us</span>
-        </div>
-
-        {/* Eyebrow */}
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontFamily: "var(--font-body)",
-            fontSize: "0.68rem",
-            fontWeight: 700,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: "#FE7A36",
-            marginBottom: "1rem",
-          }}
-        >
-          <span
-            style={{
-              width: 20,
-              height: 1.5,
-              background: "#FE7A36",
-              display: "block",
-            }}
-          />
-          About Serenly
-        </div>
-
-        <h1
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2.5rem,6vw,5rem)",
-            lineHeight: 1.04,
-            color: "#fff",
-            marginBottom: "1.75rem",
-            maxWidth: 800,
-            textShadow: "0 2px 40px rgba(0,0,0,0.3)",
-          }}
-        >
-          A Nairobi Partner In{" "}
-          <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
-            Brand, Growth & Digital Strategy.
-          </em>
-        </h1>
-
-        {/* Two-column intro row + explore link, like the reference hero */}
-        <div
-          className="hero-intro-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr auto",
-            gap: "2.5rem",
-            alignItems: "end",
-            borderTop: "1px solid rgba(255,255,255,0.15)",
-            paddingTop: "1.75rem",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "0.9rem",
-              color: "rgba(255,255,255,0.6)",
-              lineHeight: 1.75,
-              margin: 0,
-            }}
-          >
-            Serenly helps ambitious businesses build the brand, visibility, and
-            systems that turn attention into revenue.
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "0.9rem",
-              color: "rgba(255,255,255,0.6)",
-              lineHeight: 1.75,
-              margin: 0,
-            }}
-          >
-            We bring branding, SEO, Meta Ads and full-stack web development
-            together under one integrated, engineer-led approach.
-          </p>
-          <Link
-            to="/services"
-            style={{
-              display: "inline-flex",
+              display: "flex",
               alignItems: "center",
               gap: "0.5rem",
+              fontSize: "0.75rem",
+              color: "var(--color-text-tertiary)",
+              marginBottom: "2.5rem",
               fontFamily: "var(--font-body)",
-              fontWeight: 700,
-              fontSize: "0.85rem",
-              color: "#fff",
-              textDecoration: "none",
-              whiteSpace: "nowrap",
-              borderBottom: "1.5px solid #FE7A36",
-              paddingBottom: "0.3rem",
             }}
           >
-            Explore Our Services
+            <a
+              href="/"
+              style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
+            >
+              Home
+            </a>
             <svg
-              width="14"
-              height="14"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2"
             >
-              <path d="M7 17L17 7M17 7H7M17 7v10" />
+              <path d="M9 18l6-6-6-6" />
             </svg>
-          </Link>
+            <span style={{ color: "#ef6905" }}>About Us</span>
+          </div>
+
+          <div
+            className="about-hero-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "0.85fr 1.15fr",
+              gap: "clamp(2.5rem,5vw,5rem)",
+              alignItems: "start",
+            }}
+          >
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(3rem,6.5vw,5.5rem)",
+                lineHeight: 1,
+                color: "var(--color-text-primary)",
+                margin: 0,
+              }}
+            >
+              About Us
+            </h1>
+
+            <div>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontStyle: "italic",
+                  fontSize: "clamp(1.05rem,1.8vw,1.35rem)",
+                  lineHeight: 1.5,
+                  color: "var(--color-text-primary)",
+                  marginBottom: "1.75rem",
+                }}
+              >
+                Every brand has a story worth telling. We make sure it's
+                heard by the right people.
+              </p>
+              <div
+                className="about-hero-copy"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "2rem",
+                }}
+              >
+                <p style={bodyText}>
+                  The reason we started this company is to help businesses
+                  tell their own stories. Stories are an essential part of
+                  our lives — we like good stories, and even more, we like
+                  being associated with one.
+                </p>
+                <p style={bodyText}>
+                  So if we want to grow our brands, we need to sell success
+                  stories that people want to be associated with. Believe
+                  us — everyone wants to be associated with a success
+                  story.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ── Full-width image strip — the "moodboard" beat ── */}
+      <section
+        className="about-image-strip"
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "clamp(200px,28vw,340px)",
+        }}
+      >
+        {[IMG.mission, IMG.atmos1, IMG.stack_bg, IMG.atmos2].map((src, i) => (
+          <div key={i} style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+            <img
+              src={src}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+        ))}
+      </section>
+
+      {/* ── Who tells your story? — the brand philosophy, in full ── */}
+      <section
+        style={{
+          background: "var(--color-bg-secondary)",
+          padding: "6rem 0",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div
+          className="container-site"
+          style={{ maxWidth: 860, marginInline: "auto" }}
+        >
+          <SectionTag label="Our Philosophy" color="orange" />
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(2rem,4vw,3rem)",
+              lineHeight: 1.1,
+              marginBottom: "1.75rem",
+            }}
+          >
+            Who tells your story?
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "1.05rem",
+              lineHeight: 1.9,
+              color: "var(--color-text-secondary)",
+              marginBottom: "1.25rem",
+            }}
+          >
+            If you don't tell your story yourself, we're going to either
+            create stories about you, assume stories about you, believe
+            what we hear online or from your competitors — or you're going
+            to exist without a story people can relate to. You might sell,
+            but never beyond a certain point.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "1.05rem",
+              lineHeight: 1.9,
+              color: "var(--color-text-secondary)",
+              marginBottom: "1.25rem",
+            }}
+          >
+            So you tell the story, and we come in — as Serenly Digital
+            Marketing Agency — and broadcast it. Because if you have the
+            story and no one is hearing it, that's also a dead end. We
+            make sure{" "}
+            <strong style={{ color: "#ef6905" }}>the right people</strong>{" "}
+            hear your story.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "1.05rem",
+              lineHeight: 1.9,
+              color: "var(--color-text-secondary)",
+              marginBottom: "2.25rem",
+            }}
+          >
+            Of course, not everyone needs to hear your story. But there
+            are probabilities in life, and we're realistic about that.
+            Our work is to sell your story to the people who are more
+            likely to engage with it — which is also your product.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontStyle: "italic",
+              fontSize: "clamp(1.1rem,2vw,1.4rem)",
+              lineHeight: 1.55,
+              color: "var(--color-text-primary)",
+              margin: 0,
+              paddingLeft: "1.5rem",
+              borderLeft: "3px solid #ef6905",
+            }}
+          >
+            You keep telling the story about your product the right way,
+            and you start becoming your target audience's go-to brand —
+            every day. Remember: customers need to be reminded, again and
+            again, of your story and your product.
+          </p>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -665,9 +745,14 @@ function HeroBanner() {
 function StatsSection() {
   const [ref, visible] = useInView(0.2);
   const stats = [
-    { val: "2024", label: "Founded In Nairobi, Kenya" },
-    { val: "4", label: "Integrated Core Services" },
-    { val: "1,000+", label: "Businesses By Our 2027 Goal" },
+    { val: "2024", label: "Founded In Nairobi, Kenya", color: "#ef6905" },
+    { val: "4", label: "Integrated Core Services", color: "#0055da" },
+    {
+      val: "1,000+",
+      label: "Businesses By Our 2027 Goal",
+      color: "#5b7e3c",
+      tint: "rgba(201,211,243,0.14)",
+    },
   ];
   return (
     <section
@@ -722,6 +807,7 @@ function StatsSection() {
                 padding: "2.5rem 1.5rem",
                 borderRight: "1px solid var(--color-border)",
                 borderBottom: "1px solid var(--color-border)",
+                background: s.tint || "transparent",
                 textAlign: "center",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "none" : "translateY(16px)",
@@ -732,7 +818,7 @@ function StatsSection() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "clamp(2.25rem,5vw,3.5rem)",
-                  color: "#FE7A36",
+                  color: s.color,
                   lineHeight: 1.1,
                   marginBottom: "0.4rem",
                 }}
@@ -788,7 +874,7 @@ function WhoWeAre() {
           }}
         >
           <div>
-            <SectionTag label="Who We Are" color="orange" />
+            <SectionTag label="Who We Are" color="green" />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
@@ -797,7 +883,7 @@ function WhoWeAre() {
               }}
             >
               Who We Are As Your Brand &{" "}
-              <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+              <em style={{ color: "#ef6905", fontStyle: "italic" }}>
                 Growth Partner
               </em>
             </h2>
@@ -827,26 +913,28 @@ function WhoWeAre() {
 
         {/* Full-width image */}
         <div
+          className="rounded-soft"
           style={{
             position: "relative",
-            borderRadius: 0,
             overflow: "hidden",
             aspectRatio: "16/8",
             boxShadow: "var(--shadow-xl)",
             border: "1px solid var(--color-border)",
           }}
         >
-          <img
-            src={IMG.stack_bg}
-            alt="The Serenly team collaborating"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
+          <ParallaxLayer speed={36} style={{ position: "absolute", inset: "-8% 0", height: "116%" }}>
+            <img
+              src={IMG.stack_bg}
+              alt="The Serenly team collaborating"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </ParallaxLayer>
           <div
             style={{
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(120deg, rgba(0,70,255,0.35) 0%, rgba(10,10,15,0.15) 55%, transparent 90%)",
+                "linear-gradient(120deg, rgba(0, 85, 218,0.35) 0%, rgba(10,10,15,0.15) 55%, transparent 90%)",
             }}
           />
         </div>
@@ -874,7 +962,7 @@ function WhoWeAre() {
               "Results over activity",
               "Local market expertise",
               "Enterprise-grade delivery",
-            ].map((trait) => (
+            ].map((trait, i) => (
               <div
                 key={trait}
                 style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}
@@ -883,7 +971,7 @@ function WhoWeAre() {
                   style={{
                     width: 18,
                     height: 1.5,
-                    background: "#FE7A36",
+                    background: ["#ef6905", "#0055da", "#5b7e3c", "#0055da"][i],
                     display: "block",
                   }}
                 />
@@ -907,26 +995,26 @@ function WhoWeAre() {
               alignItems: "center",
               gap: "0.6rem",
               padding: "0.9rem 2rem",
-              borderRadius: 0,
-              background: "#FE7A36",
-              color: "#fff",
+              borderRadius: "var(--radius-soft)",
+              background: "#ef6905",
+              color: "#f5f5f5",
               fontFamily: "var(--font-body)",
               fontWeight: 700,
               fontSize: "0.9rem",
               textDecoration: "none",
-              boxShadow: "0 6px 28px rgba(254,122,54,0.38)",
+              boxShadow: "0 6px 28px rgba(239, 105, 5,0.38)",
               transition: "transform 0.2s var(--ease-spring), box-shadow 0.2s",
               flexShrink: 0,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "scale(1.04)";
               e.currentTarget.style.boxShadow =
-                "0 12px 48px rgba(254,122,54,0.55)";
+                "0 12px 48px rgba(239, 105, 5,0.55)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "";
               e.currentTarget.style.boxShadow =
-                "0 6px 28px rgba(254,122,54,0.38)";
+                "0 6px 28px rgba(239, 105, 5,0.38)";
             }}
           >
             Work With Us
@@ -972,7 +1060,7 @@ function HowWePartner() {
           }}
         >
           <div style={{ maxWidth: 480 }}>
-            <SectionTag label="How We Partner" color="orange" />
+            <SectionTag label="How We Partner" color="green" />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
@@ -981,7 +1069,7 @@ function HowWePartner() {
               }}
             >
               How We Partner{" "}
-              <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+              <em style={{ color: "#ef6905", fontStyle: "italic" }}>
                 With You
               </em>
             </h2>
@@ -1015,7 +1103,7 @@ function HowWePartner() {
               key={s.id}
               style={{
                 background: "#0A0A0F",
-                borderRadius: 0,
+                borderRadius: "var(--radius-soft)",
                 padding: "2rem 1.75rem",
                 display: "flex",
                 flexDirection: "column",
@@ -1036,7 +1124,7 @@ function HowWePartner() {
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: 0,
+                  borderRadius: "var(--radius-soft)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1054,7 +1142,7 @@ function HowWePartner() {
                   fontFamily: "var(--font-display)",
                   fontSize: "1.3rem",
                   lineHeight: 1.25,
-                  color: "#fff",
+                  color: "#f5f5f5",
                   marginBottom: "0.75rem",
                 }}
               >
@@ -1113,7 +1201,7 @@ function OurJourney() {
     >
       <div className="container-site" ref={ref}>
         <div style={{ marginBottom: "3.5rem" }}>
-          <SectionTag label="Our Journey" color="blue" />
+          <SectionTag label="Our Journey" color="green" />
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -1123,7 +1211,7 @@ function OurJourney() {
             }}
           >
             From First Idea To{" "}
-            <em style={{ color: "#0046FF", fontStyle: "italic" }}>
+            <em style={{ color: "#5b7e3c", fontStyle: "italic" }}>
               Integrated Growth.
             </em>
           </h2>
@@ -1148,7 +1236,7 @@ function OurJourney() {
                 fontWeight: 700,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: "#0046FF",
+                color: "#5b7e3c",
                 marginBottom: "0.75rem",
               }}
             >
@@ -1184,7 +1272,7 @@ function OurJourney() {
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: 0,
+                  borderRadius: "var(--radius-soft)",
                   border: "1.5px solid var(--color-border-strong)",
                   background: "var(--color-surface-raised)",
                   color: "var(--color-text-primary)",
@@ -1195,8 +1283,8 @@ function OurJourney() {
                   transition: "border-color 0.2s, color 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#0046FF";
-                  e.currentTarget.style.color = "#0046FF";
+                  e.currentTarget.style.borderColor = "#5b7e3c";
+                  e.currentTarget.style.color = "#5b7e3c";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor =
@@ -1214,7 +1302,7 @@ function OurJourney() {
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: 0,
+                  borderRadius: "var(--radius-soft)",
                   border: "1.5px solid var(--color-border-strong)",
                   background: "var(--color-surface-raised)",
                   color: "var(--color-text-primary)",
@@ -1225,8 +1313,8 @@ function OurJourney() {
                   transition: "border-color 0.2s, color 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#0046FF";
-                  e.currentTarget.style.color = "#0046FF";
+                  e.currentTarget.style.borderColor = "#5b7e3c";
+                  e.currentTarget.style.color = "#5b7e3c";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor =
@@ -1246,7 +1334,7 @@ function OurJourney() {
             className="journey-image"
             style={{
               position: "relative",
-              borderRadius: 0,
+              borderRadius: "var(--radius-soft)",
               overflow: "hidden",
               aspectRatio: "4/3",
               boxShadow: "var(--shadow-xl)",
@@ -1291,7 +1379,7 @@ function OurJourney() {
                   fontFamily: "var(--font-body)",
                   fontSize: "0.8rem",
                   fontWeight: 700,
-                  color: i === active ? "#0046FF" : "var(--color-text-tertiary)",
+                  color: i === active ? "#5b7e3c" : "var(--color-text-tertiary)",
                   transition: "color 0.2s",
                 }}
               >
@@ -1299,8 +1387,8 @@ function OurJourney() {
                   style={{
                     width: 8,
                     height: 8,
-                    borderRadius: 0,
-                    background: i === active ? "#0046FF" : "var(--color-border-strong)",
+                    borderRadius: "var(--radius-soft)",
+                    background: i === active ? "#5b7e3c" : "var(--color-border-strong)",
                     display: "block",
                     transition: "background 0.2s",
                   }}
@@ -1346,9 +1434,9 @@ function ToolsWeUse() {
           height: "45vw",
           top: "-10%",
           right: "-10%",
-          borderRadius: 0,
+          borderRadius: "var(--radius-soft)",
           background:
-            "radial-gradient(circle,rgba(0,70,255,0.07) 0%,transparent 70%)",
+            "radial-gradient(circle,rgba(0, 85, 218,0.07) 0%,transparent 70%)",
           filter: "blur(60px)",
           pointerEvents: "none",
         }}
@@ -1368,7 +1456,7 @@ function ToolsWeUse() {
             }}
           >
             AI tools & analytics that{" "}
-            <em style={{ color: "#0046FF", fontStyle: "italic" }}>
+            <em style={{ color: "#0055da", fontStyle: "italic" }}>
               drive decisions.
             </em>
           </h2>
@@ -1401,7 +1489,7 @@ function ToolsWeUse() {
               style={{
                 background: "var(--color-surface-raised)",
                 border: "1px solid var(--color-border)",
-                borderRadius: 0,
+                borderRadius: "var(--radius-soft)",
                 padding: "1.5rem",
                 display: "flex",
                 alignItems: "center",
@@ -1412,7 +1500,7 @@ function ToolsWeUse() {
                 cursor: "default",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,70,255,0.3)";
+                e.currentTarget.style.borderColor = "rgba(0, 85, 218,0.3)";
                 e.currentTarget.style.transform = "translateY(-4px)";
               }}
               onMouseLeave={(e) => {
@@ -1424,9 +1512,9 @@ function ToolsWeUse() {
                 style={{
                   width: 46,
                   height: 46,
-                  borderRadius: 0,
-                  background: "rgba(0,70,255,0.06)",
-                  border: "1px solid rgba(0,70,255,0.14)",
+                  borderRadius: "var(--radius-soft)",
+                  background: "rgba(0, 85, 218,0.06)",
+                  border: "1px solid rgba(0, 85, 218,0.14)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1492,7 +1580,7 @@ function Leadership() {
           }}
         >
           <div style={{ maxWidth: 480 }}>
-            <SectionTag label="Our Team" color="orange" />
+            <SectionTag label="Our Team" color="green" />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
@@ -1512,9 +1600,9 @@ function Leadership() {
               maxWidth: 440,
             }}
           >
-            Serenly is led by an engineer-founder who brings production-grade
-            software discipline to every brand and campaign we build — and
-            we're growing the team behind it.
+            Serenly is led by a founder who believes every brand's growth
+            starts with a story told right — and we're growing the team
+            behind it.
           </p>
         </div>
 
@@ -1526,22 +1614,7 @@ function Leadership() {
               transition: "opacity 0.55s ease, transform 0.55s ease",
             }}
           >
-            <div
-              style={{
-                position: "relative",
-                borderRadius: 0,
-                overflow: "hidden",
-                aspectRatio: "3/4",
-                boxShadow: "var(--shadow-md)",
-                border: "1px solid var(--color-border)",
-              }}
-            >
-              <img
-                src={IMG.felix}
-                alt="Felix Ngunga — Founder, Serenly"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
+            <FounderAvatar />
             <p
               style={{
                 fontFamily: "var(--font-display)",
@@ -1559,16 +1632,16 @@ function Leadership() {
                 color: "var(--color-text-tertiary)",
               }}
             >
-              Founder & Lead Software Engineer
+              Founder, Serenly
             </p>
           </div>
 
           {/* Join Us card */}
           <div
             style={{
-              borderRadius: 0,
+              borderRadius: "var(--radius-soft)",
               background: "#0A0A0F",
-              border: "1px solid rgba(254,122,54,0.25)",
+              border: "1px solid rgba(91, 126, 60,0.35)",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -1593,7 +1666,7 @@ function Leadership() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "1.15rem",
-                color: "#fff",
+                color: "#f5f5f5",
                 marginBottom: "0.4rem",
               }}
             >
@@ -1652,9 +1725,9 @@ function FounderSpotlight() {
           height: "50vw",
           top: "-10%",
           right: "-10%",
-          borderRadius: 0,
+          borderRadius: "var(--radius-soft)",
           background:
-            "radial-gradient(circle,rgba(254,122,54,0.08) 0%,transparent 70%)",
+            "radial-gradient(circle,rgba(239, 105, 5,0.08) 0%,transparent 70%)",
           filter: "blur(80px)",
           pointerEvents: "none",
         }}
@@ -1674,9 +1747,9 @@ function FounderSpotlight() {
               marginBottom: "0.75rem",
             }}
           >
-            Engineering excellence,{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
-              by design.
+            Every story deserves{" "}
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
+              to be told right.
             </em>
           </h2>
           <p
@@ -1689,9 +1762,8 @@ function FounderSpotlight() {
               fontSize: "1rem",
             }}
           >
-            Behind every website, system, and campaign is a founder who
-            architects enterprise-grade software — then markets it with equal
-            precision.
+            Founder Felix Ngunga on why storytelling became his life's
+            work — and Serenly's.
           </p>
         </div>
 
@@ -1713,80 +1785,14 @@ function FounderSpotlight() {
               transition: "opacity 0.8s ease, transform 0.8s ease",
             }}
           >
-            <div
-              style={{
-                position: "relative",
-                borderRadius: 0,
-                overflow: "hidden",
-                aspectRatio: "3/4",
-                boxShadow: "var(--shadow-xl)",
-                border: "1px solid var(--color-border)",
-              }}
-            >
-              <img
-                src={IMG.felix}
-                alt="Felix Ngunga — Founder, Serenly"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 4,
-                  background: "#FE7A36",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: "1.5rem",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.6rem",
-                    color: "#fff",
-                    lineHeight: 1.1,
-                    marginBottom: "0.25rem",
-                  }}
-                >
-                  Felix Ngunga
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "0.7rem",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    color: "#FE7A36",
-                  }}
-                >
-                  Founder · Lead Software Engineer
-                </div>
-              </div>
-            </div>
+            <FounderAvatar withCaption />
 
             <div
               style={{
                 marginTop: "1.25rem",
-                background: "var(--color-surface-raised)",
-                border: "1px solid rgba(254,122,54,0.25)",
-                borderRadius: 0,
+                background: "rgba(201,211,243,0.14)",
+                border: "1px solid rgba(201,211,243,0.4)",
+                borderRadius: "var(--radius-soft)",
                 padding: "1rem 1.25rem",
                 display: "flex",
                 alignItems: "center",
@@ -1834,9 +1840,9 @@ function FounderSpotlight() {
                 alignItems: "center",
                 gap: 8,
                 padding: "0.4rem 1rem",
-                borderRadius: 0,
-                background: "rgba(254,122,54,0.1)",
-                border: "1px solid rgba(254,122,54,0.28)",
+                borderRadius: "var(--radius-soft)",
+                background: "rgba(239, 105, 5,0.1)",
+                border: "1px solid rgba(239, 105, 5,0.28)",
                 marginBottom: "1.5rem",
               }}
             >
@@ -1844,8 +1850,8 @@ function FounderSpotlight() {
                 style={{
                   width: 8,
                   height: 8,
-                  borderRadius: 0,
-                  background: "#FE7A36",
+                  borderRadius: "var(--radius-soft)",
+                  background: "#ef6905",
                   display: "inline-block",
                   animation: "pulse 2s infinite",
                 }}
@@ -1857,10 +1863,10 @@ function FounderSpotlight() {
                   fontWeight: 700,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
-                  color: "#FE7A36",
+                  color: "#ef6905",
                 }}
               >
-                Software Engineer · Founder · Agile Lead
+                Founder · Storyteller · Serenly
               </span>
             </div>
 
@@ -1872,11 +1878,10 @@ function FounderSpotlight() {
                 marginBottom: "1.25rem",
               }}
             >
-              Not just a marketer —<br />a{" "}
-              <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
-                full-stack engineer
-              </em>{" "}
-              who markets.
+              The danger of a{" "}
+              <em style={{ color: "#ef6905", fontStyle: "italic" }}>
+                single story.
+              </em>
             </h3>
 
             <p
@@ -1888,11 +1893,14 @@ function FounderSpotlight() {
                 marginBottom: "1rem",
               }}
             >
-              Felix Ngunga is a highly experienced software engineer who founded
-              Serenly to bridge the gap between powerful technology and
-              effective digital marketing. With deep expertise in building
-              production-grade systems, Felix brings an engineer's rigour to
-              everything Serenly delivers.
+              My name is Felix Ngunga. I created Serenly in 2024, after
+              listening to a TED Talk titled{" "}
+              <strong style={{ color: "var(--color-text-primary)" }}>
+                "The Danger of a Single Story"
+              </strong>{" "}
+              by Chimamanda Ngozi Adichie. That talk opened my eyes to how
+              impactful stories are in our lives — and even more, to the
+              power of a wrongly told story.
             </p>
             <p
               style={{
@@ -1900,15 +1908,47 @@ function FounderSpotlight() {
                 fontSize: "1rem",
                 lineHeight: 1.85,
                 color: "var(--color-text-secondary)",
-                marginBottom: "2rem",
+                marginBottom: "1rem",
               }}
             >
-              He personally leads all complex systems development using{" "}
+              From there, I decided to dedicate my life to helping brands,
+              individuals, corporates and businesses tell the right
+              stories, the right way.
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "1rem",
+                lineHeight: 1.85,
+                color: "var(--color-text-secondary)",
+                marginBottom: "1rem",
+              }}
+            >
+              In the era of social media, a bad story spreads faster than
+              a good one. So every entity needs to constantly tell its
+              story — in different variations of vocabulary, but always
+              the same story. This builds{" "}
               <strong style={{ color: "var(--color-text-primary)" }}>
-                Agile methodologies and Scrum frameworks
-              </strong>{" "}
-              — managing sprints, product backlogs, and cross-functional
-              delivery with the discipline of a senior tech lead.
+                trust, reliability, and dependability
+              </strong>
+              .
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-display)",
+                fontStyle: "italic",
+                fontSize: "1.05rem",
+                lineHeight: 1.7,
+                color: "var(--color-text-primary)",
+                marginBottom: "2rem",
+                paddingLeft: "1.25rem",
+                borderLeft: "3px solid #ef6905",
+              }}
+            >
+              It's a journey we walk together with you, every day —
+              telling the right story, and making sure no one else is
+              telling it for you. Because the moment you let someone else
+              tell your story, you're completely doomed.
             </p>
 
             <div
@@ -1919,7 +1959,7 @@ function FounderSpotlight() {
                 marginBottom: "2rem",
               }}
             >
-              {FELIX_TRAITS.map((trait) => (
+              {FOUNDER_TRAITS.map((trait) => (
                 <div
                   key={trait}
                   style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}
@@ -1928,14 +1968,14 @@ function FounderSpotlight() {
                     style={{
                       width: 18,
                       height: 18,
-                      borderRadius: 0,
+                      borderRadius: "var(--radius-soft)",
                       flexShrink: 0,
-                      background: "rgba(254,122,54,0.1)",
-                      border: "1px solid rgba(254,122,54,0.3)",
+                      background: "rgba(239, 105, 5,0.1)",
+                      border: "1px solid rgba(239, 105, 5,0.3)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: "#FE7A36",
+                      color: "#ef6905",
                       fontSize: "0.55rem",
                       fontWeight: 700,
                     }}
@@ -1962,28 +2002,28 @@ function FounderSpotlight() {
                 alignItems: "center",
                 gap: "0.6rem",
                 padding: "0.9rem 2rem",
-                borderRadius: 0,
-                background: "#FE7A36",
-                color: "#fff",
+                borderRadius: "var(--radius-soft)",
+                background: "#ef6905",
+                color: "#f5f5f5",
                 fontFamily: "var(--font-body)",
                 fontWeight: 700,
                 fontSize: "0.9rem",
                 textDecoration: "none",
-                boxShadow: "0 6px 28px rgba(254,122,54,0.38)",
+                boxShadow: "0 6px 28px rgba(239, 105, 5,0.38)",
                 transition: "transform 0.2s var(--ease-spring), box-shadow 0.2s",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.04)";
                 e.currentTarget.style.boxShadow =
-                  "0 12px 48px rgba(254,122,54,0.55)";
+                  "0 12px 48px rgba(239, 105, 5,0.55)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "";
                 e.currentTarget.style.boxShadow =
-                  "0 6px 28px rgba(254,122,54,0.38)";
+                  "0 6px 28px rgba(239, 105, 5,0.38)";
               }}
             >
-              Build Something With Felix
+              Let's Tell Your Story
               <svg
                 width="16"
                 height="16"
@@ -1998,7 +2038,7 @@ function FounderSpotlight() {
           </div>
         </div>
 
-        {/* Tech stack */}
+        {/* What retelling the right story, consistently, actually builds */}
         <div
           style={{
             borderTop: "1px solid var(--color-border)",
@@ -2017,7 +2057,7 @@ function FounderSpotlight() {
               textAlign: "center",
             }}
           >
-            Serenly's Core Engineering Stack
+            What The Right Story, Told Right, Builds
           </p>
 
           <div
@@ -2028,13 +2068,13 @@ function FounderSpotlight() {
             }}
             className="stack-grid"
           >
-            {FELIX_STACK.map((tech, i) => (
+            {STORY_VALUES.map((tech, i) => (
               <div
                 key={tech.name}
                 style={{
                   background: "var(--color-surface-raised)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: 0,
+                  borderRadius: "var(--radius-soft)",
                   padding: "1.25rem 1.5rem",
                   cursor: "default",
                   opacity: visible ? 1 : 0,
@@ -2065,7 +2105,7 @@ function FounderSpotlight() {
                     style={{
                       width: 10,
                       height: 10,
-                      borderRadius: 0,
+                      borderRadius: "var(--radius-soft)",
                       background: tech.color,
                       flexShrink: 0,
                       boxShadow: `0 0 10px ${tech.color}80`,
@@ -2128,7 +2168,7 @@ function LatestNews() {
           }}
         >
           <div>
-            <SectionTag label="Latest Insights" color="orange" />
+            <SectionTag label="Latest Insights" color="blue" />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
@@ -2137,7 +2177,7 @@ function LatestNews() {
               }}
             >
               From the{" "}
-              <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+              <em style={{ color: "#0055da", fontStyle: "italic" }}>
                 Serenly Blog.
               </em>
             </h2>
@@ -2149,7 +2189,7 @@ function LatestNews() {
               alignItems: "center",
               gap: "0.6rem",
               padding: "0.7rem 1.6rem",
-              borderRadius: 0,
+              borderRadius: "var(--radius-soft)",
               background: "var(--color-surface-raised)",
               border: "1.5px solid var(--color-border-strong)",
               color: "var(--color-text-primary)",
@@ -2160,8 +2200,8 @@ function LatestNews() {
               transition: "border-color 0.2s, color 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#FE7A36";
-              e.currentTarget.style.color = "#FE7A36";
+              e.currentTarget.style.borderColor = "#0055da";
+              e.currentTarget.style.color = "#0055da";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = "var(--color-border-strong)";
@@ -2195,7 +2235,7 @@ function LatestNews() {
             <article
               key={post.title}
               style={{
-                borderRadius: 0,
+                borderRadius: "var(--radius-soft)",
                 overflow: "hidden",
                 background: "var(--color-surface-raised)",
                 border: "1px solid var(--color-border)",
@@ -2205,10 +2245,10 @@ function LatestNews() {
                 transition: `opacity 0.55s ease ${i * 0.1}s, transform 0.55s ease ${i * 0.1}s, border-color 0.2s, box-shadow 0.2s`,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(254,122,54,0.3)";
+                e.currentTarget.style.borderColor = "rgba(0, 85, 218,0.3)";
                 e.currentTarget.style.transform = "translateY(-5px)";
                 e.currentTarget.style.boxShadow =
-                  "0 20px 60px rgba(254,122,54,0.12)";
+                  "0 20px 60px rgba(0, 85, 218,0.12)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "var(--color-border)";
@@ -2251,10 +2291,10 @@ function LatestNews() {
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
                       padding: "0.25rem 0.65rem",
-                      borderRadius: 0,
-                      background: "rgba(254,122,54,0.1)",
-                      border: "1px solid rgba(254,122,54,0.22)",
-                      color: "#FE7A36",
+                      borderRadius: "var(--radius-soft)",
+                      background: "rgba(0, 85, 218,0.08)",
+                      border: "1px solid rgba(0, 85, 218,0.2)",
+                      color: "#0055da",
                       fontFamily: "var(--font-body)",
                     }}
                   >
@@ -2299,7 +2339,7 @@ function LatestNews() {
                     gap: "0.5rem",
                     fontSize: "0.85rem",
                     fontWeight: 700,
-                    color: "#FE7A36",
+                    color: "#0055da",
                     fontFamily: "var(--font-body)",
                   }}
                 >
@@ -2377,9 +2417,9 @@ function FinalCTA() {
           top: "50%",
           left: "50%",
           transform: "translate(-50%,-50%)",
-          borderRadius: 0,
+          borderRadius: "var(--radius-soft)",
           background:
-            "radial-gradient(circle,rgba(254,122,54,0.16) 0%,transparent 70%)",
+            "radial-gradient(circle,rgba(239, 105, 5,0.16) 0%,transparent 70%)",
           filter: "blur(60px)",
           pointerEvents: "none",
           zIndex: 2,
@@ -2412,7 +2452,7 @@ function FinalCTA() {
               fontWeight: 700,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "#FE7A36",
+              color: "#ef6905",
               marginBottom: "1.5rem",
             }}
           >
@@ -2420,7 +2460,7 @@ function FinalCTA() {
               style={{
                 width: 20,
                 height: 1.5,
-                background: "#FE7A36",
+                background: "#ef6905",
                 display: "block",
               }}
             />
@@ -2432,12 +2472,12 @@ function FinalCTA() {
               fontFamily: "var(--font-display)",
               fontSize: "clamp(2.4rem,5vw,4rem)",
               lineHeight: 1.05,
-              color: "#fff",
+              color: "#f5f5f5",
               marginBottom: "1.25rem",
             }}
           >
             Your business deserves to{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               win online.
             </em>
           </h2>
@@ -2476,12 +2516,12 @@ function FinalCTA() {
               style={{
                 flex: 1,
                 padding: "1rem 1.5rem",
-                borderRadius: 0,
+                borderRadius: "var(--radius-soft)",
                 border: "1.5px solid rgba(255,255,255,0.22)",
                 background: "rgba(255,255,255,0.09)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
-                color: "#fff",
+                color: "#f5f5f5",
                 fontFamily: "var(--font-body)",
                 fontSize: "0.9rem",
                 outline: "none",
@@ -2491,15 +2531,15 @@ function FinalCTA() {
               type="submit"
               style={{
                 padding: "1rem 2rem",
-                borderRadius: 0,
-                background: "#FE7A36",
-                color: "#fff",
+                borderRadius: "var(--radius-soft)",
+                background: "#ef6905",
+                color: "#f5f5f5",
                 border: "none",
                 fontFamily: "var(--font-body)",
                 fontWeight: 700,
                 fontSize: "0.9rem",
                 cursor: "pointer",
-                boxShadow: "0 8px 36px rgba(254,122,54,0.48)",
+                boxShadow: "0 8px 36px rgba(239, 105, 5,0.48)",
                 transition: "transform 0.2s var(--ease-spring)",
                 whiteSpace: "nowrap",
               }}
@@ -2525,10 +2565,10 @@ function FinalCTA() {
                 alignItems: "center",
                 gap: "0.6rem",
                 padding: "0.75rem 1.75rem",
-                borderRadius: 0,
+                borderRadius: "var(--radius-soft)",
                 background: "transparent",
                 border: "1.5px solid rgba(255,255,255,0.22)",
-                color: "#fff",
+                color: "#f5f5f5",
                 fontFamily: "var(--font-body)",
                 fontWeight: 600,
                 fontSize: "0.85rem",
@@ -2581,9 +2621,7 @@ export default function About() {
         <StatsSection />
         <WhoWeAre />
         <HowWePartner />
-        <OurJourney />
-        <ToolsWeUse />
-        <Leadership />
+      
         <FounderSpotlight />
         <LatestNews />
         <FinalCTA />

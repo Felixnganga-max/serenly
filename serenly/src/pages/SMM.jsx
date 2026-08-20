@@ -13,7 +13,27 @@
 //   9. FAQ           — SEO-rich Q&A
 //  10. CTA
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Reveal, ParallaxLayer } from "../components/Parallax";
+
+/* ─────────────────────────────────────────────
+   ACCENT LOOKUPS
+   Shared orange / blue / green / periwinkle
+   values consumed by the inline style ternaries
+   throughout this page's accent-driven cards.
+───────────────────────────────────────────── */
+const ACCENT_RGB = {
+  orange: "239, 105, 5",
+  blue: "0, 85, 218",
+  green: "91, 126, 60",
+  periwinkle: "201,211,243",
+};
+const ACCENT_VAR = {
+  orange: "var(--color-brand-orange)",
+  blue: "var(--color-brand-blue)",
+  green: "var(--color-brand-green)",
+  periwinkle: "var(--color-brand-periwinkle-dark)",
+};
 
 /* ─────────────────────────────────────────────
    REAL DATA (sourced from article research)
@@ -22,11 +42,11 @@ import React, { useEffect, useRef, useState } from "react";
 const META_STATS = [
   { val: "5B+", label: "Social media users globally", accent: "orange" },
   { val: "2.5hrs", label: "Average daily time on social", accent: "blue" },
-  { val: "70%", label: "US adults log into Facebook daily", accent: "orange" },
+  { val: "70%", label: "US adults log into Facebook daily", accent: "green" },
   {
     val: "$5–30",
     label: "Average CPL on Meta vs $20–100 on Google",
-    accent: "blue",
+    accent: "periwinkle",
   },
 ];
 
@@ -65,7 +85,7 @@ const AD_FORMATS = [
     id: "carousel",
     icon: "🎠",
     title: "Carousel Ads",
-    accent: "orange",
+    accent: "green",
     badge: "Best for Products",
     desc: "Multiple images or cards in one ad. Carousels invite users to swipe and discover more — ideal when showcasing multiple products, services, or a narrative that builds curiosity. The key: make the content flow, not feel generic.",
     useCases: [
@@ -110,13 +130,13 @@ const RETARGETING_TYPES = [
     icon: "👥",
     title: "Lookalike Audiences",
     desc: "Meta builds a new audience that mirrors the behaviour and interests of your existing customers or site visitors — expanding your reach to cold audiences most likely to convert.",
-    color: "orange",
+    color: "green",
   },
   {
     icon: "📧",
     title: "Custom Audience Upload",
     desc: "Upload your customer list (name, email, phone, DOB, zip) for 80–90% match rates on Meta. Target existing customers with upsells, re-engagement offers, or loyalty campaigns.",
-    color: "blue",
+    color: "green",
   },
 ];
 
@@ -140,7 +160,7 @@ const STRATEGY_PILLARS = [
     title: "UTM Tracking",
     desc: "Every ad URL carries UTM parameters so Google Analytics shows exactly which ads drive traffic and revenue — far more accurate than Meta's own attribution reporting.",
     icon: "🔗",
-    accent: "orange",
+    accent: "green",
   },
   {
     num: "04",
@@ -161,7 +181,7 @@ const STRATEGY_PILLARS = [
     title: "Ad Relevance Optimisation",
     desc: "We monitor Quality Ranking, Engagement Rate Ranking, and Conversion Rate Ranking — Meta's three Ad Relevance Diagnostics — to keep CPMs low and delivery high.",
     icon: "📊",
-    accent: "blue",
+    accent: "green",
   },
 ];
 
@@ -282,13 +302,13 @@ const PROCESS = [
     num: 3,
     title: "Content & Creative",
     desc: "Graphics, video scripts, UGC sourcing, captions and hashtag strategy — all crafted to match your brand voice and optimised for Meta's ad relevance scoring.",
-    color: "#E1306C",
+    color: "var(--color-brand-green)",
   },
   {
     num: 4,
     title: "Launch & Engage",
     desc: "Campaigns go live at optimal times. We monitor the auction, adjust bids, respond to comments, manage your inbox, and A/B test creatives continuously.",
-    color: "var(--color-brand-orange)",
+    color: "var(--color-brand-green)",
   },
   {
     num: 5,
@@ -315,13 +335,13 @@ const RESULTS = [
     val: "80–90%",
     label: "Custom audience match rate",
     sub: "On email/phone list uploads",
-    accent: "orange",
+    accent: "green",
   },
   {
     val: "30 days",
     label: "To see measurable results",
     sub: "Leads, followers or revenue",
-    accent: "blue",
+    accent: "green",
   },
 ];
 
@@ -353,28 +373,6 @@ const FAQS = [
 ];
 
 /* ─────────────────────────────────────────────
-   HOOKS
-───────────────────────────────────────────── */
-function useFadeIn(threshold = 0.1) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, visible];
-}
-
-/* ─────────────────────────────────────────────
    SUB-COMPONENTS
 ───────────────────────────────────────────── */
 function Tag({ label, color = "orange" }) {
@@ -393,14 +391,18 @@ function Tag({ label, color = "orange" }) {
             ? "var(--color-brand-orange)"
             : color === "pink"
               ? "#E1306C"
-              : "var(--color-brand-blue)",
+              : color === "green"
+                ? "var(--color-brand-green)"
+                : "var(--color-brand-blue)",
         background:
           color === "orange"
-            ? "rgba(254,122,54,0.1)"
+            ? "rgba(239, 105, 5,0.1)"
             : color === "pink"
               ? "rgba(225,48,108,0.1)"
-              : "rgba(0,70,255,0.08)",
-        border: `1px solid ${color === "orange" ? "rgba(254,122,54,0.25)" : color === "pink" ? "rgba(225,48,108,0.25)" : "rgba(0,70,255,0.2)"}`,
+              : color === "green"
+                ? "rgba(91, 126, 60,0.1)"
+                : "rgba(0, 85, 218,0.08)",
+        border: `1px solid ${color === "orange" ? "rgba(239, 105, 5,0.25)" : color === "pink" ? "rgba(225,48,108,0.25)" : color === "green" ? "rgba(91, 126, 60,0.25)" : "rgba(0, 85, 218,0.2)"}`,
         borderRadius: 999,
         padding: "5px 12px",
       }}
@@ -415,7 +417,9 @@ function Tag({ label, color = "orange" }) {
               ? "var(--color-brand-orange)"
               : color === "pink"
                 ? "#E1306C"
-                : "var(--color-brand-blue)",
+                : color === "green"
+                  ? "var(--color-brand-green)"
+                  : "var(--color-brand-blue)",
           display: "inline-block",
         }}
       />
@@ -457,7 +461,20 @@ export default function SMM() {
         style={{
           background: "var(--color-bg-primary)",
           color: "var(--color-text-primary)",
-          overflowX: "hidden",
+          // `overflow-x: hidden` alone forces the UA to compute overflow-y as
+          // `auto` too (CSS Overflow spec: a lone 'visible' axis paired with a
+          // non-visible one is coerced to 'auto'), which turns this wrapper
+          // into an unintended scroll container and hijacks every descendant
+          // `animation-timeline: view()` <Reveal>/<ParallaxLayer> calculation
+          // against this div's own (page-length-tall) box instead of the real
+          // viewport — pinning far-down sections like the final CTA at
+          // near-zero opacity forever. `clip` on both axes avoids the
+          // visible->auto coercion (neither axis is 'visible') while still
+          // clipping the horizontal overflow from full-bleed decorative
+          // blobs, and — unlike hidden/auto — never establishes a scroll
+          // container, so it doesn't hijack view-timeline math.
+          overflowX: "clip",
+          overflowY: "clip",
         }}
       >
         <HeroSection
@@ -496,9 +513,11 @@ export default function SMM() {
         .smm-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,4vw,5rem); align-items:center; }
         @media(max-width:820px){ .smm-grid-2 { grid-template-columns:1fr !important; } }
         .format-tab:hover { transform:translateY(-2px); }
-        .strategy-card:hover { transform:translateY(-4px); }
-        .svc-tile:hover { transform:translateY(-2px); }
-        .result-card:hover { transform:translateY(-4px); }
+        /* strategy-card / svc-tile / result-card / retarget-card lift is applied via
+           onMouseEnter/onMouseLeave (not :hover transform) — those cards are wrapped in
+           <Reveal>, whose scroll-linked entrance animation keeps a filled transform value
+           that would silently out-prioritise a competing :hover transform in browsers with
+           native scroll-timeline support. box-shadow/border-color hover cues don't collide. */
         .faq-item { border-bottom:1px solid var(--color-border); }
         .faq-item:last-child { border-bottom:none; }
       `}</style>
@@ -527,32 +546,35 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
         alignItems: "center",
         justifyContent: "center",
         background:
-          "linear-gradient(150deg, rgba(254,122,54,0.08) 0%, rgba(0,70,255,0.06) 45%, rgba(225,48,108,0.05) 100%)",
+          "linear-gradient(150deg, rgba(239, 105, 5,0.08) 0%, rgba(0, 85, 218,0.06) 45%, rgba(225,48,108,0.05) 100%)",
         padding: "5rem 0 3rem",
       }}
     >
-      {/* Background blobs */}
+      {/* Background blobs — drift at different speeds for a layered depth effect */}
       {[
         {
           top: "5%",
           left: "4%",
           w: 220,
-          bg: "rgba(254,122,54,0.15)",
+          bg: "rgba(239, 105, 5,0.15)",
           anim: "anim-float",
+          speed: 30,
         },
         {
           top: "12%",
           right: "6%",
           w: 160,
-          bg: "rgba(0,70,255,0.12)",
+          bg: "rgba(0, 85, 218,0.12)",
           anim: "anim-float-d",
+          speed: -24,
         },
         {
           bottom: "18%",
           left: "2%",
           w: 100,
-          bg: "rgba(254,122,54,0.1)",
+          bg: "rgba(91, 126, 60,0.14)",
           anim: "anim-float",
+          speed: 22,
         },
         {
           bottom: "8%",
@@ -560,22 +582,22 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
           w: 180,
           bg: "rgba(225,48,108,0.09)",
           anim: "anim-float-d",
+          speed: -18,
         },
       ].map((b, i) => (
-        <div
-          key={i}
-          className={b.anim}
-          style={{
-            position: "absolute",
-            width: b.w,
-            height: b.w,
-            borderRadius: "50%",
-            background: `radial-gradient(circle,${b.bg} 0%,transparent 70%)`,
-            filter: "blur(3px)",
-            pointerEvents: "none",
-            ...b,
-          }}
-        />
+        <ParallaxLayer key={i} speed={b.speed} style={{ position: "absolute", ...b }}>
+          <div
+            className={b.anim}
+            style={{
+              width: b.w,
+              height: b.w,
+              borderRadius: "50%",
+              background: `radial-gradient(circle,${b.bg} 0%,transparent 70%)`,
+              filter: "blur(3px)",
+              pointerEvents: "none",
+            }}
+          />
+        </ParallaxLayer>
       ))}
       <div
         style={{
@@ -597,7 +619,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
           style={{
             background: "var(--color-surface)",
             border: "1px solid var(--color-border)",
-            borderRadius: "var(--radius-2xl)",
+            borderRadius: "var(--radius-soft)",
             boxShadow: "var(--shadow-xl)",
             padding: "clamp(2rem,4vw,3.5rem)",
             opacity: loaded ? 1 : 0,
@@ -617,7 +639,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               height: 3,
               background:
                 "linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-blue),#E1306C)",
-              borderRadius: "var(--radius-2xl) var(--radius-2xl) 0 0",
+              borderRadius: "var(--radius-soft) var(--radius-soft) 0 0",
             }}
           />
 
@@ -660,7 +682,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                 <span
                   style={{
                     background:
-                      "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                      "linear-gradient(135deg,var(--color-brand-orange),#ff8a2e)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -721,7 +743,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                       alignItems: "center",
                       gap: "0.875rem",
                       padding: "0.85rem 1rem",
-                      borderRadius: "var(--radius-lg)",
+                      borderRadius: "var(--radius-soft)",
                       border: "1px solid var(--color-border)",
                       background: "var(--color-bg-secondary)",
                       opacity: loaded ? 1 : 0,
@@ -733,13 +755,10 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                       style={{
                         width: 40,
                         height: 40,
-                        borderRadius: "var(--radius-md)",
+                        borderRadius: "var(--radius-soft)",
                         flexShrink: 0,
-                        background:
-                          i % 2 === 0
-                            ? "rgba(254,122,54,0.1)"
-                            : "rgba(0,70,255,0.08)",
-                        border: `1px solid ${i % 2 === 0 ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
+                        background: `rgba(${ACCENT_RGB[["orange", "blue", "green"][i % 3]]},0.1)`,
+                        border: `1px solid rgba(${ACCENT_RGB[["orange", "blue", "green"][i % 3]]},0.23)`,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -786,9 +805,9 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                   className="btn btn-primary btn-lg"
                   style={{
                     background:
-                      "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
-                    boxShadow: "0 8px 28px rgba(254,122,54,0.4)",
-                    borderRadius: 12,
+                      "linear-gradient(135deg,var(--color-brand-orange),#ff8a2e)",
+                    boxShadow: "0 8px 28px rgba(239, 105, 5,0.4)",
+                    borderRadius: "var(--radius-pill)",
                   }}
                 >
                   See Ad Formats
@@ -806,7 +825,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                 <a
                   href="/contact"
                   className="btn btn-ghost btn-lg"
-                  style={{ borderRadius: 12 }}
+                  style={{ borderRadius: "var(--radius-pill)" }}
                 >
                   Get Free Audit
                 </a>
@@ -823,13 +842,14 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
               }}
             >
               {/* Main analytics card */}
-              <div
+              <ParallaxLayer
+                speed={18}
                 style={{
                   width: "100%",
                   maxWidth: 320,
                   background: "var(--color-surface-raised)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "var(--radius-2xl)",
+                  borderRadius: "var(--radius-soft)",
                   overflow: "hidden",
                   boxShadow: "var(--shadow-lg)",
                 }}
@@ -853,7 +873,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: "#fff",
+                      color: "#f5f5f5",
                       fontWeight: 800,
                       fontSize: "0.9rem",
                     }}
@@ -865,7 +885,7 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                       style={{
                         fontSize: "0.8rem",
                         fontWeight: 700,
-                        color: "#fff",
+                        color: "#f5f5f5",
                       }}
                     >
                       Serenly Client Campaign
@@ -927,14 +947,14 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                       val: "Ksh 340",
                       change: "-18%",
                       up: false,
-                      c: "var(--color-brand-orange)",
+                      c: "var(--color-brand-green)",
                     },
                   ].map((m) => (
                     <div
                       key={m.label}
                       style={{
                         padding: "0.875rem",
-                        borderRadius: "var(--radius-md)",
+                        borderRadius: "var(--radius-soft)",
                         background: "var(--color-bg-secondary)",
                         border: "1px solid var(--color-border)",
                       }}
@@ -1006,13 +1026,13 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                         height: "100%",
                         width: "78%",
                         background:
-                          "linear-gradient(90deg,var(--color-brand-orange),#ff9a62)",
+                          "linear-gradient(90deg,var(--color-brand-orange),#ff8a2e)",
                         borderRadius: 999,
                       }}
                     />
                   </div>
                 </div>
-              </div>
+              </ParallaxLayer>
 
               {/* Floating badges */}
               <div
@@ -1022,9 +1042,9 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                   top: "-0.75rem",
                   right: "-0.25rem",
                   padding: "0.75rem 1rem",
-                  borderRadius: "var(--radius-lg)",
+                  borderRadius: "var(--radius-soft)",
                   background: "var(--color-surface)",
-                  border: "1px solid rgba(254,122,54,0.3)",
+                  border: "1px solid rgba(239, 105, 5,0.3)",
                   boxShadow: "var(--shadow-md)",
                   textAlign: "center",
                   minWidth: 96,
@@ -1061,9 +1081,9 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
                   bottom: "1rem",
                   left: "-0.75rem",
                   padding: "0.75rem 1rem",
-                  borderRadius: "var(--radius-lg)",
-                  background: "var(--color-surface)",
-                  border: "1px solid rgba(0,70,255,0.25)",
+                  borderRadius: "var(--radius-soft)",
+                  background: "rgba(201,211,243,0.22)",
+                  border: "1px solid var(--color-brand-periwinkle-dark)",
                   boxShadow: "var(--shadow-md)",
                   textAlign: "center",
                   minWidth: 110,
@@ -1172,10 +1192,8 @@ function HeroSection({ activePlatform, setActivePlatform, platform }) {
 
 /* ══════ 2. STATS STRIP ══════ */
 function StatsStrip() {
-  const [ref, visible] = useFadeIn(0.1);
   return (
     <section
-      ref={ref}
       style={{
         background: "var(--color-bg-secondary)",
         borderTop: "1px solid var(--color-border)",
@@ -1193,20 +1211,16 @@ function StatsStrip() {
           className="stats-grid"
         >
           {META_STATS.map((s, i) => (
-            <div
+            <Reveal
               key={s.label}
+              type="up"
+              delay={i * 0.08}
               style={{
                 textAlign: "center",
                 padding: "1.5rem 1rem",
-                borderRadius: "var(--radius-xl)",
-                background:
-                  s.accent === "orange"
-                    ? "rgba(254,122,54,0.05)"
-                    : "rgba(0,70,255,0.04)",
-                border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.14)"}`,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(16px)",
-                transition: `all 0.5s ease ${i * 0.1}s`,
+                borderRadius: "var(--radius-soft)",
+                background: `rgba(${ACCENT_RGB[s.accent]},0.05)`,
+                border: `1px solid rgba(${ACCENT_RGB[s.accent]},0.16)`,
               }}
             >
               <div
@@ -1214,9 +1228,9 @@ function StatsStrip() {
                   fontFamily: "var(--font-display)",
                   fontSize: "clamp(1.75rem,3vw,2.5rem)",
                   color:
-                    s.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
+                    s.accent === "periwinkle"
+                      ? "var(--color-text-primary)"
+                      : ACCENT_VAR[s.accent],
                   lineHeight: 1,
                   marginBottom: "0.5rem",
                 }}
@@ -1232,7 +1246,7 @@ function StatsStrip() {
               >
                 {s.label}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1243,16 +1257,14 @@ function StatsStrip() {
 
 /* ══════ 3. AD FORMATS ══════ */
 function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
-  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="ad-formats"
-      ref={ref}
       className="section-pad"
       aria-label="Meta Ad Formats"
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <Tag label="Ad Formats" color="orange" />
           <h2
             style={{
@@ -1265,7 +1277,7 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
             <span
               style={{
                 background:
-                  "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                  "linear-gradient(135deg,var(--color-brand-orange),#ff8a2e)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -1287,10 +1299,12 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
             objectives, audiences, and business types. We choose — and often mix
             — formats based on your campaign goal.
           </p>
-        </div>
+        </Reveal>
 
         {/* Format tabs */}
-        <div
+        <Reveal
+          type="up"
+          delay={0.1}
           style={{
             display: "flex",
             gap: "0.625rem",
@@ -1309,19 +1323,15 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                 alignItems: "center",
                 gap: "0.5rem",
                 padding: "0.65rem 1.25rem",
-                borderRadius: "var(--radius-full)",
-                border: `1.5px solid ${activeFormat === f.id ? (f.accent === "orange" ? "var(--color-brand-orange)" : "var(--color-brand-blue)") : "var(--color-border)"}`,
+                borderRadius: "var(--radius-pill)",
+                border: `1.5px solid ${activeFormat === f.id ? ACCENT_VAR[f.accent] : "var(--color-border)"}`,
                 background:
                   activeFormat === f.id
-                    ? f.accent === "orange"
-                      ? "rgba(254,122,54,0.1)"
-                      : "rgba(0,70,255,0.08)"
+                    ? `rgba(${ACCENT_RGB[f.accent]},0.1)`
                     : "var(--color-surface)",
                 color:
                   activeFormat === f.id
-                    ? f.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)"
+                    ? ACCENT_VAR[f.accent]
                     : "var(--color-text-secondary)",
                 fontFamily: "var(--font-body)",
                 fontWeight: 700,
@@ -1338,14 +1348,8 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                     padding: "2px 7px",
                     borderRadius: 999,
                     fontWeight: 700,
-                    background:
-                      f.accent === "orange"
-                        ? "rgba(254,122,54,0.15)"
-                        : "rgba(0,70,255,0.12)",
-                    color:
-                      f.accent === "orange"
-                        ? "var(--color-brand-orange)"
-                        : "var(--color-brand-blue)",
+                    background: `rgba(${ACCENT_RGB[f.accent]},0.14)`,
+                    color: ACCENT_VAR[f.accent],
                   }}
                 >
                   {f.badge}
@@ -1353,21 +1357,17 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
               )}
             </button>
           ))}
-        </div>
+        </Reveal>
 
-        {/* Active format detail */}
-        <div
+        {/* Active format detail — remounts + re-reveals on every tab switch */}
+        <Reveal
+          key={format.id}
+          type="scale"
           style={{
-            borderRadius: "var(--radius-2xl)",
-            background:
-              format.accent === "orange"
-                ? "linear-gradient(145deg,rgba(254,122,54,0.07),rgba(254,122,54,0.02))"
-                : "linear-gradient(145deg,rgba(0,70,255,0.06),rgba(0,70,255,0.02))",
-            border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
+            borderRadius: "var(--radius-soft)",
+            background: `linear-gradient(145deg,rgba(${ACCENT_RGB[format.accent]},0.07),rgba(${ACCENT_RGB[format.accent]},0.02))`,
+            border: `1px solid rgba(${ACCENT_RGB[format.accent]},0.19)`,
             padding: "clamp(2rem,4vw,3rem)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.55s ease",
           }}
         >
           <div className="smm-grid-2" style={{ gap: "clamp(2rem,4vw,4rem)" }}>
@@ -1376,17 +1376,14 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                 style={{
                   width: 64,
                   height: 64,
-                  borderRadius: "var(--radius-lg)",
+                  borderRadius: "var(--radius-soft)",
                   fontSize: "2rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: "1.25rem",
-                  background:
-                    format.accent === "orange"
-                      ? "rgba(254,122,54,0.12)"
-                      : "rgba(0,70,255,0.1)",
-                  border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.28)" : "rgba(0,70,255,0.22)"}`,
+                  background: `rgba(${ACCENT_RGB[format.accent]},0.12)`,
+                  border: `1px solid rgba(${ACCENT_RGB[format.accent]},0.26)`,
                 }}
               >
                 {format.icon}
@@ -1414,12 +1411,9 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
               <div
                 style={{
                   padding: "1rem 1.25rem",
-                  borderRadius: "var(--radius-lg)",
-                  background:
-                    format.accent === "orange"
-                      ? "rgba(254,122,54,0.08)"
-                      : "rgba(0,70,255,0.07)",
-                  border: `1px solid ${format.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
+                  borderRadius: "var(--radius-soft)",
+                  background: `rgba(${ACCENT_RGB[format.accent]},0.08)`,
+                  border: `1px solid rgba(${ACCENT_RGB[format.accent]},0.19)`,
                   display: "flex",
                   gap: "0.75rem",
                   alignItems: "flex-start",
@@ -1437,10 +1431,7 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                       fontWeight: 800,
                       letterSpacing: "0.1em",
                       textTransform: "uppercase",
-                      color:
-                        format.accent === "orange"
-                          ? "var(--color-brand-orange)"
-                          : "var(--color-brand-blue)",
+                      color: ACCENT_VAR[format.accent],
                       marginBottom: 4,
                     }}
                   >
@@ -1465,10 +1456,7 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                   fontWeight: 800,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color:
-                    format.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
+                  color: ACCENT_VAR[format.accent],
                   marginBottom: "1.25rem",
                 }}
               >
@@ -1489,7 +1477,7 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                       alignItems: "center",
                       gap: "0.875rem",
                       padding: "1rem 1.25rem",
-                      borderRadius: "var(--radius-lg)",
+                      borderRadius: "var(--radius-soft)",
                       background: "var(--color-surface)",
                       border: "1px solid var(--color-border)",
                       fontSize: "0.9rem",
@@ -1502,19 +1490,13 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                         height: 28,
                         borderRadius: "50%",
                         flexShrink: 0,
-                        background:
-                          format.accent === "orange"
-                            ? "rgba(254,122,54,0.12)"
-                            : "rgba(0,70,255,0.1)",
+                        background: `rgba(${ACCENT_RGB[format.accent]},0.12)`,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: "0.7rem",
                         fontWeight: 800,
-                        color:
-                          format.accent === "orange"
-                            ? "var(--color-brand-orange)"
-                            : "var(--color-brand-blue)",
+                        color: ACCENT_VAR[format.accent],
                       }}
                     >
                       0{i + 1}
@@ -1531,13 +1513,12 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
                   display: "inline-flex",
                   background:
                     format.accent === "orange"
-                      ? "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)"
-                      : "linear-gradient(135deg,var(--color-brand-blue),#3369ff)",
-                  borderRadius: 12,
-                  boxShadow:
-                    format.accent === "orange"
-                      ? "0 8px 28px rgba(254,122,54,0.35)"
-                      : "0 8px 28px rgba(0,70,255,0.3)",
+                      ? "linear-gradient(135deg,var(--color-brand-orange),#ff8a2e)"
+                      : format.accent === "green"
+                        ? "linear-gradient(135deg,var(--color-brand-green),var(--color-brand-green-light))"
+                        : "linear-gradient(135deg,var(--color-brand-blue),#3878e6)",
+                  borderRadius: "var(--radius-pill)",
+                  boxShadow: `0 8px 28px rgba(${ACCENT_RGB[format.accent]},0.32)`,
                 }}
               >
                 Run {format.title} for My Business
@@ -1554,7 +1535,7 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1562,11 +1543,9 @@ function AdFormatsSection({ activeFormat, setActiveFormat, format }) {
 
 /* ══════ 4. RETARGETING ══════ */
 function RetargetingSection() {
-  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="retargeting"
-      ref={ref}
       aria-label="Meta Pixel Retargeting"
       style={{
         background: "var(--color-bg-secondary)",
@@ -1577,32 +1556,54 @@ function RetargetingSection() {
         overflow: "hidden",
       }}
     >
-      <div
+      <ParallaxLayer
+        speed={-26}
         style={{
           position: "absolute",
           top: "10%",
           right: "5%",
           width: 280,
           height: 280,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle,rgba(254,122,54,0.1) 0%,transparent 70%)",
-          animation: "float 10s ease-in-out infinite",
-          pointerEvents: "none",
         }}
-      />
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle,rgba(91, 126, 60,0.14) 0%,transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+      </ParallaxLayer>
+      <ParallaxLayer
+        speed={20}
+        style={{
+          position: "absolute",
+          bottom: "6%",
+          left: "3%",
+          width: 180,
+          height: 180,
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle,rgba(239, 105, 5,0.1) 0%,transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+      </ParallaxLayer>
 
       <div className="container-site">
         <div className="smm-grid-2">
           {/* LEFT — explanation */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-24px)",
-              transition: "all 0.65s ease",
-            }}
-          >
-            <Tag label="Retargeting & Pixel" color="orange" />
+          <Reveal type="left">
+            <Tag label="Retargeting & Pixel" color="green" />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
@@ -1616,7 +1617,7 @@ function RetargetingSection() {
               <span
                 style={{
                   background:
-                    "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                    "linear-gradient(135deg,var(--color-brand-green),var(--color-brand-green-light))",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -1669,7 +1670,7 @@ function RetargetingSection() {
                   bottom: 24,
                   width: 2,
                   background:
-                    "linear-gradient(180deg,var(--color-brand-orange),var(--color-brand-blue))",
+                    "linear-gradient(180deg,var(--color-brand-green),var(--color-brand-orange))",
                   borderRadius: 2,
                   opacity: 0.35,
                 }}
@@ -1687,16 +1688,15 @@ function RetargetingSection() {
                   step: "They click, convert, and become a customer",
                 },
               ].map((s, i) => (
-                <div
+                <Reveal
                   key={s.step}
+                  type="left"
+                  delay={0.15 + i * 0.07}
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: "1rem",
                     padding: "0.875rem 0",
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? "translateX(0)" : "translateX(-12px)",
-                    transition: `all 0.45s ease ${0.2 + i * 0.08}s`,
                   }}
                 >
                   <div
@@ -1725,10 +1725,10 @@ function RetargetingSection() {
                   >
                     {s.step}
                   </span>
-                </div>
+                </Reveal>
               ))}
             </div>
-          </div>
+          </Reveal>
 
           {/* RIGHT — retargeting type cards */}
           <div
@@ -1736,34 +1736,25 @@ function RetargetingSection() {
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: "1rem",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(24px)",
-              transition: "all 0.65s ease 0.15s",
             }}
           >
             {RETARGETING_TYPES.map((rt, i) => (
-              <div
+              <Reveal
                 key={rt.title}
+                type="up"
+                delay={i * 0.08}
                 style={{
                   padding: "1.5rem",
-                  borderRadius: "var(--radius-xl)",
-                  background:
-                    rt.color === "orange"
-                      ? "rgba(254,122,54,0.05)"
-                      : "rgba(0,70,255,0.04)",
-                  border: `1px solid ${rt.color === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.15)"}`,
+                  borderRadius: "var(--radius-soft)",
+                  background: `rgba(${ACCENT_RGB[rt.color]},0.05)`,
+                  border: `1px solid rgba(${ACCENT_RGB[rt.color]},0.16)`,
                   transition: "all 0.25s ease",
                   cursor: "default",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow =
-                    rt.color === "orange"
-                      ? "0 16px 40px rgba(254,122,54,0.18)"
-                      : "0 16px 40px rgba(0,70,255,0.15)";
+                  e.currentTarget.style.boxShadow = `0 16px 40px rgba(${ACCENT_RGB[rt.color]},0.16)`;
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
@@ -1775,10 +1766,7 @@ function RetargetingSection() {
                     fontSize: "0.875rem",
                     fontWeight: 800,
                     marginBottom: "0.5rem",
-                    color:
-                      rt.color === "orange"
-                        ? "var(--color-brand-orange)"
-                        : "var(--color-brand-blue)",
+                    color: ACCENT_VAR[rt.color],
                   }}
                 >
                   {rt.title}
@@ -1792,18 +1780,20 @@ function RetargetingSection() {
                 >
                   {rt.desc}
                 </div>
-              </div>
+              </Reveal>
             ))}
 
             {/* ROAS callout */}
-            <div
+            <Reveal
+              type="scale"
+              delay={0.2}
               style={{
                 gridColumn: "1/-1",
                 padding: "1.25rem 1.5rem",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-soft)",
                 background:
-                  "linear-gradient(135deg,rgba(254,122,54,0.1),rgba(0,70,255,0.08))",
-                border: "1px solid rgba(254,122,54,0.25)",
+                  "linear-gradient(135deg,rgba(91, 126, 60,0.12),rgba(239, 105, 5,0.08))",
+                border: "1px solid rgba(91, 126, 60,0.28)",
                 display: "flex",
                 alignItems: "center",
                 gap: "1.25rem",
@@ -1815,7 +1805,7 @@ function RetargetingSection() {
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "1.6rem",
-                    color: "var(--color-brand-orange)",
+                    color: "var(--color-brand-green)",
                     lineHeight: 1,
                   }}
                 >
@@ -1834,7 +1824,7 @@ function RetargetingSection() {
                   people who already trust your brand.
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </div>
@@ -1844,16 +1834,14 @@ function RetargetingSection() {
 
 /* ══════ 5. STRATEGY PILLARS ══════ */
 function StrategySection() {
-  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="strategy"
-      ref={ref}
       className="section-pad"
       aria-label="Meta Advertising Strategy"
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <Tag label="Our Strategy" color="blue" />
           <h2
             style={{
@@ -1866,7 +1854,7 @@ function StrategySection() {
             <span
               style={{
                 background:
-                  "linear-gradient(135deg,var(--color-brand-blue),#3369ff)",
+                  "linear-gradient(135deg,var(--color-brand-blue),#3878e6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -1888,7 +1876,7 @@ function StrategySection() {
             on how Meta's auction, algorithm, and ad relevance scoring actually
             operate.
           </p>
-        </div>
+        </Reveal>
 
         <div
           style={{
@@ -1899,39 +1887,26 @@ function StrategySection() {
           className="strategy-grid"
         >
           {STRATEGY_PILLARS.map((s, i) => (
-            <div
+            <Reveal
               key={s.num}
+              type="up"
+              delay={i * 0.08}
               className="strategy-card"
               style={{
                 padding: "1.875rem",
-                borderRadius: "var(--radius-xl)",
-                background:
-                  s.accent === "orange"
-                    ? "linear-gradient(145deg,rgba(254,122,54,0.06),rgba(254,122,54,0.02))"
-                    : "linear-gradient(145deg,rgba(0,70,255,0.05),rgba(0,70,255,0.02))",
-                border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.14)"}`,
+                borderRadius: "var(--radius-soft)",
+                background: `linear-gradient(145deg,rgba(${ACCENT_RGB[s.accent]},0.06),rgba(${ACCENT_RGB[s.accent]},0.02))`,
+                border: `1px solid rgba(${ACCENT_RGB[s.accent]},0.16)`,
                 position: "relative",
                 overflow: "hidden",
                 cursor: "default",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `all 0.5s ease ${i * 0.08}s`,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor =
-                  s.accent === "orange"
-                    ? "rgba(254,122,54,0.38)"
-                    : "rgba(0,70,255,0.32)";
-                e.currentTarget.style.boxShadow =
-                  s.accent === "orange"
-                    ? "0 20px 48px rgba(254,122,54,0.15)"
-                    : "0 20px 48px rgba(0,70,255,0.12)";
+                e.currentTarget.style.borderColor = `rgba(${ACCENT_RGB[s.accent]},0.35)`;
+                e.currentTarget.style.boxShadow = `0 20px 48px rgba(${ACCENT_RGB[s.accent]},0.14)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor =
-                  s.accent === "orange"
-                    ? "rgba(254,122,54,0.18)"
-                    : "rgba(0,70,255,0.14)";
+                e.currentTarget.style.borderColor = `rgba(${ACCENT_RGB[s.accent]},0.16)`;
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
@@ -1947,16 +1922,13 @@ function StrategySection() {
                   style={{
                     width: 46,
                     height: 46,
-                    borderRadius: "var(--radius-md)",
+                    borderRadius: "var(--radius-soft)",
                     fontSize: "1.4rem",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background:
-                      s.accent === "orange"
-                        ? "rgba(254,122,54,0.12)"
-                        : "rgba(0,70,255,0.1)",
-                    border: `1px solid ${s.accent === "orange" ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
+                    background: `rgba(${ACCENT_RGB[s.accent]},0.12)`,
+                    border: `1px solid rgba(${ACCENT_RGB[s.accent]},0.23)`,
                   }}
                 >
                   {s.icon}
@@ -1965,10 +1937,7 @@ function StrategySection() {
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "0.75rem",
-                    color:
-                      s.accent === "orange"
-                        ? "rgba(254,122,54,0.4)"
-                        : "rgba(0,70,255,0.35)",
+                    color: `rgba(${ACCENT_RGB[s.accent]},0.4)`,
                   }}
                 >
                   {s.num}
@@ -2000,17 +1969,14 @@ function StrategySection() {
                   fontFamily: "var(--font-display)",
                   fontSize: "5rem",
                   lineHeight: 1,
-                  color:
-                    s.accent === "orange"
-                      ? "rgba(254,122,54,0.04)"
-                      : "rgba(0,70,255,0.04)",
+                  color: `rgba(${ACCENT_RGB[s.accent]},0.04)`,
                   userSelect: "none",
                   pointerEvents: "none",
                 }}
               >
                 {s.num}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -2021,11 +1987,9 @@ function StrategySection() {
 
 /* ══════ 6. PLATFORMS DEEP-DIVE ══════ */
 function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
-  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="platforms"
-      ref={ref}
       aria-label="Facebook and Instagram Marketing Services"
       style={{
         background: "var(--color-bg-secondary)",
@@ -2035,7 +1999,7 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
       }}
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <Tag label="Platform Services" color="blue" />
           <h2
             style={{
@@ -2058,10 +2022,12 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
             Two platforms, two tailored strategies — each optimised for how that
             audience actually scrolls, engages, and buys.
           </p>
-        </div>
+        </Reveal>
 
         {/* Platform tabs */}
-        <div
+        <Reveal
+          type="up"
+          delay={0.1}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -2101,23 +2067,16 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
               {p.label}
             </button>
           ))}
-        </div>
+        </Reveal>
 
-        <div
-          className="smm-grid-2"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.6s ease",
-          }}
-        >
+        <div className="smm-grid-2">
           {/* Left — stats & info */}
-          <div>
+          <Reveal key={`${platform.id}-left`} type="left">
             {/* Stat banner */}
             <div
               style={{
                 padding: "1.5rem 2rem",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-soft)",
                 marginBottom: "2rem",
                 background: `linear-gradient(135deg,${platform.color}15,${platform.color}08)`,
                 border: `1px solid ${platform.color}30`,
@@ -2212,7 +2171,7 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
               style={{
                 background: `linear-gradient(135deg,${platform.color},${platform.color}cc)`,
                 boxShadow: `0 8px 28px ${platform.color}35`,
-                borderRadius: 12,
+                borderRadius: "var(--radius-pill)",
               }}
             >
               Get {platform.label} Strategy
@@ -2227,10 +2186,11 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </a>
-          </div>
+          </Reveal>
 
           {/* Right — service tiles */}
           <div
+            key={`${platform.id}-right`}
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -2238,27 +2198,26 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
             }}
           >
             {platform.services.map((svc, i) => (
-              <div
+              <Reveal
                 key={svc.title}
+                type="up"
+                delay={i * 0.07}
                 className="svc-tile"
                 style={{
                   padding: "1.125rem",
-                  borderRadius: "var(--radius-lg)",
+                  borderRadius: "var(--radius-soft)",
                   background: "var(--color-surface)",
                   border: "1px solid var(--color-border)",
                   cursor: "default",
                   transition: "all 0.25s ease",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(12px)",
-                  transition: `all 0.4s ease ${0.15 + i * 0.07}s`,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = `${platform.color}44`;
-                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = `0 12px 28px ${platform.color}1c`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "var(--color-border)";
-                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 <div
@@ -2282,7 +2241,7 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
                 >
                   {svc.detail}
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -2293,17 +2252,15 @@ function PlatformsSection({ activePlatform, setActivePlatform, platform }) {
 
 /* ══════ 7. PROCESS ══════ */
 function ProcessSection() {
-  const [ref, visible] = useFadeIn(0.1);
   return (
     <section
       id="process"
-      ref={ref}
       className="section-pad"
       aria-label="Our Social Media Marketing Process"
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <Tag label="Our Process" color="orange" />
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "4rem" }}>
+          <Tag label="Our Process" color="green" />
           <h2
             style={{
               fontFamily: "var(--font-display)",
@@ -2315,7 +2272,7 @@ function ProcessSection() {
             <span
               style={{
                 background:
-                  "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
+                  "linear-gradient(135deg,var(--color-brand-green),var(--color-brand-green-light))",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -2324,7 +2281,7 @@ function ProcessSection() {
               Social Media
             </span>
           </h2>
-        </div>
+        </Reveal>
 
         {/* Horizontal timeline */}
         <div
@@ -2344,8 +2301,7 @@ function ProcessSection() {
               height: 3,
               borderRadius: 2,
               background: `linear-gradient(90deg,${PROCESS.map((p) => p.color).join(",")})`,
-              opacity: visible ? 0.35 : 0,
-              transition: "opacity 0.8s ease 0.3s",
+              opacity: 0.35,
             }}
           />
           {/* Dots */}
@@ -2359,17 +2315,16 @@ function ProcessSection() {
             }}
           >
             {PROCESS.map((p, i) => (
-              <div
+              <Reveal
                 key={p.num}
+                type="up"
+                delay={i * 0.1}
                 style={{
                   flex: 1,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   padding: "0 0.5rem",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(20px)",
-                  transition: `all 0.5s ease ${i * 0.12}s`,
                 }}
               >
                 <div
@@ -2381,7 +2336,7 @@ function ProcessSection() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#fff",
+                    color: "#f5f5f5",
                     fontWeight: 800,
                     fontSize: "0.875rem",
                     flexShrink: 0,
@@ -2403,7 +2358,7 @@ function ProcessSection() {
                 >
                   {p.title}
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
 
@@ -2418,11 +2373,13 @@ function ProcessSection() {
             }}
           >
             {PROCESS.map((p, i) => (
-              <div
+              <Reveal
                 key={p.num}
+                type="up"
+                delay={0.3 + i * 0.1}
                 style={{
                   padding: "1.125rem",
-                  borderRadius: "var(--radius-lg)",
+                  borderRadius: "var(--radius-soft)",
                   background: "var(--color-surface)",
                   border: `1px solid var(--color-border)`,
                   borderTopColor: p.color,
@@ -2430,12 +2387,10 @@ function ProcessSection() {
                   fontSize: "0.78rem",
                   color: "var(--color-text-secondary)",
                   lineHeight: 1.65,
-                  opacity: visible ? 1 : 0,
-                  transition: `all 0.5s ease ${0.5 + i * 0.1}s`,
                 }}
               >
                 {p.desc}
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -2446,20 +2401,18 @@ function ProcessSection() {
 
 /* ══════ 8. RESULTS ══════ */
 function ResultsSection() {
-  const [ref, visible] = useFadeIn(0.1);
   return (
     <section
-      ref={ref}
       style={{
         background:
-          "linear-gradient(135deg,rgba(254,122,54,0.07) 0%,rgba(0,70,255,0.05) 50%,rgba(225,48,108,0.06) 100%)",
+          "linear-gradient(135deg,rgba(239, 105, 5,0.07) 0%,rgba(91, 126, 60,0.05) 50%,rgba(0, 85, 218,0.05) 100%)",
         borderTop: "1px solid var(--color-border)",
         borderBottom: "1px solid var(--color-border)",
         padding: "clamp(4rem,8vw,6rem) 0",
       }}
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <Tag label="Real Results" color="orange" />
           <h2
             style={{
@@ -2482,7 +2435,7 @@ function ResultsSection() {
             Benchmark figures from Meta industry data and our managed client
             campaigns.
           </p>
-        </div>
+        </Reveal>
 
         <div
           style={{
@@ -2493,30 +2446,24 @@ function ResultsSection() {
           className="results-grid"
         >
           {RESULTS.map((r, i) => (
-            <div
+            <Reveal
               key={r.label}
+              type="up"
+              delay={i * 0.1}
               className="result-card"
               style={{
                 padding: "2rem 1.5rem",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-soft)",
                 textAlign: "center",
                 background: "var(--color-surface)",
-                border: `1px solid ${r.accent === "orange" ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.16)"}`,
+                border: `1px solid rgba(${ACCENT_RGB[r.accent]},0.18)`,
                 cursor: "default",
-                transition: "all 0.3s ease",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `all 0.5s ease ${i * 0.1}s`,
+                transition: "box-shadow 0.3s ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow =
-                  r.accent === "orange"
-                    ? "0 20px 48px rgba(254,122,54,0.18)"
-                    : "0 20px 48px rgba(0,70,255,0.14)";
+                e.currentTarget.style.boxShadow = `0 20px 48px rgba(${ACCENT_RGB[r.accent]},0.16)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
@@ -2526,10 +2473,7 @@ function ResultsSection() {
                   fontSize: "clamp(2rem,3.5vw,3rem)",
                   lineHeight: 1,
                   marginBottom: "0.75rem",
-                  color:
-                    r.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
+                  color: ACCENT_VAR[r.accent],
                 }}
               >
                 {r.val}
@@ -2552,7 +2496,7 @@ function ResultsSection() {
               >
                 {r.sub}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -2563,16 +2507,14 @@ function ResultsSection() {
 
 /* ══════ 9. FAQ ══════ */
 function FaqSection({ openFaq, setOpenFaq }) {
-  const [ref, visible] = useFadeIn(0.08);
   return (
     <section
       id="faq"
-      ref={ref}
       className="section-pad"
       aria-label="Social Media Marketing FAQ"
     >
       <div className="container-site" style={{ maxWidth: 820 }}>
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <Reveal type="up" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <Tag label="FAQ" color="blue" />
           <h2
             style={{
@@ -2595,17 +2537,15 @@ function FaqSection({ openFaq, setOpenFaq }) {
             Everything you need to know before running your first — or next —
             Meta advertising campaign.
           </p>
-        </div>
+        </Reveal>
 
-        <div
+        <Reveal
+          type="scale"
           style={{
-            borderRadius: "var(--radius-2xl)",
+            borderRadius: "var(--radius-soft)",
             background: "var(--color-surface)",
             border: "1px solid var(--color-border)",
             overflow: "hidden",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.6s ease",
           }}
         >
           {FAQS.map((faq, i) => {
@@ -2645,9 +2585,9 @@ function FaqSection({ openFaq, setOpenFaq }) {
                       borderRadius: "50%",
                       flexShrink: 0,
                       background: isOpen
-                        ? "rgba(254,122,54,0.12)"
+                        ? "rgba(239, 105, 5,0.12)"
                         : "var(--color-bg-secondary)",
-                      border: `1px solid ${isOpen ? "rgba(254,122,54,0.3)" : "var(--color-border)"}`,
+                      border: `1px solid ${isOpen ? "rgba(239, 105, 5,0.3)" : "var(--color-border)"}`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -2695,7 +2635,7 @@ function FaqSection({ openFaq, setOpenFaq }) {
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -2703,49 +2643,65 @@ function FaqSection({ openFaq, setOpenFaq }) {
 
 /* ══════ 10. CTA ══════ */
 function CtaSection() {
-  const [ref, visible] = useFadeIn(0.15);
   return (
-    <section ref={ref} className="section-pad">
+    <section className="section-pad">
       <div className="container-site">
-        <div
+        <Reveal
+          type="scale"
           style={{
-            borderRadius: "var(--radius-2xl)",
+            borderRadius: "var(--radius-soft)",
             overflow: "hidden",
             position: "relative",
             background:
-              "linear-gradient(135deg,rgba(254,122,54,0.1) 0%,rgba(0,70,255,0.08) 50%,rgba(225,48,108,0.08) 100%)",
-            border: "1px solid rgba(254,122,54,0.22)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(28px)",
-            transition: "all 0.7s ease",
+              "linear-gradient(135deg,rgba(239, 105, 5,0.1) 0%,rgba(91, 126, 60,0.07) 50%,rgba(0, 85, 218,0.08) 100%)",
+            border: "1px solid rgba(239, 105, 5,0.22)",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "-30%",
-              right: "10%",
-              width: 400,
-              height: 400,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(254,122,54,0.12) 0%,transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "-20%",
-              left: "5%",
-              width: 300,
-              height: 300,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle,rgba(0,70,255,0.1) 0%,transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
+          <ParallaxLayer
+            speed={-22}
+            style={{ position: "absolute", top: "-30%", right: "10%", width: 400, height: 400 }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle,rgba(239, 105, 5,0.12) 0%,transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+          </ParallaxLayer>
+          <ParallaxLayer
+            speed={18}
+            style={{ position: "absolute", bottom: "-20%", left: "5%", width: 300, height: 300 }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle,rgba(0, 85, 218,0.1) 0%,transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+          </ParallaxLayer>
+          <ParallaxLayer
+            speed={-14}
+            style={{ position: "absolute", top: "20%", left: "22%", width: 220, height: 220 }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle,rgba(91, 126, 60,0.14) 0%,transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+          </ParallaxLayer>
           <div
             style={{
               position: "absolute",
@@ -2782,7 +2738,7 @@ function CtaSection() {
                 Ready to grow on{" "}
                 <span
                   style={{
-                    background: "linear-gradient(135deg,#1877F2,#3369ff)",
+                    background: "linear-gradient(135deg,#1877F2,#3878e6)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -2820,9 +2776,9 @@ function CtaSection() {
                 className="btn btn-primary btn-lg"
                 style={{
                   background:
-                    "linear-gradient(135deg,var(--color-brand-orange),#ff9a62)",
-                  boxShadow: "0 8px 32px rgba(254,122,54,0.45)",
-                  borderRadius: 12,
+                    "linear-gradient(135deg,var(--color-brand-orange),#ff8a2e)",
+                  boxShadow: "0 8px 32px rgba(239, 105, 5,0.45)",
+                  borderRadius: "var(--radius-pill)",
                   whiteSpace: "nowrap",
                 }}
               >
@@ -2841,13 +2797,13 @@ function CtaSection() {
               <a
                 href="#platforms"
                 className="btn btn-ghost btn-lg"
-                style={{ borderRadius: 12, textAlign: "center" }}
+                style={{ borderRadius: "var(--radius-pill)", textAlign: "center" }}
               >
                 View Platform Services
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
       <style>{`@media(max-width:768px){.cta-inner{grid-template-columns:1fr !important;}}`}</style>
     </section>

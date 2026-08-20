@@ -1,33 +1,58 @@
-// src/sections/WebDevStrategies.jsx
-// Serenly — Web Development Strategies Section
-// Drop-in addition to Solutions.jsx — add <WebDevStrategies /> before <CtaBanner />
-// SEO schema markup included via JSON-LD
-// Covers: mobile-first, speed, UX, SEO, security, conversion, integrations,
-//         scalability, branding, maintenance, analytics, AI/voice search
+// src/pages/Solutions.jsx
+// Serenly — Web Development page, routed at /web-dev
+// 12 proven web development strategies — copy sourced from industry
+// research, preserved verbatim. Visual system rebuilt to match Serenly's
+// Home/Services design language: rounded-soft cards, orange/blue/green
+// rotating accents, Reveal + ParallaxLayer scroll motion.
+// SEO schema markup included via JSON-LD.
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import { ArrowUpRight, Check, ChevronDown } from "lucide-react";
+import { Reveal, ParallaxLayer } from "../components/Parallax";
 
-/* ─── Scroll animation hook ────────────────────────────── */
-function useFadeIn(threshold = 0.1) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, visible];
-}
+/* ─── Accent system — orange / blue / green rotate roughly 1/3 each ──── */
+const ACCENT = {
+  orange: {
+    text: "text-brand-orange",
+    groupHoverText: "group-hover:text-brand-orange",
+    tag: "section-tag-orange",
+    iconBg: "bg-brand-orange/10",
+    iconBorder: "border-brand-orange/25",
+    chipBg: "bg-brand-orange/7",
+    chipBorder: "border-brand-orange/20",
+    hoverBorder: "group-hover:border-brand-orange/35",
+    hoverShadow:
+      "group-hover:shadow-[0_20px_50px_-16px_rgba(239,105,5,0.4)]",
+  },
+  blue: {
+    text: "text-brand-blue",
+    groupHoverText: "group-hover:text-brand-blue",
+    tag: "section-tag-blue",
+    iconBg: "bg-brand-blue/8",
+    iconBorder: "border-brand-blue/20",
+    chipBg: "bg-brand-blue/6",
+    chipBorder: "border-brand-blue/18",
+    hoverBorder: "group-hover:border-brand-blue/30",
+    hoverShadow: "group-hover:shadow-[0_20px_50px_-16px_rgba(0,85,218,0.35)]",
+  },
+  green: {
+    text: "text-brand-green",
+    groupHoverText: "group-hover:text-brand-green",
+    tag: "section-tag-green",
+    iconBg: "bg-brand-green/10",
+    iconBorder: "border-brand-green/25",
+    chipBg: "bg-brand-green/8",
+    chipBorder: "border-brand-green/25",
+    hoverBorder: "group-hover:border-brand-green/35",
+    hoverShadow:
+      "group-hover:shadow-[0_20px_50px_-16px_rgba(91,126,60,0.4)]",
+  },
+};
 
-/* ─── Strategy data — sourced from industry research ──── */
+/* ─── Strategy data — sourced from industry research ──────────────────
+   Accents rebalanced to a genuine 1/3 orange / 1/3 blue / 1/3 green split
+   (4 strategies each) — all titles, summaries, impact stats and
+   how-we-do-it bullets preserved exactly. ─────────────────────────── */
 const STRATEGIES = [
   {
     num: "01",
@@ -87,7 +112,7 @@ const STRATEGIES = [
   },
   {
     num: "03",
-    accent: "orange",
+    accent: "green",
     icon: (
       <svg
         width="24"
@@ -117,7 +142,7 @@ const STRATEGIES = [
   },
   {
     num: "04",
-    accent: "blue",
+    accent: "orange",
     icon: (
       <svg
         width="24"
@@ -145,7 +170,7 @@ const STRATEGIES = [
   },
   {
     num: "05",
-    accent: "orange",
+    accent: "blue",
     icon: (
       <svg
         width="24"
@@ -173,7 +198,7 @@ const STRATEGIES = [
   },
   {
     num: "06",
-    accent: "blue",
+    accent: "green",
     icon: (
       <svg
         width="24"
@@ -255,7 +280,7 @@ const STRATEGIES = [
   },
   {
     num: "09",
-    accent: "orange",
+    accent: "green",
     icon: (
       <svg
         width="24"
@@ -283,7 +308,7 @@ const STRATEGIES = [
   },
   {
     num: "10",
-    accent: "blue",
+    accent: "orange",
     icon: (
       <svg
         width="24"
@@ -311,7 +336,7 @@ const STRATEGIES = [
   },
   {
     num: "11",
-    accent: "orange",
+    accent: "blue",
     icon: (
       <svg
         width="24"
@@ -338,7 +363,7 @@ const STRATEGIES = [
   },
   {
     num: "12",
-    accent: "blue",
+    accent: "green",
     icon: (
       <svg
         width="24"
@@ -367,7 +392,7 @@ const STRATEGIES = [
   },
 ];
 
-/* ─── JSON-LD SEO Schema ────────────────────────────────── */
+/* ─── JSON-LD SEO Schema ────────────────────────────────────────────── */
 const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -383,575 +408,310 @@ const JSON_LD = {
   })),
 };
 
-/* ─── Strategy Card ─────────────────────────────────────── */
-function StrategyCard({ strategy, index, visible }) {
-  const [expanded, setExpanded] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const isOrange = strategy.accent === "orange";
+/* ─── Stats bar data ────────────────────────────────────────────────── */
+const STATS = [
+  { val: "12", label: "Core Strategies", accent: "orange" },
+  { val: "95+", label: "Avg Perf Score", accent: "blue" },
+  { val: "54%", label: "Traffic is Mobile", accent: "green", tint: true },
+  { val: "7%", label: "Conversion Lost per 1s Delay", accent: "orange" },
+];
+
+/* ─── Strategy Card ─────────────────────────────────────────────────── */
+function StrategyCard({ strategy }) {
+  const [open, setOpen] = useState(false);
+  const a = ACCENT[strategy.accent];
+
+  const toggle = () => setOpen((v) => !v);
 
   return (
     <article
+      role="button"
+      tabIndex={0}
+      aria-expanded={open}
       aria-label={strategy.title}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        borderRadius: "var(--radius-xl)",
-        background: "var(--color-surface)",
-        border: "1px solid",
-        borderColor: hovered
-          ? isOrange
-            ? "rgba(254,122,54,0.35)"
-            : "rgba(0,70,255,0.3)"
-          : "var(--color-border)",
-        padding: "1.75rem",
-        transition: "all 0.35s var(--ease-spring)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered
-          ? isOrange
-            ? "var(--shadow-orange)"
-            : "var(--shadow-blue)"
-          : "var(--shadow-sm)",
-        opacity: visible ? 1 : 0,
-        transitionDelay: `${(index % 3) * 60}ms`,
-        cursor: "pointer",
+      onClick={toggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
       }}
-      onClick={() => setExpanded(!expanded)}
+      className={`group relative flex h-full cursor-pointer flex-col rounded-soft border border-border bg-bg-secondary p-7 transition-all duration-300 hover:-translate-y-1 ${a.hoverBorder} ${a.hoverShadow}`}
     >
-      {/* Top row */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          marginBottom: "1.25rem",
-        }}
-      >
+      {/* Top row — icon + category tag */}
+      <div className="mb-6 flex items-start justify-between gap-4">
         <div
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: "var(--radius-md)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: isOrange
-              ? "rgba(254,122,54,0.1)"
-              : "rgba(0,70,255,0.08)",
-            border: `1px solid ${isOrange ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
-            color: isOrange
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)",
-            flexShrink: 0,
-            transition: "transform 0.3s ease",
-            transform: hovered ? "scale(1.06) rotate(-2deg)" : "scale(1)",
-          }}
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-soft border transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105 ${a.iconBg} ${a.iconBorder} ${a.text}`}
         >
           {strategy.icon}
         </div>
-
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <span
-            style={{
-              fontSize: "0.65rem",
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              padding: "0.25rem 0.6rem",
-              borderRadius: "var(--radius-full)",
-              background: isOrange
-                ? "rgba(254,122,54,0.07)"
-                : "rgba(0,70,255,0.06)",
-              border: `1px solid ${isOrange ? "rgba(254,122,54,0.2)" : "rgba(0,70,255,0.18)"}`,
-              color: isOrange
-                ? "var(--color-brand-orange)"
-                : "var(--color-brand-blue)",
-            }}
-          >
-            {strategy.category}
-          </span>
-        </div>
+        <span className={`section-tag ${a.tag}`}>{strategy.category}</span>
       </div>
 
-      {/* Number */}
-      <div
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "0.75rem",
-          color: "var(--color-text-tertiary)",
-          letterSpacing: "0.1em",
-          marginBottom: "0.4rem",
-        }}
-      >
+      <div className="mb-1 font-display text-xs tracking-[0.1em] text-text-tertiary">
         {strategy.num}
       </div>
 
-      {/* Title */}
       <h3
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "1.2rem",
-          marginBottom: "0.75rem",
-          lineHeight: 1.2,
-          color: hovered
-            ? isOrange
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)"
-            : "var(--color-text-primary)",
-          transition: "color 0.2s ease",
-        }}
+        className={`mb-3 font-display text-xl leading-tight text-foreground transition-colors duration-300 ${a.groupHoverText}`}
       >
         {strategy.title}
       </h3>
 
-      {/* Summary */}
-      <p
-        style={{
-          fontSize: "0.9rem",
-          lineHeight: 1.75,
-          color: "var(--color-text-secondary)",
-          marginBottom: "1rem",
-        }}
-      >
+      <p className="mb-5 text-sm leading-relaxed text-text-secondary">
         {strategy.summary}
       </p>
 
-      {/* Impact pill */}
+      {/* Impact chip */}
       <div
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          fontSize: "0.72rem",
-          fontWeight: 700,
-          color: isOrange
-            ? "var(--color-brand-orange)"
-            : "var(--color-brand-blue)",
-          background: isOrange
-            ? "rgba(254,122,54,0.06)"
-            : "rgba(0,70,255,0.05)",
-          border: `1px solid ${isOrange ? "rgba(254,122,54,0.18)" : "rgba(0,70,255,0.16)"}`,
-          borderRadius: "var(--radius-full)",
-          padding: "0.3rem 0.75rem",
-          marginBottom: "1rem",
-          letterSpacing: "0.04em",
-        }}
+        className={`mb-5 inline-flex w-fit items-center gap-1.5 rounded-pill! border px-3 py-1.5 text-[0.7rem] font-bold tracking-wide ${a.chipBg} ${a.chipBorder} ${a.text}`}
       >
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-        >
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-          <polyline points="17 6 23 6 23 12" />
-        </svg>
+        <Check size={12} strokeWidth={3} />
         {strategy.impact}
       </div>
 
       {/* Expandable how-we-do-it */}
       <div
-        style={{
-          maxHeight: expanded ? "400px" : "0",
-          overflow: "hidden",
-          transition: "max-height 0.4s ease",
-        }}
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-500 ease-out ${
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
       >
-        <div
-          style={{
-            borderTop: "1px solid var(--color-border)",
-            paddingTop: "1.25rem",
-            marginTop: "0.5rem",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.7rem",
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "var(--color-text-tertiary)",
-              marginBottom: "0.75rem",
-            }}
-          >
-            How We Do It
-          </div>
-          <ul
-            style={{
-              listStyle: "none",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.55rem",
-            }}
-          >
-            {strategy.howWeDoIt.map((point, pi) => (
-              <li
-                key={pi}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "0.6rem",
-                  fontSize: "0.875rem",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                <span
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: "50%",
-                    flexShrink: 0,
-                    background: isOrange
-                      ? "rgba(254,122,54,0.1)"
-                      : "rgba(0,70,255,0.08)",
-                    border: `1px solid ${isOrange ? "rgba(254,122,54,0.25)" : "rgba(0,70,255,0.2)"}`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: isOrange
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
-                    fontSize: "0.55rem",
-                    fontWeight: 700,
-                    marginTop: "0.1rem",
-                  }}
+        <div className="min-h-0">
+          <div className="mt-1 border-t border-border pt-5">
+            <p className="mb-3 text-[0.7rem] font-bold uppercase tracking-[0.1em] text-text-tertiary">
+              How We Do It
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {strategy.howWeDoIt.map((point, pi) => (
+                <li
+                  key={pi}
+                  className="flex items-start gap-2.5 text-sm text-text-secondary"
                 >
-                  ✓
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
+                  <span
+                    className={`mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-pill border ${a.iconBg} ${a.iconBorder} ${a.text}`}
+                  >
+                    <Check size={11} strokeWidth={3} />
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      {/* Expand toggle */}
+      {/* Expand toggle indicator */}
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.4rem",
-          fontSize: "0.8rem",
-          fontWeight: 700,
-          marginTop: "1rem",
-          color: isOrange
-            ? "var(--color-brand-orange)"
-            : "var(--color-brand-blue)",
-        }}
+        className={`mt-5 flex items-center gap-1.5 text-sm font-bold ${a.text}`}
       >
-        {expanded ? "Show less" : "How we do it"}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          style={{
-            transform: expanded ? "rotate(180deg)" : "rotate(0)",
-            transition: "transform 0.3s ease",
-          }}
-        >
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
+        {open ? "Show less" : "How we do it"}
+        <ChevronDown
+          size={15}
+          strokeWidth={2.5}
+          className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
       </div>
     </article>
   );
 }
 
-/* ─── Stats bar ─────────────────────────────────────────── */
-function StatsBar({ visible }) {
-  const stats = [
-    { val: "12", label: "Core Strategies", accent: "orange" },
-    { val: "95+", label: "Avg Perf Score", accent: "blue" },
-    { val: "54%", label: "Traffic is Mobile", accent: "orange" },
-    { val: "7%", label: "Conversion Lost per 1s Delay", accent: "blue" },
-  ];
-
+/* ─── Stats bar ──────────────────────────────────────────────────────── */
+function StatsBar() {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-        gap: "1px",
-        background: "var(--color-border)",
-        borderRadius: "var(--radius-xl)",
-        overflow: "hidden",
-        marginBottom: "5rem",
-      }}
-    >
-      {stats.map((s, i) => (
-        <div
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-soft border border-border bg-border md:grid-cols-4">
+      {STATS.map((s, i) => (
+        <Reveal
           key={s.label}
-          style={{
-            background: "var(--color-surface)",
-            padding: "1.5rem 2rem",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: `all 0.5s ease ${i * 0.08}s`,
-          }}
+          type="up"
+          delay={i * 0.08}
+          className={`px-6 py-8 md:px-8 ${s.tint ? "bg-brand-periwinkle/15" : "bg-background"}`}
         >
-          <div
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "2.25rem",
-              lineHeight: 1,
-              color:
-                s.accent === "orange"
-                  ? "var(--color-brand-orange)"
-                  : "var(--color-brand-blue)",
-              marginBottom: "0.35rem",
-            }}
+          <p
+            className={`mb-2 font-display text-4xl leading-none md:text-[2.75rem] ${ACCENT[s.accent].text}`}
           >
             {s.val}
-          </div>
-          <div
-            style={{
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--color-text-tertiary)",
-            }}
-          >
+          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-text-tertiary md:text-sm">
             {s.label}
-          </div>
-        </div>
+          </p>
+        </Reveal>
       ))}
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════════
    MAIN EXPORT
-══════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════════════════════ */
 export default function Solutions() {
-  const [ref, visible] = useFadeIn(0.06);
-  const [cardsRef, cardsVisible] = useFadeIn(0.04);
-
   return (
-    <>
+    <div
+      id="web-development-strategies"
+      className="min-h-screen bg-background text-foreground font-body"
+    >
       {/* JSON-LD SEO Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
 
+      {/* ── Hero / section header ── */}
       <section
-        id="web-development-strategies"
-        ref={ref}
-        className="section-padding"
-        style={{ background: "var(--color-bg-primary)" }}
+        className="relative overflow-hidden px-6 pb-16 pt-32 md:pb-20 md:pt-40 lg:px-12"
         aria-label="Web Development Strategies"
       >
-        <div className="container-site">
-          {/* ── Section header ── */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "clamp(2rem, 5vw, 6rem)",
-              alignItems: "flex-end",
-              marginBottom: "3.5rem",
-            }}
-            className="strat-header-grid"
-          >
-            <div
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateX(0)" : "translateX(-20px)",
-                transition: "all 0.6s ease",
-              }}
-            >
-              {/* Section tag */}
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  fontSize: "0.72rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "var(--color-brand-orange)",
-                  background: "rgba(254,122,54,0.06)",
-                  border: "1px solid rgba(254,122,54,0.18)",
-                  borderRadius: "var(--radius-full)",
-                  padding: "0.3rem 0.9rem",
-                  marginBottom: "1.25rem",
-                }}
-              >
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "var(--color-brand-orange)",
-                    display: "inline-block",
-                  }}
-                />
+        <ParallaxLayer
+          speed={-40}
+          className="pointer-events-none absolute -left-24 -top-20 h-[380px] w-[380px] rounded-pill"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(239,105,5,0.14) 0%, transparent 70%)",
+            filter: "blur(30px)",
+          }}
+        />
+        <ParallaxLayer
+          speed={50}
+          className="pointer-events-none absolute -right-28 top-24 h-[420px] w-[420px] rounded-pill"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,85,218,0.12) 0%, transparent 70%)",
+            filter: "blur(30px)",
+          }}
+        />
+        <ParallaxLayer
+          speed={-25}
+          className="pointer-events-none absolute bottom-[-4rem] left-1/3 h-[300px] w-[300px] rounded-pill"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(91,126,60,0.12) 0%, transparent 70%)",
+            filter: "blur(30px)",
+          }}
+        />
+
+        <div className="container-site relative">
+          <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-2 lg:gap-20">
+            <Reveal type="left">
+              <span className="section-tag section-tag-orange mb-6">
+                <span className="inline-block h-1.5 w-1.5 rounded-pill bg-brand-orange" />
                 Our Development Approach
               </span>
 
-              <h2
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2.1rem, 4vw, 3.25rem)",
-                  lineHeight: 1.08,
-                  marginTop: "0.5rem",
-                }}
-              >
+              <h1 className="mb-2 leading-[1.08]">
                 12 Strategies That Make{" "}
                 <span className="text-gradient-orange">Every Website</span> We
                 Build <span className="text-gradient-blue">Perform.</span>
-              </h2>
+              </h1>
 
-              <div style={{ marginTop: "2rem" }}>
-                <div
-                  className="divider-gradient divider"
-                  style={{ marginBottom: "1.5rem" }}
-                />
-                <a href="/contact" className="btn btn-primary btn-md">
-                  Start Your Project
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </a>
-              </div>
-            </div>
+              <div className="divider-gradient divider my-8" />
 
-            <div
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateX(0)" : "translateX(20px)",
-                transition: "all 0.6s ease 0.15s",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 1.85,
-                  color: "var(--color-text-secondary)",
-                  marginBottom: "1rem",
-                }}
+              <a
+                href="/contact"
+                className="btn btn-primary btn-md rounded-pill!"
               >
+                Start Your Project
+                <ArrowUpRight size={16} />
+              </a>
+            </Reveal>
+
+            <Reveal type="right" delay={0.15}>
+              <p className="mb-4 text-lg leading-relaxed text-text-secondary">
                 Building a website without a strategy is building to fail.
                 Serenly combines 12 proven web development strategies — from
                 mobile-first architecture and Core Web Vitals optimisation to
                 SEO-first development and AI search readiness — into every
                 project we deliver.
               </p>
-              <p
-                style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 1.85,
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                Click any strategy below to see exactly how we implement it for
-                your business.
+              <p className="text-lg leading-relaxed text-text-secondary">
+                Click any strategy below to see exactly how we implement it
+                for your business.
               </p>
-            </div>
+            </Reveal>
           </div>
+        </div>
+      </section>
 
-          {/* ── Stats bar ── */}
-          <StatsBar visible={visible} />
+      {/* ── Stats bar ── */}
+      <section className="relative overflow-hidden px-6 pb-16 md:pb-20 lg:px-12">
+        <ParallaxLayer
+          speed={30}
+          className="pointer-events-none absolute -right-32 top-0 h-[500px] w-[500px] rounded-pill opacity-70"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(201,211,243,0.4) 0%, transparent 70%)",
+            filter: "blur(40px)",
+          }}
+        />
+        <div className="container-site relative">
+          <StatsBar />
+        </div>
+      </section>
 
-          {/* ── Strategy cards grid ── */}
-          <div ref={cardsRef}>
+      {/* ── Strategy cards grid ── */}
+      <section className="px-6 pb-16 md:pb-20 lg:px-12">
+        <div className="container-site">
+          <Reveal type="up" className="mb-10 md:mb-12">
+            <span className="section-tag section-tag-green">
+              The Strategies
+            </span>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {STRATEGIES.map((strategy, i) => (
+              <Reveal key={strategy.num} type="up" delay={(i % 3) * 0.08}>
+                <StrategyCard strategy={strategy} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bottom CTA banner ── */}
+      <section className="relative z-10 -mt-4 px-4 pb-20 md:-mt-8 md:px-6 md:pb-28 lg:px-12">
+        <Reveal type="scale" className="container-site">
+          <div className="relative flex flex-col items-center justify-between gap-8 overflow-hidden rounded-soft bg-brand-black px-6 py-14 text-neutral-0 md:flex-row md:rounded-[36px] md:px-14 md:py-16">
             <div
+              className="pointer-events-none absolute -bottom-16 -left-16 h-72 w-72 rounded-pill"
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                gap: "1.25rem",
+                background:
+                  "radial-gradient(circle, rgba(239,105,5,0.18) 0%, transparent 70%)",
               }}
-              className="strat-cards-grid"
-            >
-              {STRATEGIES.map((strategy, i) => (
-                <StrategyCard
-                  key={strategy.num}
-                  strategy={strategy}
-                  index={i}
-                  visible={cardsVisible}
-                />
-              ))}
-            </div>
-          </div>
+            />
+            <div
+              className="pointer-events-none absolute -right-10 -top-10 h-56 w-56 rounded-pill"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(91,126,60,0.18) 0%, transparent 70%)",
+              }}
+            />
 
-          {/* ── Bottom CTA strip ── */}
-          <div
-            style={{
-              marginTop: "4rem",
-              padding: "2.5rem",
-              borderRadius: "var(--radius-xl)",
-              border: "1px solid var(--color-border)",
-              background: "var(--color-bg-secondary)",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "1.5rem",
-              opacity: cardsVisible ? 1 : 0,
-              transform: cardsVisible ? "translateY(0)" : "translateY(20px)",
-              transition: "all 0.6s ease 0.6s",
-            }}
-          >
-            <div>
-              <h4
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "1.4rem",
-                  marginBottom: "0.4rem",
-                }}
-              >
+            <div className="relative max-w-xl text-center md:text-left">
+              <h4 className="mb-3 font-display text-2xl leading-tight md:text-3xl">
                 Want all 12 strategies applied to your project?
               </h4>
-              <p
-                style={{
-                  fontSize: "0.9375rem",
-                  color: "var(--color-text-secondary)",
-                }}
-              >
-                Every Serenly website ships with these principles baked in — not
-                as extras, but as standard.
+              <p className="leading-relaxed text-neutral-0/70">
+                Every Serenly website ships with these principles baked in —
+                not as extras, but as standard.
               </p>
             </div>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <a href="/contact" className="btn btn-primary btn-md">
+
+            <div className="relative flex shrink-0 flex-wrap justify-center gap-3">
+              <a
+                href="/contact"
+                className="btn btn-primary btn-md rounded-pill!"
+              >
                 Get a Free Quote
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                <ArrowUpRight size={16} />
               </a>
-              <a href="#web-development-strategies" className="btn btn-ghost btn-md">
+              <a
+                href="#web-development-strategies"
+                className="inline-flex items-center gap-2 rounded-pill border border-neutral-0/25 px-6 py-3 text-sm font-semibold text-neutral-0 transition-all hover:border-brand-orange hover:text-brand-orange"
+              >
                 View Solutions
               </a>
             </div>
           </div>
-        </div>
-
-        <style>{`
-          @media (max-width: 768px) {
-            .strat-header-grid { grid-template-columns: 1fr !important; }
-            .strat-cards-grid { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
+        </Reveal>
       </section>
-    </>
+    </div>
   );
 }

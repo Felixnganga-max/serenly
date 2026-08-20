@@ -245,7 +245,7 @@ function ServiceDetailPage({ serviceId, onBack }) {
     <div
       style={{
         fontFamily: "'Inter', -apple-system, sans-serif",
-        background: "#fff",
+        background: "#f5f5f5",
         color: "#111",
         minHeight: "100vh",
       }}
@@ -376,10 +376,10 @@ function ServiceDetailPage({ serviceId, onBack }) {
           text-align: center;
           margin-top: 64px;
         }
-        .cta-band h3 { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .cta-band h3 { font-size: 26px; font-weight: 800; color: #f5f5f5; margin-bottom: 10px; }
         .cta-band p { font-size: 15px; color: rgba(255,255,255,0.85); margin-bottom: 28px; }
         .cta-band-btn {
-          background: #fff;
+          background: #f5f5f5;
           color: #1d6ef5;
           border: none;
           border-radius: 10px;
@@ -467,7 +467,7 @@ function ServiceDetailPage({ serviceId, onBack }) {
                   height="12"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#fff"
+                  stroke="#f5f5f5"
                   strokeWidth="3"
                 >
                   <polyline points="20 6 9 17 4 12" />
@@ -712,7 +712,7 @@ export default function SolutionsPage() {
     <div
       style={{
         fontFamily: "'Inter', -apple-system, sans-serif",
-        background: "#fff",
+        background: "#f5f5f5",
         color: "#111",
         minHeight: "100vh",
       }}
@@ -748,13 +748,13 @@ export default function SolutionsPage() {
           border-radius: 50%;
           background: #1d6ef5;
           display: flex; align-items: center; justify-content: center;
-          color: #fff;
+          color: #f5f5f5;
           margin-bottom: 18px;
         }
         .card.featured .icon-circle { background: rgba(255,255,255,0.22); }
 
         .card-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 10px; line-height: 1.35; }
-        .card.featured .card-title { color: #fff; }
+        .card.featured .card-title { color: #f5f5f5; }
         .card-desc { font-size: 13px; color: #777; line-height: 1.7; }
         .card.featured .card-desc { color: rgba(255,255,255,0.82); }
 
@@ -766,7 +766,7 @@ export default function SolutionsPage() {
           transition: gap 0.15s;
         }
         .read-more-link:hover { gap: 9px; }
-        .card.featured .read-more-link { color: #fff; }
+        .card.featured .read-more-link { color: #f5f5f5; }
       `}</style>
 
       {/* Section header */}

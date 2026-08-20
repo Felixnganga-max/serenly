@@ -86,8 +86,8 @@ function ProductSection({
   }, [isMobile]);
 
   const isBlue = color === "blue";
-  const accent = isBlue ? "#0046FF" : "#FE7A36";
-  const glowRgb = isBlue ? "0,70,255" : "254,122,54";
+  const accent = isBlue ? "#0055da" : "#ef6905";
+  const glowRgb = isBlue ? "0, 85, 218" : "239, 105, 5";
   const bgColor = bgVariant === "secondary" ? "#0F0F18" : "#0A0A0F";
 
   return (
@@ -114,7 +114,7 @@ function ProductSection({
             fontWeight: 400,
             fontStyle: "italic",
             lineHeight: 1,
-            color: "#fff",
+            color: "#f5f5f5",
             opacity: 0.025,
             userSelect: "none",
             pointerEvents: "none",
@@ -323,7 +323,7 @@ function ProductSection({
                 padding: isMobile ? "0.75rem 1.5rem" : "0.85rem 1.8rem",
                 borderRadius: 100,
                 background: accent,
-                color: "#fff",
+                color: "#f5f5f5",
                 fontSize: "0.875rem",
                 fontWeight: 500,
                 textDecoration: "none",

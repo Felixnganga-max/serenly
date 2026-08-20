@@ -64,8 +64,8 @@ export default function Newsletter() {
             borderRadius: "var(--radius-2xl)",
             padding: "clamp(2.5rem,6vw,5rem) clamp(2rem,6vw,5rem)",
             background:
-              "linear-gradient(135deg, rgba(254,122,54,0.09) 0%, rgba(0,70,255,0.06) 50%, rgba(254,122,54,0.05) 100%)",
-            border: "1px solid rgba(254,122,54,0.18)",
+              "linear-gradient(135deg, rgba(239, 105, 5,0.09) 0%, rgba(0, 85, 218,0.06) 50%, rgba(239, 105, 5,0.05) 100%)",
+            border: "1px solid rgba(239, 105, 5,0.18)",
             position: "relative",
             overflow: "hidden",
           }}
@@ -79,7 +79,7 @@ export default function Newsletter() {
               width: 320,
               height: 320,
               background:
-                "radial-gradient(circle,rgba(254,122,54,0.1) 0%,transparent 65%)",
+                "radial-gradient(circle,rgba(239, 105, 5,0.1) 0%,transparent 65%)",
               borderRadius: "50%",
               pointerEvents: "none",
             }}
@@ -92,7 +92,7 @@ export default function Newsletter() {
               width: 260,
               height: 260,
               background:
-                "radial-gradient(circle,rgba(0,70,255,0.08) 0%,transparent 65%)",
+                "radial-gradient(circle,rgba(0, 85, 218,0.08) 0%,transparent 65%)",
               borderRadius: "50%",
               pointerEvents: "none",
             }}
@@ -115,7 +115,7 @@ export default function Newsletter() {
                 className="section-tag section-tag-orange animate-fade-up"
                 style={{ marginBottom: "1.25rem" }}
               >
-                <Sparkles size={12} style={{ color: "#FE7A36" }} />
+                <Sparkles size={12} style={{ color: "#ef6905" }} />
                 Free Marketing Insights
               </div>
 
@@ -158,7 +158,7 @@ export default function Newsletter() {
                   >
                     <CheckCircle2
                       size={16}
-                      style={{ color: "#FE7A36", flexShrink: 0, marginTop: 2 }}
+                      style={{ color: "#ef6905", flexShrink: 0, marginTop: 2 }}
                     />
                     <span
                       style={{

@@ -116,8 +116,8 @@ const GLOBAL_CSS = `
   :root {
     --font-display: 'Marcellus', Georgia, serif;
     --font-body: 'Dosis', system-ui, sans-serif;
-    --orange: #FE7A36;
-    --blue: #0046FF;
+    --orange: #ef6905;
+    --blue: #0055da;
     --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
     --ease-smooth: cubic-bezier(0.4,0,0.2,1);
   }
@@ -125,7 +125,7 @@ const GLOBAL_CSS = `
     --color-bg-primary:#FAFAFA;
     --color-bg-secondary:#F3F3F6;
     --color-surface:rgba(255,255,255,0.92);
-    --color-surface-raised:#FFFFFF;
+    --color-surface-raised:#f5f5f5;
     --color-border:rgba(0,0,0,0.07);
     --color-border-subtle:rgba(0,0,0,0.04);
     --color-border-strong:rgba(0,0,0,0.13);
@@ -164,7 +164,7 @@ const GLOBAL_CSS = `
     transition:background 0.4s,color 0.4s;
   }
   h1,h2,h3,h4,h5,h6{font-family:var(--font-display);font-weight:400}
-  ::selection{background:rgba(254,122,54,0.18);color:var(--color-text-primary)}
+  ::selection{background:rgba(239, 105, 5,0.18);color:var(--color-text-primary)}
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-track{background:var(--color-bg-secondary)}
   ::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px}
@@ -189,7 +189,7 @@ const GLOBAL_CSS = `
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border:1.5px solid rgba(255,255,255,0.25);
-    color:#fff;
+    color:#f5f5f5;
   }
   .btn-ghost:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.45)}
 
@@ -201,13 +201,13 @@ const GLOBAL_CSS = `
     transition:border-color 0.2s,box-shadow 0.2s;
   }
   .input::placeholder{color:var(--color-text-tertiary)}
-  .input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(254,122,54,0.1)}
+  .input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(239, 105, 5,0.1)}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   @keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
   @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  @keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(254,122,54,0.5)}50%{box-shadow:0 0 0 6px rgba(254,122,54,0)}}
+  @keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(239, 105, 5,0.5)}50%{box-shadow:0 0 0 6px rgba(239, 105, 5,0)}}
   @keyframes scaleIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
   @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
   @keyframes bgPan{from{transform:scale(1.08) translateY(0)}to{transform:scale(1.08) translateY(-3%)}}
@@ -226,7 +226,7 @@ const HERO_SLIDES = [
     ctaLink: "#system",
     secondaryCta: "Book a Demo",
     secondaryLink: "#contact",
-    accent: "#FE7A36",
+    accent: "#ef6905",
     img: IMG.hero_system,
   },
   {
@@ -238,7 +238,7 @@ const HERO_SLIDES = [
     ctaLink: "#website",
     secondaryCta: "Request Audit",
     secondaryLink: "#contact",
-    accent: "#0046FF",
+    accent: "#0055da",
     img: IMG.hero_website,
   },
   {
@@ -250,7 +250,7 @@ const HERO_SLIDES = [
     ctaLink: "#branding",
     secondaryCta: "Start Project",
     secondaryLink: "#contact",
-    accent: "#FE7A36",
+    accent: "#ef6905",
     img: IMG.hero_branding,
   },
   {
@@ -262,7 +262,7 @@ const HERO_SLIDES = [
     ctaLink: "#ads",
     secondaryCta: "Launch Campaign",
     secondaryLink: "#contact",
-    accent: "#0046FF",
+    accent: "#0055da",
     img: IMG.hero_ads,
   },
 ];
@@ -484,7 +484,7 @@ function Hero() {
               fontFamily: "var(--font-display)",
               fontSize: "clamp(3rem,7vw,6.5rem)",
               lineHeight: 1.0,
-              color: "#fff",
+              color: "#f5f5f5",
               fontWeight: 400,
               textShadow: "0 2px 40px rgba(0,0,0,0.4)",
             }}
@@ -558,7 +558,7 @@ function Hero() {
               padding: "0.9rem 2rem",
               borderRadius: 999,
               background: slide.accent,
-              color: "#fff",
+              color: "#f5f5f5",
               fontFamily: "var(--font-body)",
               fontWeight: 700,
               fontSize: "0.9rem",
@@ -666,14 +666,14 @@ function Hero() {
             fontSize: "0.62rem",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#fff",
+            color: "#f5f5f5",
             writingMode: "vertical-rl",
             marginBottom: 4,
           }}
         >
           Scroll
         </span>
-        <ChevronDown size={14} color="#fff" />
+        <ChevronDown size={14} color="#f5f5f5" />
       </div>
 
       <style>{`
@@ -777,7 +777,7 @@ function TrustBar() {
                 width: 4,
                 height: 4,
                 borderRadius: "50%",
-                background: "#FE7A36",
+                background: "#ef6905",
                 display: "inline-block",
                 flexShrink: 0,
               }}
@@ -875,9 +875,9 @@ function ProblemSection() {
               gap: "0.5rem",
               padding: "0.35rem 1rem",
               borderRadius: 999,
-              background: "rgba(254,122,54,0.08)",
-              border: "1px solid rgba(254,122,54,0.22)",
-              color: "#FE7A36",
+              background: "rgba(239, 105, 5,0.08)",
+              border: "1px solid rgba(239, 105, 5,0.22)",
+              color: "#ef6905",
               fontFamily: "var(--font-body)",
               fontSize: "0.65rem",
               fontWeight: 700,
@@ -897,7 +897,7 @@ function ProblemSection() {
             }}
           >
             Most schools operate on{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               fragmented systems.
             </em>
           </h2>
@@ -945,7 +945,7 @@ function ProblemCard({ icon, before, after, delay }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: hovered
-          ? "rgba(254,122,54,0.03)"
+          ? "rgba(239, 105, 5,0.03)"
           : "var(--color-surface-raised)",
         padding: "2rem 1.75rem",
         opacity: visible ? 1 : 0,
@@ -1049,7 +1049,7 @@ const SERVICES = [
     id: "system",
     num: "01",
     tag: "School Management Platform",
-    accent: "#FE7A36",
+    accent: "#ef6905",
     headline: "One Login.",
     headlineItalic: "Every aspect of your school.",
     body: "Built for Kenyan institutions — a secure, private dashboard for each school. Faculty, learners, fees, exams, and welfare in one place.",
@@ -1066,7 +1066,7 @@ const SERVICES = [
     id: "website",
     num: "02",
     tag: "School Websites",
-    accent: "#0046FF",
+    accent: "#0055da",
     headline: "A Website That",
     headlineItalic: "Drives Enrollment.",
     body: "Fast, mobile-first school websites that rank locally on Google — with your management dashboard seamlessly integrated.",
@@ -1083,7 +1083,7 @@ const SERVICES = [
     id: "branding",
     num: "03",
     tag: "Institutional Branding",
-    accent: "#FE7A36",
+    accent: "#ef6905",
     headline: "Make Parents",
     headlineItalic: "Choose You.",
     body: "From logo to custom uniforms produced via sublimation printing — the complete identity that positions your school as the premier choice.",
@@ -1100,7 +1100,7 @@ const SERVICES = [
     id: "ads",
     num: "04",
     tag: "Enrollment Marketing",
-    accent: "#0046FF",
+    accent: "#0055da",
     headline: "Fill Every",
     headlineItalic: "Available Seat.",
     body: "Targeted Meta campaigns that reach parents actively searching for quality schools — during open houses, new terms, and year-round.",
@@ -1133,8 +1133,8 @@ function ServiceSection({
 }) {
   const [ref, inView] = useInView(0.08);
   const [bgParRef, bgOffset] = useParallax(0.12);
-  const isBlue = accent === "#0046FF";
-  const glowRgb = isBlue ? "0,70,255" : "254,122,54";
+  const isBlue = accent === "#0055da";
+  const glowRgb = isBlue ? "0, 85, 218" : "239, 105, 5";
 
   return (
     <section
@@ -1199,7 +1199,7 @@ function ServiceSection({
           fontSize: "clamp(6rem,12vw,14rem)",
           fontWeight: 400,
           fontStyle: "italic",
-          color: "#fff",
+          color: "#f5f5f5",
           opacity: 0.05,
           userSelect: "none",
           pointerEvents: "none",
@@ -1274,7 +1274,7 @@ function ServiceSection({
                 fontSize: "clamp(2.4rem,4.5vw,4rem)",
                 fontWeight: 400,
                 lineHeight: 1.05,
-                color: "#fff",
+                color: "#f5f5f5",
                 opacity: inView ? 1 : 0,
                 transform: inView ? "none" : "translateY(24px)",
                 transition:
@@ -1372,7 +1372,7 @@ function ServiceSection({
                   padding: "0.875rem 2rem",
                   borderRadius: 999,
                   background: accent,
-                  color: "#fff",
+                  color: "#f5f5f5",
                   fontFamily: "var(--font-body)",
                   fontWeight: 700,
                   fontSize: "0.9rem",
@@ -1677,9 +1677,9 @@ function HowItWorks() {
               gap: "0.5rem",
               padding: "0.35rem 1rem",
               borderRadius: 999,
-              background: "rgba(254,122,54,0.08)",
-              border: "1px solid rgba(254,122,54,0.22)",
-              color: "#FE7A36",
+              background: "rgba(239, 105, 5,0.08)",
+              border: "1px solid rgba(239, 105, 5,0.22)",
+              color: "#ef6905",
               fontFamily: "var(--font-body)",
               fontSize: "0.65rem",
               fontWeight: 700,
@@ -1699,7 +1699,7 @@ function HowItWorks() {
             }}
           >
             Operational in{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               days, not months.
             </em>
           </h2>
@@ -1728,13 +1728,13 @@ function HowItWorks() {
             title="No website yet?"
             subtitle="We build everything."
             steps={pathNew}
-            accent="#FE7A36"
+            accent="#ef6905"
           />
           <PathCard
             title="Have a website?"
             subtitle="We plug right in."
             steps={pathExisting}
-            accent="#0046FF"
+            accent="#0055da"
           />
         </div>
       </div>
@@ -1745,8 +1745,8 @@ function HowItWorks() {
 
 function PathCard({ title, subtitle, steps, accent }) {
   const [ref, visible] = useInView();
-  const isBlue = accent === "#0046FF";
-  const glowRgb = isBlue ? "0,70,255" : "254,122,54";
+  const isBlue = accent === "#0055da";
+  const glowRgb = isBlue ? "0, 85, 218" : "239, 105, 5";
   return (
     <div
       ref={ref}
@@ -1910,7 +1910,7 @@ function Newsletter() {
           right: "-15%",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(254,122,54,0.08) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(239, 105, 5,0.08) 0%, transparent 65%)",
           filter: "blur(60px)",
           pointerEvents: "none",
         }}
@@ -1926,8 +1926,8 @@ function Newsletter() {
             borderRadius: 24,
             padding: "clamp(2.5rem,6vw,5rem) clamp(2rem,6vw,5rem)",
             background:
-              "linear-gradient(135deg, rgba(254,122,54,0.07) 0%, rgba(0,70,255,0.04) 50%, rgba(254,122,54,0.03) 100%)",
-            border: "1px solid rgba(254,122,54,0.18)",
+              "linear-gradient(135deg, rgba(239, 105, 5,0.07) 0%, rgba(0, 85, 218,0.04) 50%, rgba(239, 105, 5,0.03) 100%)",
+            border: "1px solid rgba(239, 105, 5,0.18)",
             opacity: visible ? 1 : 0,
             transform: visible ? "none" : "translateY(24px)",
             transition: "opacity 0.7s, transform 0.7s",
@@ -1950,9 +1950,9 @@ function Newsletter() {
                   gap: "0.5rem",
                   padding: "0.35rem 1rem",
                   borderRadius: 999,
-                  background: "rgba(254,122,54,0.08)",
-                  border: "1px solid rgba(254,122,54,0.22)",
-                  color: "#FE7A36",
+                  background: "rgba(239, 105, 5,0.08)",
+                  border: "1px solid rgba(239, 105, 5,0.22)",
+                  color: "#ef6905",
                   fontFamily: "var(--font-body)",
                   fontSize: "0.65rem",
                   fontWeight: 700,
@@ -1972,7 +1972,7 @@ function Newsletter() {
                 }}
               >
                 Grow your school's{" "}
-                <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+                <em style={{ color: "#ef6905", fontStyle: "italic" }}>
                   enrollment every term.
                 </em>
               </h2>
@@ -2002,7 +2002,7 @@ function Newsletter() {
                   >
                     <CheckCircle2
                       size={15}
-                      style={{ color: "#FE7A36", flexShrink: 0, marginTop: 2 }}
+                      style={{ color: "#ef6905", flexShrink: 0, marginTop: 2 }}
                     />
                     <span
                       style={{
@@ -2137,9 +2137,9 @@ function Newsletter() {
                         width: "100%",
                         justifyContent: "center",
                         borderRadius: 10,
-                        background: "linear-gradient(135deg, #FE7A36, #ff9a62)",
-                        color: "#fff",
-                        boxShadow: "0 6px 24px rgba(254,122,54,0.35)",
+                        background: "linear-gradient(135deg, #ef6905, #ff8a2e)",
+                        color: "#f5f5f5",
+                        boxShadow: "0 6px 24px rgba(239, 105, 5,0.35)",
                         opacity: loading ? 0.75 : 1,
                         border: "none",
                       }}
@@ -2228,7 +2228,7 @@ function FinalCTA() {
           transform: "translate(-50%,-50%)",
           borderRadius: "50%",
           background:
-            "radial-gradient(circle,rgba(254,122,54,0.18) 0%,transparent 70%)",
+            "radial-gradient(circle,rgba(239, 105, 5,0.18) 0%,transparent 70%)",
           filter: "blur(60px)",
           pointerEvents: "none",
           zIndex: 2,
@@ -2261,7 +2261,7 @@ function FinalCTA() {
               fontWeight: 700,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: "#FE7A36",
+              color: "#ef6905",
               marginBottom: "1.5rem",
             }}
           >
@@ -2269,7 +2269,7 @@ function FinalCTA() {
               style={{
                 width: 20,
                 height: 1.5,
-                background: "#FE7A36",
+                background: "#ef6905",
                 display: "block",
               }}
             />
@@ -2282,11 +2282,11 @@ function FinalCTA() {
               fontSize: "clamp(2.4rem,5vw,4rem)",
               lineHeight: 1.05,
               marginBottom: "1.25rem",
-              color: "#fff",
+              color: "#f5f5f5",
             }}
           >
             Your institution deserves to operate{" "}
-            <em style={{ color: "#FE7A36", fontStyle: "italic" }}>
+            <em style={{ color: "#ef6905", fontStyle: "italic" }}>
               at its full potential.
             </em>
           </h2>
@@ -2321,25 +2321,25 @@ function FinalCTA() {
                 gap: "0.7rem",
                 padding: "1rem 2.25rem",
                 borderRadius: 999,
-                background: "#FE7A36",
-                color: "#fff",
+                background: "#ef6905",
+                color: "#f5f5f5",
                 fontFamily: "var(--font-body)",
                 fontSize: "0.95rem",
                 fontWeight: 700,
                 textDecoration: "none",
-                boxShadow: "0 8px 36px rgba(254,122,54,0.48)",
+                boxShadow: "0 8px 36px rgba(239, 105, 5,0.48)",
                 transition:
                   "transform 0.2s var(--ease-spring), box-shadow 0.2s",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.05)";
                 e.currentTarget.style.boxShadow =
-                  "0 16px 60px rgba(254,122,54,0.65)";
+                  "0 16px 60px rgba(239, 105, 5,0.65)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "";
                 e.currentTarget.style.boxShadow =
-                  "0 8px 36px rgba(254,122,54,0.48)";
+                  "0 8px 36px rgba(239, 105, 5,0.48)";
               }}
             >
               Request a Demo <ArrowUpRight size={16} strokeWidth={2.5} />

@@ -3,8 +3,9 @@
 // Stack: React + Tailwind v4 + Global CSS (index.css)
 // Unsplash images used as placeholders — swap with your own assets later
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Reveal, ParallaxLayer } from "../components/Parallax";
 
 /* ─── Unsplash placeholder images ─── */
 const HERO_BG =
@@ -48,7 +49,7 @@ const SERVICES = [
     desc: "Business cards, letterheads, flyers, banners, social templates — every piece of branded material designed to command attention and drive recall.",
     image:
       "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80",
-    accent: "orange",
+    accent: "green",
     bullets: [
       "Business cards & stationery",
       "Brochures, flyers & print materials",
@@ -63,7 +64,7 @@ const SERVICES = [
     desc: "Your brand speaks constantly — on your website, in your emails, on social media. We make sure every word reinforces your identity and moves people to act.",
     image:
       "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
-    accent: "blue",
+    accent: "orange",
     bullets: [
       "Brand voice & tone guidelines",
       "Taglines & key messaging",
@@ -141,39 +142,41 @@ const STATS = [
 
 const CATEGORIES = ["All", "Identity", "Print", "Collateral", "Digital"];
 
-/* ─── Intersection observer hook for scroll animations ─── */
-function useFadeIn(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, visible];
-}
+/* Portfolio category → accent colour, so the gallery reads as a rotation
+   rather than a single repeated brand colour */
+const CATEGORY_COLOR = {
+  Identity: "var(--color-brand-blue-light)",
+  Print: "var(--color-brand-orange)",
+  Collateral: "var(--color-brand-green-light)",
+  Digital: "var(--color-brand-green-light)",
+};
+
+/* Accent tokens shared across the page — orange / blue / green kept in
+   roughly equal rotation rather than letting one colour dominate */
+const TAG_DOT_COLOR = {
+  orange: "var(--color-brand-orange)",
+  blue: "var(--color-brand-blue)",
+  green: "var(--color-brand-green-light)",
+};
+
+const ACCENT_HEX = {
+  orange: "var(--color-brand-orange)",
+  blue: "var(--color-brand-blue)",
+  green: "var(--color-brand-green)",
+};
+
+const ACCENT_CYCLE = ["orange", "blue", "green"];
 
 /* ─── Small reusable components ─── */
-function SectionTag({ label, color = "orange" }) {
+function SectionTag({ label, color = "orange", className = "", style }) {
   return (
-    <span className={`section-tag section-tag-${color}`}>
+    <span className={`section-tag section-tag-${color} ${className}`} style={style}>
       <span
         style={{
           width: 6,
           height: 6,
           borderRadius: "50%",
-          background:
-            color === "orange"
-              ? "var(--color-brand-orange)"
-              : "var(--color-brand-blue)",
+          background: TAG_DOT_COLOR[color] || TAG_DOT_COLOR.orange,
           display: "inline-block",
         }}
       />
@@ -210,11 +213,17 @@ export default function Branding() {
       {/* ── 1. HERO ─────────────────────────────────────────── */}
       <HeroSection heroLoaded={heroLoaded} />
 
+      {/* ── 2. STATS — floating card overlapping the hero ─────── */}
+      <StatsBar />
+
       {/* ── 3. INTRO / WHAT WE DO ───────────────────────────── */}
       <IntroSection />
 
       {/* ── 4. SERVICES (alternating layout) ───────────────── */}
       <ServicesSection />
+
+      {/* ── 5. PROCESS ──────────────────────────────────────── */}
+      <ProcessStrip />
 
       {/* ── 6. PORTFOLIO GALLERY ────────────────────────────── */}
       <PortfolioSection
@@ -241,19 +250,26 @@ function HeroSection({ heroLoaded }) {
         overflow: "hidden",
       }}
     >
-      {/* Background image */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `url(${HERO_BG})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(0.22)",
-          transform: "scale(1.04)",
-          transition: "transform 8s ease-out",
-        }}
-      />
+      {/* Background image — drifts on scroll, zooms in gently on load */}
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+        <ParallaxLayer
+          speed={34}
+          style={{ position: "absolute", inset: "-10% 0", height: "120%" }}
+        >
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${HERO_BG})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.22)",
+              transform: heroLoaded ? "scale(1.04)" : "scale(1.14)",
+              transition: "transform 8s ease-out",
+            }}
+          />
+        </ParallaxLayer>
+      </div>
 
       {/* Dot grid overlay */}
       <div
@@ -266,7 +282,7 @@ function HeroSection({ heroLoaded }) {
         }}
       />
 
-      {/* Glow blobs */}
+      {/* Glow blobs — orange, blue, green in roughly equal presence */}
       <div
         className="glow-orange"
         style={{
@@ -277,16 +293,40 @@ function HeroSection({ heroLoaded }) {
           zIndex: 1,
         }}
       />
-      <div
-        className="glow-blue"
+      <ParallaxLayer
+        speed={-26}
         style={{
-          width: 500,
-          height: 500,
-          bottom: "5%",
-          right: "5%",
+          position: "absolute",
+          bottom: "6%",
+          right: "6%",
           zIndex: 1,
+          pointerEvents: "none",
         }}
-      />
+      >
+        <div className="glow-blue" style={{ position: "relative", width: 500, height: 500 }} />
+      </ParallaxLayer>
+      <ParallaxLayer
+        speed={22}
+        style={{
+          position: "absolute",
+          top: "36%",
+          left: "40%",
+          zIndex: 1,
+          pointerEvents: "none",
+        }}
+      >
+        <div
+          style={{
+            width: 420,
+            height: 420,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(91,126,60,0.16) 0%, transparent 65%)",
+            filter: "blur(2px)",
+            animation: "pulse-glow 6.5s ease-in-out infinite 0.6s",
+          }}
+        />
+      </ParallaxLayer>
 
       {/* Content */}
       <div
@@ -294,54 +334,63 @@ function HeroSection({ heroLoaded }) {
         style={{ position: "relative", zIndex: 2 }}
       >
         <div style={{ maxWidth: 820 }}>
-          <h1
-            className="animate-fade-up delay-100"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(3rem, 7vw, 5.5rem)",
-              lineHeight: 1.05,
-              color: "var(--color-neutral-0)",
-              marginBottom: "1.75rem",
-            }}
-          >
-            A Brand That <span className="text-gradient-orange">Commands</span>
-            <br />
-            Attention.
-          </h1>
+          <Reveal type="up">
+            <SectionTag
+              label="Brand Identity & Strategy"
+              color="orange"
+              style={{ marginBottom: "1.5rem" }}
+            />
+          </Reveal>
 
-          <p
-            className="animate-fade-up delay-200"
-            style={{
-              fontSize: "clamp(1rem, 2vw, 1.2rem)",
-              color: "rgba(245,245,245,0.65)",
-              maxWidth: 560,
-              lineHeight: 1.8,
-              marginBottom: "2.5rem",
-            }}
-          >
-            Your brand is more than a logo — it's the first impression, the
-            lasting memory, and the reason customers choose you over
-            competitors. Serenly crafts compelling brand identities that
-            resonate.
-          </p>
+          <Reveal type="up" delay={0.08}>
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(3rem, 7vw, 5.5rem)",
+                lineHeight: 1.05,
+                color: "var(--color-neutral-0)",
+                marginBottom: "1.75rem",
+              }}
+            >
+              A Brand That <span className="text-gradient-orange">Commands</span>
+              <br />
+              Attention.
+            </h1>
+          </Reveal>
+
+          <Reveal type="up" delay={0.16}>
+            <p
+              style={{
+                fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                color: "rgba(245,245,245,0.65)",
+                maxWidth: 560,
+                lineHeight: 1.8,
+                marginBottom: "2.5rem",
+              }}
+            >
+              Your brand is more than a logo — it's the first impression, the
+              lasting memory, and the reason customers choose you over
+              competitors. Serenly crafts compelling brand identities that
+              resonate.
+            </p>
+          </Reveal>
         </div>
 
-        {/* Floating badge */}
+        {/* Floating badge — hidden on smaller screens via Tailwind, not a
+            broken always-off inline style */}
         <div
-          className="animate-float glass"
+          className="hidden lg:block animate-float glass"
           style={{
             position: "absolute",
             right: "clamp(1rem, 6vw, 8rem)",
             top: "50%",
             transform: "translateY(-50%)",
             padding: "1.5rem 2rem",
-            borderRadius: "var(--radius-xl)",
+            borderRadius: "var(--radius-soft)",
             background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(254,122,54,0.3)",
+            border: "1px solid rgba(239, 105, 5,0.3)",
             textAlign: "center",
-            display: "none", // hidden on mobile via inline; shown via media below
           }}
-          //   className="animate-float hero-badge glass"
         >
           <div
             style={{
@@ -427,86 +476,89 @@ function HeroSection({ heroLoaded }) {
             width: 1,
             height: 40,
             background:
-              "linear-gradient(to bottom, rgba(254,122,54,0.7), transparent)",
+              "linear-gradient(to bottom, rgba(239, 105, 5,0.7), transparent)",
             animation: "fade-up 1.5s ease-in-out infinite",
           }}
         />
       </div>
-
-      <style>{`.hero-badge { display: block; } @media(max-width:900px){ .hero-badge { display: none !important; } }`}</style>
     </section>
   );
 }
 
-/* ══════ STATS BAR ══════ */
+/* ══════ STATS BAR — floating card overlapping the hero's bottom edge ══════ */
 function StatsBar() {
-  const [ref, visible] = useFadeIn(0.2);
   return (
-    <div
-      ref={ref}
-      style={{
-        borderTop: "1px solid var(--color-border)",
-        borderBottom: "1px solid var(--color-border)",
-        background: "var(--color-surface-raised)",
-        padding: "2.5rem 0",
-      }}
-    >
-      <div className="container-site">
-        <div
+    <section style={{ position: "relative", zIndex: 5 }}>
+      <div
+        className="container-site"
+        style={{ marginTop: "clamp(-3.5rem, -6vw, -5.5rem)" }}
+      >
+        <Reveal
+          type="up"
+          className="rounded-soft"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-            gap: "2rem",
-            textAlign: "center",
+            background: "var(--color-surface-raised)",
+            border: "1px solid var(--color-border)",
+            boxShadow: "var(--shadow-xl)",
+            padding: "2.5rem clamp(1.5rem, 4vw, 3rem)",
           }}
         >
-          {STATS.map((s, i) => (
-            <div
-              key={s.label}
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `all 0.6s ease ${i * 120}ms`,
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                  color:
-                    i % 2 === 0
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
-                  lineHeight: 1,
-                  marginBottom: "0.4rem",
-                }}
-              >
-                {s.value}
-              </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  color: "var(--color-text-tertiary)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  fontWeight: 600,
-                }}
-              >
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+              gap: "2rem",
+              textAlign: "center",
+            }}
+          >
+            {STATS.map((s, i) => {
+              const accent = ACCENT_CYCLE[i % ACCENT_CYCLE.length];
+              const special = accent === "green";
+              return (
+                <div
+                  key={s.label}
+                  className={special ? "rounded-soft" : ""}
+                  style={{
+                    padding: special ? "1rem" : 0,
+                    background: special ? "rgba(201,211,243,0.16)" : "transparent",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(2rem, 4vw, 2.75rem)",
+                      color: ACCENT_HEX[accent],
+                      lineHeight: 1,
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "var(--color-text-tertiary)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
-    </div>
+    </section>
   );
 }
 
 /* ══════ INTRO SECTION ══════ */
 function IntroSection() {
-  const [ref, visible] = useFadeIn(0.15);
   return (
-    <section ref={ref} className="section-padding">
+    <section className="section-padding">
       <div className="container-site">
         <div
           style={{
@@ -518,160 +570,180 @@ function IntroSection() {
           className="intro-grid"
         >
           {/* Left */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(-30px)",
-              transition: "all 0.7s ease",
-            }}
-          >
-            <SectionTag label="What We Do" color="orange" />
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                marginTop: "1.25rem",
-                marginBottom: "1.5rem",
-                lineHeight: 1.1,
-              }}
-            >
-              We Build Brands That{" "}
-              <span className="text-gradient-orange">People Remember</span>
-            </h2>
-            <p
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.85,
-                marginBottom: "1.25rem",
-              }}
-            >
-              In a world full of noise, forgettable brands lose. Serenly's
-              branding process is rooted in strategy — understanding your
-              audience, your competitors, and your ambitions before we ever open
-              a design tool.
-            </p>
-            <p style={{ fontSize: "1.05rem", lineHeight: 1.85 }}>
-              The result? A brand that doesn't just look good — it feels right,
-              communicates clearly, and converts strangers into loyal customers
-              across every channel.
-            </p>
-
-            <div
-              style={{ marginTop: "2.5rem", display: "flex", gap: "2.5rem" }}
-            >
-              {[
-                { icon: "🎨", label: "Visual Identity" },
-                { icon: "📋", label: "Brand Strategy" },
-                { icon: "✍️", label: "Brand Voice" },
-              ].map((item) => (
-                <div key={item.label} style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: "1.75rem", marginBottom: "0.4rem" }}>
-                    {item.icon}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "var(--color-text-tertiary)",
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right — image mosaic */}
-          <div
-            style={{
-              position: "relative",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateX(0)" : "translateX(30px)",
-              transition: "all 0.7s ease 0.2s",
-            }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "1rem",
-              }}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=500&q=80"
-                alt="Branding design"
-                style={{
-                  width: "100%",
-                  aspectRatio: "3/4",
-                  objectFit: "cover",
-                  borderRadius: "var(--radius-xl)",
-                  gridRow: "span 2",
-                }}
+          <Reveal type="left">
+            <div>
+              <SectionTag
+                label="What We Do"
+                color="orange"
+                style={{ marginBottom: "1.25rem" }}
               />
-              <img
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
-                alt="Brand collateral"
-                style={{
-                  width: "100%",
-                  aspectRatio: "1/1",
-                  objectFit: "cover",
-                  borderRadius: "var(--radius-xl)",
-                }}
-              />
-              <img
-                src="https://images.unsplash.com/photo-1561070791-36c11767b26a?w=500&q=80"
-                alt="Brand guidelines"
-                style={{
-                  width: "100%",
-                  aspectRatio: "1/1",
-                  objectFit: "cover",
-                  borderRadius: "var(--radius-xl)",
-                }}
-              />
-            </div>
-
-            {/* Floating label */}
-            <div
-              className="glass-orange"
-              style={{
-                position: "absolute",
-                bottom: "-1.5rem",
-                left: "-1.5rem",
-                padding: "1rem 1.5rem",
-                borderRadius: "var(--radius-lg)",
-              }}
-            >
-              <div
+              <h2
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "1.5rem",
-                  color: "var(--color-brand-orange)",
+                  marginBottom: "1.5rem",
+                  lineHeight: 1.1,
                 }}
               >
-                ✦
-              </div>
-              <div
+                We Build Brands That{" "}
+                <span className="text-gradient-green">People Remember</span>
+              </h2>
+              <p
                 style={{
-                  fontSize: "0.875rem",
-                  fontWeight: 600,
-                  color: "var(--color-text-primary)",
-                  marginTop: "0.25rem",
+                  fontSize: "1.05rem",
+                  lineHeight: 1.85,
+                  marginBottom: "1.25rem",
                 }}
               >
-                Strategy-First
-              </div>
+                In a world full of noise, forgettable brands lose. Serenly's
+                branding process is rooted in strategy — understanding your
+                audience, your competitors, and your ambitions before we ever open
+                a design tool.
+              </p>
+              <p style={{ fontSize: "1.05rem", lineHeight: 1.85 }}>
+                The result? A brand that doesn't just look good — it feels right,
+                communicates clearly, and converts strangers into loyal customers
+                across every channel.
+              </p>
+
               <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "var(--color-text-tertiary)",
-                }}
+                style={{ marginTop: "2.5rem", display: "flex", gap: "2.5rem" }}
               >
-                Brand Design
+                {[
+                  { icon: "🎨", label: "Visual Identity" },
+                  { icon: "📋", label: "Brand Strategy" },
+                  { icon: "✍️", label: "Brand Voice" },
+                ].map((item) => (
+                  <div key={item.label} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: "1.75rem", marginBottom: "0.4rem" }}>
+                      {item.icon}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        color: "var(--color-text-tertiary)",
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </Reveal>
+
+          {/* Right — image mosaic */}
+          <Reveal type="right" delay={0.12}>
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "1rem",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "var(--radius-soft)",
+                    overflow: "hidden",
+                    aspectRatio: "3/4",
+                    gridRow: "span 2",
+                  }}
+                >
+                  <ParallaxLayer
+                    speed={30}
+                    style={{ position: "absolute", inset: "-10% 0", height: "120%" }}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1609921212029-bb5a28e60960?w=500&q=80"
+                      alt="Branding design"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </ParallaxLayer>
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "var(--radius-soft)",
+                    overflow: "hidden",
+                    aspectRatio: "1/1",
+                  }}
+                >
+                  <ParallaxLayer
+                    speed={-20}
+                    style={{ position: "absolute", inset: "-10% 0", height: "120%" }}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
+                      alt="Brand collateral"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </ParallaxLayer>
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "var(--radius-soft)",
+                    overflow: "hidden",
+                    aspectRatio: "1/1",
+                  }}
+                >
+                  <ParallaxLayer
+                    speed={24}
+                    style={{ position: "absolute", inset: "-10% 0", height: "120%" }}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1561070791-36c11767b26a?w=500&q=80"
+                      alt="Brand guidelines"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </ParallaxLayer>
+                </div>
+              </div>
+
+              {/* Floating label */}
+              <div
+                className="bg-brand-periwinkle/15 backdrop-blur-xl border border-brand-periwinkle/40 rounded-soft"
+                style={{
+                  position: "absolute",
+                  bottom: "-1.5rem",
+                  left: "-1.5rem",
+                  padding: "1rem 1.5rem",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.5rem",
+                    color: "var(--color-brand-green)",
+                  }}
+                >
+                  ✦
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: 600,
+                    color: "var(--color-text-primary)",
+                    marginTop: "0.25rem",
+                  }}
+                >
+                  Strategy-First
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "var(--color-text-tertiary)",
+                  }}
+                >
+                  Brand Design
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
 
@@ -690,12 +762,10 @@ function ServicesSection() {
       }}
     >
       <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "5rem" }}>
-          <SectionTag label="Our Services" color="blue" />
-          <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
-          >
-            Everything Your Brand Needs
+        <Reveal type="up" className="text-center" style={{ marginBottom: "5rem" }}>
+          <SectionTag label="Our Services" color="blue" style={{ marginBottom: "1.25rem" }} />
+          <h2 style={{ fontFamily: "var(--font-display)" }}>
+            Everything Your Brand <span className="text-gradient-blue">Needs</span>
           </h2>
           <p
             style={{
@@ -707,11 +777,13 @@ function ServicesSection() {
             From strategy to execution — we handle every dimension of your brand
             identity so it's consistent, compelling, and conversion-ready.
           </p>
-        </div>
+        </Reveal>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "6rem" }}>
           {SERVICES.map((svc, i) => (
-            <ServiceRow key={svc.id} svc={svc} reverse={i % 2 !== 0} />
+            <Reveal key={svc.id} type="up" delay={(i % 2) * 0.06}>
+              <ServiceRow svc={svc} reverse={i % 2 !== 0} index={i} />
+            </Reveal>
           ))}
         </div>
       </div>
@@ -719,20 +791,40 @@ function ServicesSection() {
   );
 }
 
-function ServiceRow({ svc, reverse }) {
-  const [ref, visible] = useFadeIn(0.15);
+const SERVICE_ACCENT = {
+  orange: {
+    tagColor: "var(--color-brand-orange)",
+    tagBorder: "rgba(239, 105, 5,0.3)",
+    bulletBg: "rgba(239, 105, 5,0.12)",
+    bulletBorder: "rgba(239, 105, 5,0.3)",
+    bulletColor: "var(--color-brand-orange)",
+  },
+  blue: {
+    tagColor: "var(--color-brand-blue-light)",
+    tagBorder: "rgba(0, 85, 218,0.3)",
+    bulletBg: "rgba(0, 85, 218,0.08)",
+    bulletBorder: "rgba(0, 85, 218,0.25)",
+    bulletColor: "var(--color-brand-blue)",
+  },
+  green: {
+    tagColor: "var(--color-brand-green-light)",
+    tagBorder: "rgba(91, 126, 60,0.4)",
+    bulletBg: "rgba(91, 126, 60,0.12)",
+    bulletBorder: "rgba(91, 126, 60,0.3)",
+    bulletColor: "var(--color-brand-green-light)",
+  },
+};
+
+function ServiceRow({ svc, reverse, index = 0 }) {
+  const accent = SERVICE_ACCENT[svc.accent] || SERVICE_ACCENT.orange;
   return (
     <div
-      ref={ref}
       style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "clamp(2rem, 5vw, 6rem)",
         alignItems: "center",
         direction: reverse ? "rtl" : "ltr",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(30px)",
-        transition: "all 0.7s ease",
       }}
       className="svc-row"
     >
@@ -740,48 +832,52 @@ function ServiceRow({ svc, reverse }) {
       <div style={{ direction: "ltr", position: "relative" }}>
         <div
           style={{
-            borderRadius: "var(--radius-2xl)",
+            position: "relative",
+            borderRadius: "var(--radius-soft)",
             overflow: "hidden",
             aspectRatio: "4/3",
           }}
         >
-          <img
-            src={svc.image}
-            alt={svc.title}
+          <ParallaxLayer
+            speed={index % 2 === 0 ? 26 : -18}
+            style={{ position: "absolute", inset: "-8% 0", height: "116%" }}
+          >
+            <img
+              src={svc.image}
+              alt={svc.title}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transition: "transform 0.6s ease",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "scale(1.04)")
+              }
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            />
+          </ParallaxLayer>
+          {/* Tag overlay */}
+          <div
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transition: "transform 0.6s ease",
+              position: "absolute",
+              top: "1.25rem",
+              left: "1.25rem",
+              zIndex: 2,
+              background: "rgba(0,0,0,0.5)",
+              backdropFilter: "blur(12px)",
+              borderRadius: "var(--radius-pill)",
+              padding: "0.4rem 1rem",
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: accent.tagColor,
+              border: `1px solid ${accent.tagBorder}`,
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.04)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          />
-        </div>
-        {/* Tag overlay */}
-        <div
-          style={{
-            position: "absolute",
-            top: "1.25rem",
-            left: "1.25rem",
-            background: "rgba(0,0,0,0.5)",
-            backdropFilter: "blur(12px)",
-            borderRadius: "var(--radius-full)",
-            padding: "0.4rem 1rem",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color:
-              svc.accent === "orange"
-                ? "var(--color-brand-orange)"
-                : "var(--color-brand-blue-light)",
-            border: `1px solid ${svc.accent === "orange" ? "rgba(254,122,54,0.3)" : "rgba(0,70,255,0.3)"}`,
-          }}
-        >
-          {svc.tag}
+          >
+            {svc.tag}
+          </div>
         </div>
       </div>
 
@@ -825,18 +921,12 @@ function ServiceRow({ svc, reverse }) {
                   height: 22,
                   borderRadius: "50%",
                   flexShrink: 0,
-                  background:
-                    svc.accent === "orange"
-                      ? "rgba(254,122,54,0.12)"
-                      : "rgba(0,70,255,0.08)",
-                  border: `1px solid ${svc.accent === "orange" ? "rgba(254,122,54,0.3)" : "rgba(0,70,255,0.25)"}`,
+                  background: accent.bulletBg,
+                  border: `1px solid ${accent.bulletBorder}`,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color:
-                    svc.accent === "orange"
-                      ? "var(--color-brand-orange)"
-                      : "var(--color-brand-blue)",
+                  color: accent.bulletColor,
                   fontSize: "0.7rem",
                 }}
               >
@@ -852,8 +942,18 @@ function ServiceRow({ svc, reverse }) {
 }
 
 /* ══════ PROCESS STRIP ══════ */
+const PROCESS_CIRCLE_BG = {
+  orange: "linear-gradient(135deg, #ef6905, #ff8a2e)",
+  blue: "linear-gradient(135deg, #0055da, #3878e6)",
+  green: "linear-gradient(135deg, #5b7e3c, #7a9c59)",
+};
+const PROCESS_CIRCLE_SHADOW = {
+  orange: "var(--shadow-orange)",
+  blue: "var(--shadow-blue)",
+  green: "0 12px 40px rgba(91, 126, 60, 0.35)",
+};
+
 function ProcessStrip() {
-  const [ref, visible] = useFadeIn(0.1);
   const steps = [
     {
       num: "01",
@@ -882,16 +982,26 @@ function ProcessStrip() {
     },
   ];
   return (
-    <section ref={ref} className="section-padding">
-      <div className="container-site">
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <SectionTag label="Our Process" color="orange" />
+    <section className="section-padding" style={{ position: "relative", overflow: "hidden" }}>
+      <ParallaxLayer
+        speed={-24}
+        className="absolute -top-24 -right-20 w-[380px] h-[380px] pointer-events-none"
+        style={{
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(91,126,60,0.09) 0%, transparent 70%)",
+          filter: "blur(50px)",
+        }}
+      />
+
+      <div className="container-site" style={{ position: "relative", zIndex: 1 }}>
+        <Reveal type="up" className="text-center" style={{ marginBottom: "4rem" }}>
+          <SectionTag label="Our Process" color="green" style={{ marginBottom: "1.25rem" }} />
           <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             How We Build Your Brand
           </h2>
-        </div>
+        </Reveal>
 
         <div
           style={{
@@ -910,64 +1020,62 @@ function ProcessStrip() {
               right: "10%",
               height: 1,
               background:
-                "linear-gradient(90deg, var(--color-brand-orange), var(--color-brand-blue))",
+                "linear-gradient(90deg, var(--color-brand-orange), var(--color-brand-green), var(--color-brand-blue))",
               opacity: 0.3,
               zIndex: 0,
             }}
             className="process-line"
           />
 
-          {steps.map((step, i) => (
-            <div
-              key={step.num}
-              style={{
-                textAlign: "center",
-                padding: "0 1.5rem",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(24px)",
-                transition: `all 0.6s ease ${i * 100}ms`,
-                position: "relative",
-                zIndex: 1,
-              }}
-            >
-              {/* Circle */}
-              <div
+          {steps.map((step, i) => {
+            const accent = ACCENT_CYCLE[i % ACCENT_CYCLE.length];
+            return (
+              <Reveal
+                key={step.num}
+                type="up"
+                delay={i * 0.08}
                 style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: "50%",
-                  background:
-                    i % 2 === 0
-                      ? "linear-gradient(135deg, #fe7a36, #ff9a62)"
-                      : "linear-gradient(135deg, #0046ff, #3369ff)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 1.25rem",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 700,
-                  fontSize: "0.8rem",
-                  color: "#fff",
-                  boxShadow:
-                    i % 2 === 0 ? "var(--shadow-orange)" : "var(--shadow-blue)",
+                  textAlign: "center",
+                  padding: "0 1.5rem",
+                  position: "relative",
+                  zIndex: 1,
                 }}
               >
-                {step.num}
-              </div>
-              <h5
-                style={{
-                  fontFamily: "var(--font-display)",
-                  marginBottom: "0.5rem",
-                  fontSize: "1.1rem",
-                }}
-              >
-                {step.title}
-              </h5>
-              <p style={{ fontSize: "0.875rem", lineHeight: 1.65 }}>
-                {step.desc}
-              </p>
-            </div>
-          ))}
+                {/* Circle */}
+                <div
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    background: PROCESS_CIRCLE_BG[accent],
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 1.25rem",
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 700,
+                    fontSize: "0.8rem",
+                    color: "#f5f5f5",
+                    boxShadow: PROCESS_CIRCLE_SHADOW[accent],
+                  }}
+                >
+                  {step.num}
+                </div>
+                <h5
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    marginBottom: "0.5rem",
+                    fontSize: "1.1rem",
+                  }}
+                >
+                  {step.title}
+                </h5>
+                <p style={{ fontSize: "0.875rem", lineHeight: 1.65 }}>
+                  {step.desc}
+                </p>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
       <style>{`@media(max-width:768px){ .process-line { display: none; } }`}</style>
@@ -981,24 +1089,34 @@ function PortfolioSection({
   setActiveCategory,
   filteredPortfolio,
 }) {
-  const [ref, visible] = useFadeIn(0.1);
   const [lightbox, setLightbox] = useState(null);
 
   return (
     <section
-      ref={ref}
       id="portfolio"
       style={{
         background: "var(--color-bg-secondary)",
         padding: "var(--spacing-section) 0",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div className="container-site">
+      <ParallaxLayer
+        speed={26}
+        className="absolute -bottom-24 -left-16 w-[420px] h-[420px] pointer-events-none"
+        style={{
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(239,105,5,0.08) 0%, transparent 70%)",
+          filter: "blur(60px)",
+        }}
+      />
+
+      <div className="container-site" style={{ position: "relative", zIndex: 1 }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <SectionTag label="Portfolio" color="blue" />
+        <Reveal type="up" className="text-center" style={{ marginBottom: "3rem" }}>
+          <SectionTag label="Portfolio" color="green" style={{ marginBottom: "1.25rem" }} />
           <h2
-            style={{ fontFamily: "var(--font-display)", marginTop: "1.25rem" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Work We're Proud Of
           </h2>
@@ -1012,25 +1130,22 @@ function PortfolioSection({
             A selection of brand identities, print materials, and design systems
             we've built for clients across Kenya and beyond.
           </p>
-        </div>
+        </Reveal>
 
         {/* Filter pills */}
-        <div
-          style={{
-            display: "flex",
-            gap: "0.75rem",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            marginBottom: "3rem",
-          }}
+        <Reveal
+          type="up"
+          delay={0.08}
+          className="flex flex-wrap justify-center gap-3"
+          style={{ marginBottom: "3rem" }}
         >
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
+              className="rounded-pill"
               style={{
                 padding: "0.5rem 1.25rem",
-                borderRadius: "var(--radius-full)",
                 border: "1.5px solid",
                 borderColor:
                   activeCategory === cat
@@ -1038,7 +1153,7 @@ function PortfolioSection({
                     : "var(--color-border)",
                 background:
                   activeCategory === cat
-                    ? "rgba(254,122,54,0.1)"
+                    ? "rgba(239, 105, 5,0.1)"
                     : "transparent",
                 color:
                   activeCategory === cat
@@ -1054,7 +1169,7 @@ function PortfolioSection({
               {cat}
             </button>
           ))}
-        </div>
+        </Reveal>
 
         {/* Masonry-style grid */}
         <div
@@ -1064,77 +1179,80 @@ function PortfolioSection({
           }}
         >
           {filteredPortfolio.map((item, i) => (
-            <div
+            <Reveal
               key={item.id}
-              onClick={() => setLightbox(item)}
-              style={{
-                breakInside: "avoid",
-                marginBottom: "1.25rem",
-                borderRadius: "var(--radius-xl)",
-                overflow: "hidden",
-                position: "relative",
-                cursor: "zoom-in",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `all 0.6s ease ${i * 80}ms`,
-              }}
-              className="portfolio-item"
+              type="scale"
+              delay={Math.min(i, 7) * 0.05}
+              style={{ breakInside: "avoid", marginBottom: "1.25rem" }}
             >
-              <img
-                src={item.img}
-                alt={item.label}
-                style={{
-                  width: "100%",
-                  display: "block",
-                  objectFit: "cover",
-                  transition: "transform 0.5s var(--ease-smooth)",
-                }}
-              />
-              {/* Hover overlay */}
               <div
-                className="portfolio-overlay"
+                onClick={() => setLightbox(item)}
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)",
-                  opacity: 0,
-                  transition: "opacity 0.3s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-end",
-                  padding: "1.5rem",
+                  borderRadius: "var(--radius-soft)",
+                  overflow: "hidden",
+                  position: "relative",
+                  cursor: "zoom-in",
                 }}
+                className="portfolio-item"
               >
-                <span
+                <img
+                  src={item.img}
+                  alt={item.label}
                   style={{
-                    fontSize: "0.65rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    color: "var(--color-brand-orange)",
-                    marginBottom: "0.3rem",
+                    width: "100%",
+                    display: "block",
+                    objectFit: "cover",
+                    transition: "transform 0.5s var(--ease-smooth)",
+                  }}
+                />
+                {/* Hover overlay */}
+                <div
+                  className="portfolio-overlay"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)",
+                    opacity: 0,
+                    transition: "opacity 0.3s ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    padding: "1.5rem",
                   }}
                 >
-                  {item.category}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1.1rem",
-                    color: "#fff",
-                  }}
-                >
-                  {item.label}
-                </span>
+                  <span
+                    style={{
+                      fontSize: "0.65rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color:
+                        CATEGORY_COLOR[item.category] ||
+                        "var(--color-brand-orange)",
+                      marginBottom: "0.3rem",
+                    }}
+                  >
+                    {item.category}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.1rem",
+                      color: "#f5f5f5",
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 
         {/* View all CTA */}
         <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <a href="/contact" className="btn btn-outline-orange btn-lg">
+          <a href="/contact" className="btn btn-outline-green btn-lg rounded-pill!">
             Start Your Branding Project
             <svg
               width="18"
@@ -1175,7 +1293,7 @@ function PortfolioSection({
               alt={lightbox.label}
               style={{
                 width: "100%",
-                borderRadius: "var(--radius-xl)",
+                borderRadius: "var(--radius-soft)",
                 display: "block",
               }}
             />
@@ -1188,13 +1306,15 @@ function PortfolioSection({
                 padding: "1.5rem 2rem",
                 background:
                   "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
-                borderRadius: "0 0 var(--radius-xl) var(--radius-xl)",
+                borderRadius: "0 0 var(--radius-soft) var(--radius-soft)",
               }}
             >
               <div
                 style={{
                   fontSize: "0.75rem",
-                  color: "var(--color-brand-orange)",
+                  color:
+                    CATEGORY_COLOR[lightbox.category] ||
+                    "var(--color-brand-orange)",
                   fontWeight: 700,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
@@ -1206,7 +1326,7 @@ function PortfolioSection({
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "1.5rem",
-                  color: "#fff",
+                  color: "#f5f5f5",
                 }}
               >
                 {lightbox.label}
@@ -1223,7 +1343,7 @@ function PortfolioSection({
                 borderRadius: "50%",
                 background: "var(--color-brand-orange)",
                 border: "none",
-                color: "#fff",
+                color: "#f5f5f5",
                 cursor: "pointer",
                 fontSize: "1.1rem",
                 display: "flex",
@@ -1248,25 +1368,22 @@ function PortfolioSection({
 
 /* ══════ CTA BANNER ══════ */
 function CtaBanner() {
-  const [ref, visible] = useFadeIn(0.2);
   return (
-    <section ref={ref} className="section-padding">
+    <section className="section-padding">
       <div className="container-site">
-        <div
+        <Reveal
+          type="scale"
+          className="rounded-soft"
           style={{
             position: "relative",
-            borderRadius: "var(--radius-2xl)",
             overflow: "hidden",
             padding: "clamp(3rem, 6vw, 5rem) clamp(2rem, 5vw, 5rem)",
             background:
               "linear-gradient(135deg, #0c0c0e 0%, #111116 50%, #0c0c0e 100%)",
-            border: "1px solid rgba(254,122,54,0.15)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(30px)",
-            transition: "all 0.7s ease",
+            border: "1px solid rgba(239, 105, 5,0.15)",
           }}
         >
-          {/* Background blobs */}
+          {/* Background blobs — orange, blue, green all present */}
           <div
             className="glow-orange"
             style={{
@@ -1277,14 +1394,47 @@ function CtaBanner() {
               opacity: 0.6,
             }}
           />
-          <div
-            className="glow-blue"
+          <ParallaxLayer
+            speed={-20}
             style={{
-              width: 400,
-              height: 400,
+              position: "absolute",
               bottom: "-20%",
               right: "5%",
-              opacity: 0.5,
+              pointerEvents: "none",
+            }}
+          >
+            <div className="glow-blue" style={{ position: "relative", width: 400, height: 400, opacity: 0.5 }} />
+          </ParallaxLayer>
+          <ParallaxLayer
+            speed={18}
+            style={{
+              position: "absolute",
+              top: "8%",
+              right: "24%",
+              pointerEvents: "none",
+            }}
+          >
+            <div
+              style={{
+                width: 280,
+                height: 280,
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle, rgba(91,126,60,0.16) 0%, transparent 65%)",
+                filter: "blur(60px)",
+              }}
+            />
+          </ParallaxLayer>
+          <div
+            className="bg-brand-periwinkle/10"
+            style={{
+              position: "absolute",
+              width: 320,
+              height: 320,
+              top: "20%",
+              right: "20%",
+              filter: "blur(70px)",
+              pointerEvents: "none",
             }}
           />
           <div
@@ -1293,13 +1443,12 @@ function CtaBanner() {
           />
 
           <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
-            <SectionTag label="Ready to Start?" color="orange" />
+            <SectionTag label="Ready to Start?" color="orange" style={{ marginBottom: "1.25rem" }} />
             <h2
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(2rem, 5vw, 3.5rem)",
                 color: "var(--color-neutral-0)",
-                marginTop: "1.25rem",
                 marginBottom: "1.25rem",
               }}
             >
@@ -1326,19 +1475,19 @@ function CtaBanner() {
                 flexWrap: "wrap",
               }}
             >
-              <a href="/contact" className="btn btn-primary btn-xl">
+              <a href="/contact" className="btn btn-primary btn-xl rounded-pill!">
                 Get Free Brand Audit
               </a>
               <Link
                 to="/#portfolio"
-                className="btn btn-ghost btn-xl"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#fff" }}
+                className="btn btn-ghost btn-xl rounded-pill!"
+                style={{ borderColor: "rgba(255,255,255,0.2)", color: "#f5f5f5" }}
               >
                 See More Work
               </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

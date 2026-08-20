@@ -82,8 +82,8 @@ export default function BlogPostView({ post, onBack }) {
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: "var(--color-brand-orange)",
-                background: "rgba(254,122,54,0.15)",
-                border: "1px solid rgba(254,122,54,0.3)",
+                background: "rgba(239, 105, 5,0.15)",
+                border: "1px solid rgba(239, 105, 5,0.3)",
                 padding: "0.25rem 0.75rem",
                 borderRadius: "var(--radius-full)",
                 marginBottom: "1rem",
@@ -96,7 +96,7 @@ export default function BlogPostView({ post, onBack }) {
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(1.75rem, 4vw, 3rem)",
-                color: "#fff",
+                color: "#f5f5f5",
                 lineHeight: 1.15,
                 maxWidth: 720,
               }}
@@ -241,8 +241,8 @@ export default function BlogPostView({ post, onBack }) {
             style={{
               marginTop: "3rem",
               background:
-                "linear-gradient(135deg, rgba(254,122,54,0.08), rgba(0,70,255,0.06))",
-              border: "1px solid rgba(254,122,54,0.2)",
+                "linear-gradient(135deg, rgba(239, 105, 5,0.08), rgba(0, 85, 218,0.06))",
+              border: "1px solid rgba(239, 105, 5,0.2)",
               borderRadius: "var(--radius-xl)",
               padding: "2rem 2.5rem",
               textAlign: "center",

@@ -1,108 +1,133 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import RibbonBanner from "./RibbonBanner";
 import assets from "../assets/assets";
 
-const SLIDES = [
-  { src: assets.hero, alt: "Serenly — building digital brands that dominate" },
-  { src: assets.hero1, alt: "Websites Serenly has built for clients" },
-  { src: assets.hero2, alt: "SEO and local search results Serenly delivers" },
-  { src: assets.hero3, alt: "Social media growth Serenly drives for brands" },
-  { src: assets.hero4, alt: "Brand identity work by Serenly" },
-];
+const HERO_IMG = assets.heroo;
 
-const TICKER_ITEMS = [
-  "Web Development",
-  "SEO Optimisation",
-  "Social Media & Meta Ads",
-  "Brand Identity",
-  "School Management Systems",
-];
-
-const SLIDE_DURATION = 6000;
-const NAV_HEIGHT = 72; // px — must match the Navbar's h-[72px]
+function useParallax(speed = 0.12) {
+  const ref = useRef(null);
+  const [offset, setOffset] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      if (!ref.current) return;
+      setOffset(window.scrollY * speed);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [speed]);
+  return [ref, offset];
+}
 
 export default function Hero() {
-  const [active, setActive] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [imgRef, imgOffset] = useParallax(0.08);
 
   useEffect(() => {
-    const id = setInterval(
-      () => setActive((p) => (p + 1) % SLIDES.length),
-      SLIDE_DURATION,
-    );
-    return () => clearInterval(id);
+    const t = setTimeout(() => setLoaded(true), 80);
+    return () => clearTimeout(t);
   }, []);
 
   return (
-    <>
-      {/* -mt-[72px] pulls this section up so it starts at the true top of the
-          page (y=0), underneath the sticky navbar's reserved space. The navbar
-          is transparent in this state (see Navbar.jsx), so the photo shows
-          through. This only affects the home route — every other page's
-          navbar stays in normal flow, untouched. */}
-      <section
-        className="relative min-h-[100dvh] bg-neutral-950 text-neutral-0 overflow-hidden"
-        style={{ marginTop: `-${NAV_HEIGHT}px` }}
-      >
-        {SLIDES.map((slide, i) => (
-          <img
-            key={slide.src}
-            src={slide.src}
-            alt={slide.alt}
-            className="absolute inset-0 w-full h-full object-cover grayscale-[35%] brightness-[0.55] transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: i === active ? 1 : 0 }}
+    <section className="pt-6 md:pt-8 pb-6 px-4 md:px-6 lg:px-8">
+      <div className="w-full max-w-[1800px] mx-auto">
+        <div
+          className="relative overflow-hidden rounded-soft md:rounded-[36px]"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(201,211,243,0.95) 0%, rgba(201,211,243,0.8) 100%)",
+          }}
+        >
+          {/* Ribbon sweeps low under the copy, then climbs behind the image —
+              deliberately routed clear of the text column for legibility. */}
+          <RibbonBanner
+            text="Brand Strategy · Content · SEO · Growth"
+            bandColor="var(--color-brand-orange)"
+            textColor="#F5F5F5"
+            pathD="M -60,730 C 300,860 560,790 680,660 C 840,480 720,140 1400,60"
+            viewBox="0 0 1320 870"
+            bandWidth={70}
+            fontSize={15}
+            className="left-0 top-0 w-full h-full opacity-95"
           />
-        ))}
 
-        {/* Dark gradient for text legibility — neutral, no color tint */}
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/25 to-neutral-950/10" />
-
-        {/* Headline content, anchored to the bottom of the viewport */}
-        <div className="absolute inset-0 flex flex-col justify-end">
-          <div className="container-site pb-16 md:pb-20">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05] max-w-3xl">
-              Building{" "}
-              <span className="font-display inline-block bg-brand-orange text-neutral-950 px-3">
-                digital brands
-              </span>{" "}
-              that{" "}
-              <span className="font-display inline-block bg-neutral-0 text-neutral-950 px-3">
-                dominate
+          <div className="relative grid lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-6 items-center px-6 sm:px-10 lg:px-14 py-10 lg:py-12">
+            {/* Copy */}
+            <div
+              style={{
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "none" : "translateY(18px)",
+                transition: "opacity 0.8s ease, transform 0.8s ease",
+              }}
+            >
+              <span className="inline-flex items-center gap-2 bg-neutral-0 text-brand-black text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-pill mb-5 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-pill bg-brand-orange" />
+                Story-First Marketing
               </span>
-            </h1>
-            <p className="mt-6 font-body font-light text-base md:text-lg text-neutral-0/75 max-w-md">
-              We start with a cup of coffee as we talk about your business. Are
-              you losing customers because you lack a website, a system, or a
-              social media presence?
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link to="/contact" className="btn btn-primary btn-lg">
-                Let's Meet & Talk
-              </Link>
-              <div className="flex items-center gap-2 text-sm font-body font-medium text-neutral-0/85">
-                <span className="text-brand-orange text-base">★★★★★</span>
-                100+ Happy Clients
+
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl leading-[1.05] text-brand-black max-w-lg">
+                Tell your <span className="text-brand-green">story</span>{" "}
+                online, <span className="text-brand-blue">the right way</span>
+              </h1>
+
+              <p className="mt-5 font-body text-base md:text-lg text-brand-black/70 max-w-md leading-relaxed">
+                We turn your business into a brand people remember — through
+                content, SEO, and campaigns that tell the same story,
+                consistently, to the right people.
+              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/contact"
+                  className="btn btn-primary btn-lg rounded-pill!"
+                >
+                  Let's Meet &amp; Talk
+                </Link>
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-brand-green hover:gap-3 transition-all"
+                >
+                  See Our Work
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Image — capped height so the card row below stays in view */}
+            <div className="relative" ref={imgRef}>
+              <div
+                className="relative w-full h-[34vh] sm:h-[38vh] lg:h-[42vh] rounded-soft overflow-hidden shadow-2xl"
+                style={{
+                  transform: `translateY(${Math.min(imgOffset, 20)}px)`,
+                  transition: "transform 0.1s linear",
+                }}
+              >
+                <img
+                  src={HERO_IMG}
+                  alt="Serenly team building a client's brand story"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="hidden sm:flex absolute -bottom-4 -left-4 items-center gap-2 bg-neutral-0 rounded-pill pl-2 pr-4 py-2 shadow-lg">
+                <span className="text-brand-green text-base">★★★★★</span>
+                <span className="text-xs font-bold text-brand-black">
+                  100+ Happy Clients
+                </span>
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Marquee ticker, flush against the hero — no gap */}
-      <div className="marquee-wrapper bg-brand-orange text-neutral-950 py-3">
-        <div className="marquee-track">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map(
-            (item, i) => (
-              <span
-                key={i}
-                className="mx-6 text-sm font-body font-bold tracking-wide flex items-center gap-6 shrink-0"
-              >
-                {item}
-                <span className="text-neutral-950/50">✳</span>
-              </span>
-            ),
-          )}
-        </div>
       </div>
-    </>
+    </section>
   );
 }

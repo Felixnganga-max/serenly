@@ -64,7 +64,7 @@ export default function ServicesList() {
                       {service.id}
                     </span>
                     <h3
-                      className={`font-serif text-3xl md:text-4xl transition-colors duration-300 ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/70"}`}
+                      className={`font-display text-3xl md:text-4xl transition-colors duration-300 ${isActive ? "text-foreground" : "text-foreground/40 group-hover:text-foreground/70"}`}
                     >
                       {service.title}
                     </h3>
