@@ -15,7 +15,7 @@ export default function ClosingCTA() {
         style={{ backgroundImage: noiseSvg, backgroundSize: "200px 200px" }}
       ></div>
       <div className="max-w-3xl mx-auto relative z-10">
-        <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-tight mb-8">
+        <h2 className="font-display text-5xl md:text-6xl lg:text-7xl leading-tight mb-8">
           Let's build something extraordinary
         </h2>
         <p className="text-lg md:text-xl text-white/80 mb-12 font-light leading-relaxed max-w-2xl mx-auto">

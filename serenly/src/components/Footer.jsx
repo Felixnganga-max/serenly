@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="lg:col-span-5 flex flex-col pr-0 lg:pr-12">
             <Link to="/" className="flex items-center gap-3 mb-6 w-fit">
               <img src={assets.logo} alt="Serenly" className="h-8 w-8 object-contain" />
-              <h3 className="font-serif text-3xl font-bold text-white tracking-tight">
+              <h3 className="font-display text-3xl font-bold text-white tracking-tight">
                 Serenly
               </h3>
             </Link>
@@ -22,7 +22,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-2 mt-auto">
               <a
                 href="mailto:contact@serenlydm.com"
-                className="hover:text-primary transition-colors w-fit"
+                className="hover:text-brand-periwinkle transition-colors w-fit"
               >
                 contact@serenlydm.com
               </a>
@@ -37,7 +37,7 @@ export default function Footer() {
                 href="https://wa.me/254797743366"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary font-semibold mt-4 w-fit hover:underline"
+                className="text-brand-green-light font-semibold mt-4 w-fit hover:underline"
               >
                 WhatsApp us →
               </a>
