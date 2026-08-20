@@ -1,5 +1,3 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import express from 'express'
 import cors from 'cors'
 import contactRoutes from './routes/contact.routes.js'
@@ -9,9 +7,6 @@ import uploadsRoutes from './routes/uploads.routes.js'
 import projectRoutes from './routes/project.routes.js'
 import statsRoutes from './routes/stats.routes.js'
 import errorHandler, { notFound } from './middleware/errorHandler.js'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -33,8 +28,6 @@ app.use('/api/posts', postsRoutes)
 app.use('/api/uploads', uploadsRoutes)
 app.use('/api/projects', projectRoutes)
 app.use('/api/stats', statsRoutes)
-
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 app.use(notFound)
 app.use(errorHandler)
